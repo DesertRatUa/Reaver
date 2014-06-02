@@ -10,17 +10,21 @@
 
 int main( int argc, char *argv[] )
 {
+	std::cout << "Running Server" << std::endl;
 	if ( argc == 0 )
 	{
 		std::cout << "Failed get PATH from argc" << std::endl;
 		return 0;
 	}
 
-	Config config( "argv[0]" );
+	Config config( argv[0] );
+	config.Init();
+	config.Read();
+	config.Write();
 
-	std::cout << "Running Server" << std::endl;
+	std::cout << "Stopping Server" << std::endl;
+	//getchar();
 
-	getchar();
 	return 0;
 }
 
