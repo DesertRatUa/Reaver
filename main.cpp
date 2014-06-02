@@ -19,6 +19,7 @@ int main( int argc, char *argv[] )
 	Config config( "argv[0]" );
 
 	std::cout << "Running Server" << std::endl;
+
 	getchar();
 	return 0;
 }
