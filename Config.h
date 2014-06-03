@@ -30,6 +30,8 @@ class Config
 
 		std::string ServerIp;
 		unsigned ServerPort;
+		std::string ListenIp;
+		unsigned ListenPort;
 
 	protected:
 		boost::property_tree::ptree m_configTree;
