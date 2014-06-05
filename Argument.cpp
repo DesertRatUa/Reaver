@@ -9,7 +9,7 @@
 #include "Log.h"
 
 Argument::Argument( const std::string &name, const std::string &shortName, const std::string &defaultValue, const std::string &description ) :
-	m_name(name), m_shortName(name), m_defaultValue(defaultValue), m_description( description ), m_set(false)
+	m_name(name), m_shortName(name), m_value(defaultValue), m_description( description ), m_set(false)
 {
 }
 
@@ -17,7 +17,7 @@ Argument::~Argument()
 {
 }
 
-const bool Argument::isSet()
+bool Argument::isSet() const
 {
 	return m_set;
 }
@@ -32,10 +32,16 @@ void Argument::Set( const std::string &value )
 {
 	Log::Add( "Argument " + m_name + " set with " + value + " value" );
 	m_set = true;
+	m_value = value;
 }
 
 void Argument::UnSet()
 {
 	Log::Add( "Argument " + m_name + " unset" );
 	m_set = false;
+}
+
+bool Argument::operator== ( const Argument& arg ) const
+{
+	return arg.m_name == m_name || arg.m_shortName == m_shortName;
 }

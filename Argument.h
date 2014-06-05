@@ -18,13 +18,15 @@ public:
 
 	std::string m_name;
 	std::string m_shortName;
-	std::string m_defaultValue;
+	std::string m_value;
 	std::string m_description;
 
-	const bool isSet();
+	bool isSet() const;
 	void Set();
 	void Set( const std::string &value );
 	void UnSet();
+
+	bool operator== ( const Argument& arg ) const;
 
 protected:
 	bool m_set;

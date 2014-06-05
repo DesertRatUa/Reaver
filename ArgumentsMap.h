@@ -10,7 +10,7 @@
 
 #include "Argument.h"
 #include <exception>
-#include <map>
+#include <vector>
 
 class ArgumentsMap
 {
@@ -19,16 +19,18 @@ public:
 	virtual ~ArgumentsMap();
 
 	void Init();
-	void Set( const std::string &name );
+	void Set( const std::string &name ) throw ( std::exception );
 	void Set( const std::string &name, const std::string &value );
-	void UnSet( const std::string &name );
+	void UnSet( const std::string &name ) throw ( std::exception );
+	void ParseArgument( std::string name );
+
 	Argument& Get( const std::string &name ) throw ( std::exception );
 
 private:
-	typedef std::map< std::string, Argument > ArgumentMap;
-	typedef std::pair< std::string, Argument > ArgumentPair;
-	ArgumentMap m_arguments;
+	typedef std::vector< Argument > Arguments;
+	Arguments m_arguments;
 	void AddArgument( std::string Name, std::string ShortName, std::string DefaultValue, std::string Description );
+	Argument& Get( const Argument &arg ) throw ( std::exception );
 };
 
 #endif /* ARGUMENTSMAP_H_ */

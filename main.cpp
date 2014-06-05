@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "Config.h"
 #include "Log.h"
+#include "ArgumentsMap.h"
 
 int main( int argc, char *argv[] )
 {
@@ -32,7 +33,12 @@ int main( int argc, char *argv[] )
 	config.Read();
 	config.Write();
 
+	ArgumentsMap arguments;
 
+	for( int i = 1; i < argc; ++i )
+	{
+		arguments.ParseArgument( argv[i] );
+	}
 
 	Log::Add( "Stopping Server" );
 	//getchar();
