@@ -9,7 +9,7 @@
 #include "Log.h"
 
 Argument::Argument( const std::string &name, const std::string &shortName, const std::string &defaultValue, const std::string &description ) :
-	m_name(name), m_shortName(name), m_value(defaultValue), m_description( description ), m_set(false)
+	m_name(name), m_shortName(shortName), m_value(defaultValue), m_description( description ), m_set(false)
 {
 }
 

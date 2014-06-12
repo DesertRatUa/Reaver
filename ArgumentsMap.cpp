@@ -21,9 +21,8 @@ ArgumentsMap::~ArgumentsMap()
 void ArgumentsMap::Init()
 {
 	AddArgument( "server", "s", "", "start server" );
-	AddArgument( "client", "s", "", "start client" );
-	AddArgument( "listen", "l", "*", "listen addr" );
-	AddArgument( "connect", "l", "*", "connect addr" );
+	AddArgument( "client", "c", "", "start client" );
+	AddArgument( "address", "a", "*", "listen/connect addr" );
 }
 
 void ArgumentsMap::Set( const std::string &name ) throw ( std::exception )
@@ -49,7 +48,7 @@ void ArgumentsMap::ParseArgument( std::string name )
 	Log::AddMessage( "Argument: " + name );
 	name = name.substr( delimeter + 1, name.length() - delimeter - 1 );
 
-	Argument tmpArg("","","","");
+	Argument tmpArg("tmp","t","","");
 
 	delimeter = name.find( "=" );
 	if ( delimeter == -1 )
@@ -78,7 +77,14 @@ void ArgumentsMap::ParseArgument( std::string name )
 	try
 	{
 		Argument& arg = Get( tmpArg );
-		arg.Set( tmpArg.m_value );
+		if ( tmpArg.m_value == "" )
+		{
+			arg.Set();
+		}
+		else
+		{
+			arg.Set( tmpArg.m_value );
+		}
 	}
 	catch ( std::exception &exc )
 	{
@@ -93,15 +99,27 @@ void ArgumentsMap::UnSet( const std::string &name ) throw ( std::exception )
 
 Argument& ArgumentsMap::Get( const std::string &name ) throw ( std::exception )
 {
-	Argument tmpArg( name, "", "", "" );
-	return Get( tmpArg );
+	for ( Arguments::iterator argument = m_arguments.begin(); argument != m_arguments.end(); ++argument )
+	{
+		if ( argument->m_name == name ) return *argument;
+	}
+	throw std::runtime_error("Unregistered argument");
+}
+
+Argument& ArgumentsMap::GetShort( const std::string &name ) throw ( std::exception )
+{
+	for ( Arguments::iterator argument = m_arguments.begin(); argument != m_arguments.end(); ++argument )
+	{
+		if ( argument->m_shortName == name ) return *argument;
+	}
+	throw std::runtime_error("Unregistered argument");
 }
 
 Argument& ArgumentsMap::Get( const Argument &arg ) throw ( std::exception )
 {
 	Arguments::iterator argument = std::find( m_arguments.begin(), m_arguments.end(), arg );
 
-	if ( argument == m_arguments.end() )
+	if( argument == m_arguments.end() )
 	{
 		throw std::runtime_error("Unregistered argument");
 	}

@@ -25,6 +25,7 @@ public:
 	void ParseArgument( std::string name );
 
 	Argument& Get( const std::string &name ) throw ( std::exception );
+	Argument& GetShort( const std::string &name ) throw ( std::exception );
 
 private:
 	typedef std::vector< Argument > Arguments;

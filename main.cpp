@@ -34,6 +34,7 @@ int main( int argc, char *argv[] )
 	config.Write();
 
 	ArgumentsMap arguments;
+	arguments.Init();
 
 	for( int i = 1; i < argc; ++i )
 	{
