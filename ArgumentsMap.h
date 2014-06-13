@@ -27,6 +27,7 @@ public:
 	Argument& Get( const std::string &name ) throw ( std::exception );
 	Argument& GetShort( const std::string &name ) throw ( std::exception );
 
+	Argument& operator()( const std::string &name );
 private:
 	typedef std::vector< Argument > Arguments;
 	Arguments m_arguments;

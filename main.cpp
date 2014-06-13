@@ -9,6 +9,7 @@
 #include "Config.h"
 #include "Log.h"
 #include "ArgumentsMap.h"
+#include "ServerModule.h"
 
 int main( int argc, char *argv[] )
 {
@@ -31,7 +32,6 @@ int main( int argc, char *argv[] )
 	Config config( argv[0] );
 	config.Init();
 	config.Read();
-	config.Write();
 
 	ArgumentsMap arguments;
 	arguments.Init();
@@ -41,7 +41,23 @@ int main( int argc, char *argv[] )
 		arguments.ParseArgument( argv[i] );
 	}
 
+	if ( arguments("server").isSet() )
+	{
+		ServerModule server( config, arguments );
+		server.Init();
+		server.Run();
+	}
+	else if ( arguments("client").isSet() )
+	{
+
+	}
+	else
+	{
+		Log::Add( "Required one of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
+	}
+
 	Log::Add( "Stopping Server" );
+	config.Write();
 	//getchar();
 	return 0;
 }

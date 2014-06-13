@@ -20,9 +20,9 @@ ArgumentsMap::~ArgumentsMap()
 
 void ArgumentsMap::Init()
 {
-	AddArgument( "server", "s", "", "start server" );
-	AddArgument( "client", "c", "", "start client" );
-	AddArgument( "address", "a", "*", "listen/connect addr" );
+	AddArgument( "server", "s", "", "Start server" );
+	AddArgument( "client", "c", "", "Start client" );
+	AddArgument( "address", "a", "*", "Listen/connect addr" );
 }
 
 void ArgumentsMap::Set( const std::string &name ) throw ( std::exception )
@@ -113,6 +113,11 @@ Argument& ArgumentsMap::GetShort( const std::string &name ) throw ( std::excepti
 		if ( argument->m_shortName == name ) return *argument;
 	}
 	throw std::runtime_error("Unregistered argument");
+}
+
+Argument& ArgumentsMap::operator()( const std::string &name )
+{
+	return Get( name );
 }
 
 Argument& ArgumentsMap::Get( const Argument &arg ) throw ( std::exception )
