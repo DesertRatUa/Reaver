@@ -42,6 +42,8 @@ void ServerModule::Run()
 
 	m_connection.Listen( ip, port );
 
+	Sleep( 100 );
+
 	m_connection.Close();
 	Log::Add( "Stop server module" );
 }

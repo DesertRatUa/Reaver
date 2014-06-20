@@ -9,6 +9,13 @@
 #define COMMUNICATIONMANAGER_H_
 
 #include <string>
+#ifdef WIN32
+   #include <winsock2.h>
+#else
+   #include <sys/socket.h>
+   #include <sys/un.h>
+#endif
+#include <pthread.h>
 
 class CommunicationManager
 {
@@ -22,6 +29,13 @@ public:
 	void Close();
 
 protected:
+	void Update();
+	static void *Run( void *arg );
+
+	bool m_run;
+	WSADATA m_wsaData;
+	SOCKET m_listenSocket;
+	pthread_t m_mainThread;
 };
 
 #endif /* COMMUNICATIONMANAGER_H_ */
