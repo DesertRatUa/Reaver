@@ -72,7 +72,7 @@ void CommunicationManager::Close()
 {
 	Log::Add( "Close all connections" );
 	m_run = false;
-	pthread_exit( &m_mainThread );
+	pthread_join( m_mainThread, NULL );
 	WSACleanup();
 	Log::Add( "All connections closed" );
 }
@@ -87,6 +87,7 @@ void CommunicationManager::Update()
 	FD_SET(m_listenSocket, &readSet);
 	timeval timeout;
 	timeout.tv_sec = 1;  // Zero timeout (poll)
+	timeout.tv_usec = 0;
 	Log::Add( "Select" );
 	if( select(m_listenSocket, &readSet, NULL, NULL, &timeout) == 1)
 	{
