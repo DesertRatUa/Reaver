@@ -11,6 +11,7 @@
 #include "Config.h"
 #include "ArgumentsMap.h"
 #include "CommunicationManager.h"
+#include "SignalHandler.h"
 
 class ServerModule
 {
@@ -25,6 +26,7 @@ protected:
 	Config &m_config;
 	ArgumentsMap &m_arguments;
 	CommunicationManager m_connection;
+	SignalHandler m_signal;
 };
 
 #endif /* SERVERMODULE_H_ */

@@ -7,7 +7,7 @@
 
 #include "ServerModule.h"
 #include "Log.h"
-
+#include <windows.h>
 
 ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : m_config( config ), m_arguments( arguments )
 {
@@ -20,6 +20,8 @@ ServerModule::~ServerModule()
 void ServerModule::Init()
 {
 	Log::Add( "Init server module" );
+	m_signal.Init();
+	m_connection.Init();
 }
 
 void ServerModule::Run()
@@ -42,7 +44,7 @@ void ServerModule::Run()
 
 	m_connection.Listen( ip, port );
 
-	Sleep( 100 );
+	m_signal.Wait();
 
 	m_connection.Close();
 	Log::Add( "Stop server module" );

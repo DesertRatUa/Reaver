@@ -19,6 +19,11 @@ CommunicationManager::~CommunicationManager()
 {
 }
 
+void CommunicationManager::Init()
+{
+
+}
+
 void CommunicationManager::Connect( const std::string &addr, const unsigned port )
 {
 
@@ -88,7 +93,7 @@ void CommunicationManager::Update()
 	timeval timeout;
 	timeout.tv_sec = 1;  // Zero timeout (poll)
 	timeout.tv_usec = 0;
-	Log::Add( "Select" );
+	//Log::Add( "Select" );
 	if( select(m_listenSocket, &readSet, NULL, NULL, &timeout) == 1)
 	{
 		msgsock = accept( m_listenSocket, (sockaddr *)&fromAddr, &fromLen );
