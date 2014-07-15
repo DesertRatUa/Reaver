@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <time.h>
+#include <boost/lexical_cast.hpp>
 
 std::string Log::m_logFile("");
 pthread_mutex_t Log::m_messageMut(NULL);
@@ -68,4 +69,9 @@ std::string Log::PrintTime()
 	tstruct = localtime(&now);
 	strftime(buf, sizeof(buf), "%X", tstruct);
 	return buf;
+}
+
+std::string Log::IntToStr( const int value )
+{
+	return boost::lexical_cast<std::string>(value);
 }

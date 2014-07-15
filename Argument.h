@@ -20,6 +20,7 @@ public:
 	std::string m_shortName;
 	std::string m_value;
 	std::string m_description;
+	bool m_set;
 
 	bool isSet() const;
 	void Set();
@@ -27,9 +28,6 @@ public:
 	void UnSet();
 
 	bool operator== ( const Argument& arg ) const;
-
-protected:
-	bool m_set;
 };
 
 #endif /* ARGUMENT_H_ */

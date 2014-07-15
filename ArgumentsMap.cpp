@@ -22,7 +22,7 @@ void ArgumentsMap::Init()
 {
 	AddArgument( "server", "s", "", "Start server" );
 	AddArgument( "client", "c", "", "Start client" );
-	AddArgument( "address", "a", "*", "Listen/connect addr" );
+	AddArgument( "address", "a", "127.0.0.1", "Listen/connect addr" );
 }
 
 void ArgumentsMap::Set( const std::string &name ) throw ( std::exception )
@@ -53,7 +53,7 @@ void ArgumentsMap::ParseArgument( std::string name )
 	delimeter = name.find( "=" );
 	if ( delimeter == -1 )
 	{
-		tmpArg.Set();
+		tmpArg.m_set = true;
 	}
 	else
 	{

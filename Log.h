@@ -23,6 +23,7 @@ public:
 	static void AddMessage( std::string message );
 	static void AddLog( std::string log );
 	static void Add( std::string log );
+	static std::string IntToStr( const int value );
 
 protected:
 	static std::string PrintTime();

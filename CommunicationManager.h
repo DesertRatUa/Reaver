@@ -9,6 +9,7 @@
 #define COMMUNICATIONMANAGER_H_
 
 #include <string>
+#include <vector>
 #ifdef WIN32
    #include <winsock2.h>
 #else
@@ -32,10 +33,16 @@ protected:
 	void Update();
 	static void *Run( void *arg );
 
+	SOCKET &CreateConnectedSocket( const SOCKET &socket );
+	void CloseConnectedSocket( const SOCKET &socket );
+
 	bool m_run;
 	WSADATA m_wsaData;
-	SOCKET m_listenSocket;
+	SOCKET m_socket;
+	typedef std::vector<SOCKET> Sockets;
+	Sockets m_connected;
 	pthread_t m_mainThread;
+	timeval m_timeout;
 };
 
 #endif /* COMMUNICATIONMANAGER_H_ */

@@ -17,15 +17,6 @@ public:
 	virtual ~SignalHandler();
 	void Init();
 	void Wait();
-
-protected:
-	BOOL CatchHandler( DWORD fdwCtrlTyp );
-	static void *Thread( void *parent );
-	void Handle();
-
-	pthread_mutex_t m_run;
-	pthread_t m_mainThread;
-	bool m_handled;
 };
 
 #endif /* SIGNALHANDLER_H_ */

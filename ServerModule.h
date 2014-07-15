@@ -8,23 +8,20 @@
 #ifndef SERVERMODULE_H_
 #define SERVERMODULE_H_
 
-#include "Config.h"
-#include "ArgumentsMap.h"
 #include "CommunicationManager.h"
 #include "SignalHandler.h"
+#include "Module.h"
 
-class ServerModule
+class ServerModule : public Module
 {
 public:
 	ServerModule( Config &config, ArgumentsMap &arguments );
 	virtual ~ServerModule();
 
-	void Init();
-	void Run();
+	virtual void Init();
+	virtual void Run();
 
 protected:
-	Config &m_config;
-	ArgumentsMap &m_arguments;
 	CommunicationManager m_connection;
 	SignalHandler m_signal;
 };

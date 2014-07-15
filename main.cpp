@@ -10,6 +10,7 @@
 #include "Log.h"
 #include "ArgumentsMap.h"
 #include "ServerModule.h"
+#include "ClientModule.h"
 
 int main( int argc, char *argv[] )
 {
@@ -41,19 +42,26 @@ int main( int argc, char *argv[] )
 		arguments.ParseArgument( argv[i] );
 	}
 
+	Module *module = NULL;
+
 	if ( arguments("server").isSet() )
 	{
-		ServerModule server( config, arguments );
-		server.Init();
-		server.Run();
+		module = new ServerModule( config, arguments );
 	}
 	else if ( arguments("client").isSet() )
 	{
-
+		module = new ClientModule( config, arguments );
 	}
 	else
 	{
 		Log::Add( "Required one of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
+	}
+
+	if ( module )
+	{
+		module->Init();
+		module->Run();
+		delete module;
 	}
 
 	Log::Add( "Stopping Server" );
