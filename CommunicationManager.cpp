@@ -11,7 +11,7 @@
 #include <sys/types.h>
 #include <algorithm>
 
-CommunicationManager::CommunicationManager() : m_run(true), m_socket(0)
+CommunicationManager::CommunicationManager() : m_run(true), m_socket(0), m_threadList(NULL)
 {
 }
 
@@ -19,15 +19,22 @@ CommunicationManager::~CommunicationManager()
 {
 }
 
+CommunicationManager::SocketData::SocketData( CommunicationManager *Manager, pthread_t &Thread ) : manager(Manager), socket(0), thread(&Thread)
+{
+	memset( &addr, sizeof(addr), 0 );
+}
+
 void CommunicationManager::Init()
 {
 	m_timeout.tv_sec = 1;  // Zero timeout (poll)
 	m_timeout.tv_usec = 0;
+	pthread_mutex_init( &m_threadList, NULL );
 }
 
 void CommunicationManager::Connect( const std::string &addr, const unsigned port )
 {
 	Log::Add( "Try connect to " + addr + ":" + Log::IntToStr( port ) );
+
 	if ( WSAStartup(0x202, &m_wsaData) != 0 )
 	{
 		Log::Add( "Failed to init data" );
@@ -62,11 +69,21 @@ void CommunicationManager::Connect( const std::string &addr, const unsigned port
 	}
 
 	Log::Add( "Connected to " + addr + ":" + Log::IntToStr( port ) );
+
+	std::string message( "Test message 1 2 3" );
+	Sleep(1000);
+
+	for ( unsigned i = 0; i < 5; ++i )
+	{
+		send( m_socket, message.c_str(), message.length(), 0);
+		Sleep(1000);
+	}
+
 }
 
 void CommunicationManager::Listen( const std::string &addr, const unsigned port )
 {
-	Log::Add( "Socket listen on " + addr + ":" + Log::IntToStr( port ) );
+	Log::Add( "Try listen on " + addr + ":" + Log::IntToStr( port ) );
 
 	if ( WSAStartup(0x202, &m_wsaData) != 0 )
 	{
@@ -105,6 +122,8 @@ void CommunicationManager::Listen( const std::string &addr, const unsigned port 
 		Log::Add( "Setting non blocking failed" );
 	}
 
+	Log::Add( "Listen on " + addr + ":" + Log::IntToStr( port ) );
+
 	pthread_create( &m_mainThread, NULL, &Run, (void*)this);
 }
 
@@ -114,52 +133,60 @@ void CommunicationManager::Close()
 	m_run = false;
 	pthread_join( m_mainThread, NULL );
 	closesocket( m_socket );
+	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
+	{
+		pthread_exit( &(*iter) );
+	}
 	WSACleanup();
 	Log::Add( "All connections closed" );
 }
 
 void CommunicationManager::Update()
 {
-
 	fd_set readSet;
 	FD_ZERO(&readSet);
 	FD_SET(m_socket, &readSet);
 
 	if( select(m_socket, &readSet, NULL, NULL, &m_timeout) == 1)
 	{
-		sockaddr_in fromAddr;
-		int fromLen = sizeof(fromAddr);
+		SocketData *data = new SocketData( this, AddThread() );
+		int fromLen = sizeof(data->addr);
+		data->socket = accept( m_socket, (sockaddr *)&data->addr, &fromLen );
 
-		SOCKET& msgsock = CreateConnectedSocket( accept( m_socket, (sockaddr *)&fromAddr, &fromLen ) );
-		if ( msgsock == INVALID_SOCKET )
+		if ( data->socket == INVALID_SOCKET )
 		{
-			Log::Add(  Log::IntToStr( WSAGetLastError() ) );
+			Log::Add( "Failed init socket for connection: " + Log::IntToStr( WSAGetLastError() ) );
+			RemoveThread( data->thread );
+			delete data;
 			return;
 		}
-		Log::Add( "Server: accepted connection from " + std::string( inet_ntoa(fromAddr.sin_addr) ) + ", port " + Log::IntToStr( htons(fromAddr.sin_port) ) );
-
-		CloseConnectedSocket(msgsock);
+		Log::Add( "Server: accepted connection from " + std::string( inet_ntoa( data->addr.sin_addr ) ) + ", port " + Log::IntToStr( htons( data->addr.sin_port ) ) );
+		pthread_create( data->thread, NULL, &ConnectionThread, (void*)data );
 	}
 }
 
-SOCKET& CommunicationManager::CreateConnectedSocket( const SOCKET &socket )
+pthread_t& CommunicationManager::AddThread()
 {
-	m_connected.push_back(socket);
-	return m_connected.back();
+	pthread_mutex_lock( &m_threadList );
+	m_listenThreads.push_back( pthread_t() );
+	pthread_t& thread = m_listenThreads.back();
+	pthread_mutex_unlock( &m_threadList );
+	return thread;
 }
 
-void CommunicationManager::CloseConnectedSocket( const SOCKET &socket )
+void CommunicationManager::RemoveThread( const pthread_t *thread )
 {
-	Sockets::iterator sock = std::find( m_connected.begin(), m_connected.end(), socket );
-	if ( sock == m_connected.end() )
+	if ( !thread ) return;
+	pthread_mutex_lock( &m_threadList );
+	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
 	{
-		closesocket(socket);
+		if ( thread->p == iter->p )
+		{
+			m_listenThreads.erase( iter );
+			break;
+		}
 	}
-	else
-	{
-		closesocket( *sock );
-		m_connected.erase( sock );
-	}
+	pthread_mutex_unlock( &m_threadList );
 }
 
 
@@ -178,6 +205,78 @@ void *CommunicationManager::Run( void *arg )
 		comm->Update();
 	}
 	Log::Add( "End listen thread" );
+	pthread_exit(NULL);
+	return NULL;
+}
+
+void *CommunicationManager::ConnectionThread( void *arg )
+{
+	if ( !arg )
+	{
+		Log::Add( "Null pointer in connection thread" );
+		return NULL;
+	}
+	Log::Add( "Start connection thread" );
+	SocketData *data = (SocketData*) arg;
+
+	char Buffer[256];
+	memset( Buffer, sizeof(Buffer), 0 );
+
+	/*
+	u_long NonBlock = 0;
+	if ( ioctlsocket( data->socket, FIONBIO, &NonBlock ) == SOCKET_ERROR )
+	{
+		Log::Add( "Setting blocking failed" );
+	}
+	*/
+
+	fd_set readSet;
+	FD_ZERO(&readSet);
+	FD_SET( data->socket , &readSet);
+
+	int status = select( data->socket, &readSet, NULL, NULL, &data->manager->m_timeout);
+	while ( status != SOCKET_ERROR )
+	{
+		if( status == 0 )
+		{
+
+			continue;
+		}
+
+		if( status == SOCKET_ERROR )
+		{
+			Log::Add( "Failed get connection from client: " + Log::IntToStr( WSAGetLastError() ) );
+			continue;
+		}
+
+		status = recv( data->socket, Buffer, sizeof(Buffer), 0 );
+
+		if ( status == 0 )
+		{
+			Log::Add( "Client disconnected" );
+			break;
+		}
+
+		if( status == SOCKET_ERROR )
+		{
+			Log::Add( "Failed get data from client: " + Log::IntToStr( WSAGetLastError() ) );
+		}
+		Log::Add( "Recived: " + std::string(Buffer) );
+		memset( Buffer, sizeof(Buffer), 0 );
+
+		status = select( data->socket, &readSet, NULL, NULL, &data->manager->m_timeout);
+	}
+
+
+	if ( status == 0 )
+	{
+
+	}
+
+	closesocket( data->socket );
+	Log::Add( "End connection thread" );
+	data->manager->RemoveThread( data->thread );
+	delete data;
 	pthread_exit(NULL);
 	return NULL;
 }
