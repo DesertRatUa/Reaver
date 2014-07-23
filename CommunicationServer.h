@@ -16,6 +16,7 @@ public:
 	CommunicationServer();
 	virtual ~CommunicationServer();
 
+	virtual void Init();
 	void Listen( const std::string &addr, const unsigned port );
 
 protected:
@@ -24,9 +25,11 @@ protected:
 		SocketData( CommunicationServer *Manager );
 		CommunicationServer *manager;
 		SOCKET socket;
-		pthread_t *thread;
+		pthread_t thread;
 		sockaddr_in addr;
 	};
+	typedef std::vector<SocketData> Clients;
+	Clients m_clients;
 
 	static void *ListenSocketThr( void *arg );
 	SocketData* CreateInputConn();
@@ -34,8 +37,11 @@ protected:
 	void CreateHandlerThread( SocketData *data );
 	static void *DataHandlerThr( void *arg );
 
-	pthread_t& AddThread();
-	void RemoveThread( const pthread_t *thread );
+	SocketData& AddClient();
+	void RemoveClient( const SocketData& data );
+	virtual void CloseAdditionalThreads();
+
+	pthread_mutex_t m_clientsM;
 };
 
 #endif /* COMMUNICATIONSERVER_H_ */

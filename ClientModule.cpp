@@ -32,7 +32,7 @@ void ClientModule::Run()
 	ParseIp( m_arguments("address").m_value, ip, port );
 
 	m_connection.Connect( ip, port );
-
+	m_connection.Send( "ECHO: ECHO: ECHO: Test message 1 2 3" );
 	Sleep( 1000 );
 
 	m_connection.Close();

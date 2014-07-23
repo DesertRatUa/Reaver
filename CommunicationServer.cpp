@@ -8,7 +8,7 @@
 #include "CommunicationServer.h"
 #include "Log.h"
 
-CommunicationServer::CommunicationServer()
+CommunicationServer::CommunicationServer() : m_clientsM(0)
 {
 }
 
@@ -16,9 +16,15 @@ CommunicationServer::~CommunicationServer()
 {
 }
 
-CommunicationServer::SocketData::SocketData( CommunicationServer *Manager ) : manager(Manager), socket(0), thread(NULL)
+CommunicationServer::SocketData::SocketData( CommunicationServer *Manager ) : manager(Manager), socket(0)
 {
 	memset( &addr, 0, sizeof(addr) );
+}
+
+void CommunicationServer::Init()
+{
+	CommunicationManager::Init();
+	pthread_mutex_init( &m_clientsM, NULL );
 }
 
 void CommunicationServer::Listen( const std::string &addr, const unsigned port )
@@ -61,15 +67,14 @@ CommunicationServer::SocketData* CommunicationServer::CreateInputConn()
 
 	if( select(m_socket, &readSet, NULL, NULL, &m_timeout) == 1)
 	{
-		data = new SocketData( this );
+		data = &AddClient();
 		int fromLen = sizeof(data->addr);
 		data->socket = accept( m_socket, (sockaddr *)&data->addr, &fromLen );
 
 		if ( data->socket == INVALID_SOCKET )
 		{
 			Log::Add( "Failed init socket for connection: " + Log::IntToStr( WSAGetLastError() ) );
-			RemoveThread( data->thread );
-			delete data;
+			RemoveClient( *data );
 			return NULL;
 		}
 	}
@@ -77,13 +82,13 @@ CommunicationServer::SocketData* CommunicationServer::CreateInputConn()
 	return data;
 }
 
-pthread_t& CommunicationServer::AddThread()
+CommunicationServer::SocketData& CommunicationServer::AddClient()
 {
-	pthread_mutex_lock( &m_threadList );
-	m_listenThreads.push_back( pthread_t() );
-	pthread_t& thread = m_listenThreads.back();
-	pthread_mutex_unlock( &m_threadList );
-	return thread;
+	pthread_mutex_lock( &m_clientsM );
+	m_clients.push_back( SocketData( this ) );
+	SocketData& client = m_clients.back();
+	pthread_mutex_unlock( &m_clientsM );
+	return client;
 }
 
 void CommunicationServer::RemoveThread( const pthread_t *thread )
@@ -93,6 +98,7 @@ void CommunicationServer::RemoveThread( const pthread_t *thread )
 		return;
 	}
 	pthread_mutex_lock( &m_threadList );
+	/*
 	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
 	{
 		if ( thread->p == iter->p )
@@ -101,6 +107,7 @@ void CommunicationServer::RemoveThread( const pthread_t *thread )
 			break;
 		}
 	}
+	 */
 	pthread_mutex_unlock( &m_threadList );
 }
 
@@ -153,4 +160,14 @@ void *CommunicationServer::DataHandlerThr( void *arg )
 	Log::Add( "End handler thread" );
 	pthread_exit(NULL);
 	return NULL;
+}
+
+void CommunicationServer::CloseAdditionalThreads()
+{
+	/*
+	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
+	{
+		pthread_exit( &(*iter) );
+	}
+	*/
 }

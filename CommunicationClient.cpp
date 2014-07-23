@@ -48,9 +48,6 @@ void CommunicationClient::Connect( const std::string &addr, const unsigned port 
 	Log::Add( "Connected to " + addr + ":" + Log::IntToStr( port ) );
 
 	pthread_create( &m_mainThread, NULL, &DataHandlerThr, (void*)this );
-
-	std::string message( "ECHO: ECHO: ECHO: Test message 1 2 3" );
-	send( m_socket, message.c_str(), message.length(), 0);
 }
 
 void *CommunicationClient::DataHandlerThr( void *arg )
@@ -68,4 +65,9 @@ void *CommunicationClient::DataHandlerThr( void *arg )
 	Log::Add( "End handler thread" );
 	pthread_exit(NULL);
 	return NULL;
+}
+
+void CommunicationClient::Send( const std::string &message )
+{
+		send( m_socket, message.c_str(), message.length(), 0);
 }

@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-CommunicationManager::CommunicationManager() : m_run(true), m_socket(0), m_threadList(NULL)
+CommunicationManager::CommunicationManager() : m_run(true), m_socket(0)
 {
 	m_mainThread.p = NULL;
 	m_mainThread.x = 0;
@@ -26,7 +26,6 @@ void CommunicationManager::Init()
 {
 	m_timeout.tv_sec = 1;  // Zero timeout (poll)
 	m_timeout.tv_usec = 0;
-	pthread_mutex_init( &m_threadList, NULL );
 	memset( &m_address, 0, sizeof(m_address) );
 
 	if ( WSAStartup(0x202, &m_wsaData) != 0 )
@@ -53,10 +52,7 @@ void CommunicationManager::Close()
 	pthread_join( m_mainThread, NULL );
 
 	closesocket( m_socket );
-	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
-	{
-		pthread_exit( &(*iter) );
-	}
+	CloseAdditionalThreads();
 	WSACleanup();
 
 	Log::Add( "All connections closed" );
@@ -100,4 +96,8 @@ void CommunicationManager::ReadSocket( SOCKET &socket, const bool &run )
 	}
 
 	closesocket( socket );
+}
+
+void CommunicationManager::CloseAdditionalThreads()
+{
 }
