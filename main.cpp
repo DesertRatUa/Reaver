@@ -57,11 +57,18 @@ int main( int argc, char *argv[] )
 		Log::Add( "Required one of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
 	}
 
-	if ( module )
+	try
 	{
-		module->Init();
-		module->Run();
-		delete module;
+		if ( module )
+		{
+			module->Init();
+			module->Run();
+			delete module;
+		}
+	}
+	catch ( std::exception &exc )
+	{
+		Log::Add( "Exeption: " + std::string( exc.what() ) );
 	}
 
 	Log::Add( "Stopping Server" );

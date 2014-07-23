@@ -8,7 +8,7 @@
 #ifndef SERVERMODULE_H_
 #define SERVERMODULE_H_
 
-#include "CommunicationManager.h"
+#include "CommunicationServer.h"
 #include "SignalHandler.h"
 #include "Module.h"
 
@@ -22,7 +22,7 @@ public:
 	virtual void Run();
 
 protected:
-	CommunicationManager m_connection;
+	CommunicationServer m_connection;
 	SignalHandler m_signal;
 };
 

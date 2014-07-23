@@ -9,7 +9,7 @@
 #define CLIENTMODULE_H_
 
 #include "Module.h"
-#include "CommunicationManager.h"
+#include "CommunicationClient.h"
 #include "SignalHandler.h"
 
 class ClientModule : public Module
@@ -22,7 +22,7 @@ public:
 	virtual void Run();
 
 protected:
-	CommunicationManager m_connection;
+	CommunicationClient m_connection;
 	SignalHandler m_signal;
 };
 

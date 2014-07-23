@@ -33,7 +33,7 @@ void ClientModule::Run()
 
 	m_connection.Connect( ip, port );
 
-	//m_signal.Wait();
+	Sleep( 1000 );
 
 	m_connection.Close();
 	Log::Add( "Stop client module" );
