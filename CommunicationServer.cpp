@@ -7,6 +7,7 @@
 
 #include "CommunicationServer.h"
 #include "Log.h"
+#include <algorithm>
 
 CommunicationServer::CommunicationServer() : m_clientsM(0)
 {
@@ -19,6 +20,11 @@ CommunicationServer::~CommunicationServer()
 CommunicationServer::SocketData::SocketData( CommunicationServer *Manager ) : manager(Manager), socket(0)
 {
 	memset( &addr, 0, sizeof(addr) );
+}
+
+bool CommunicationServer::SocketData::operator==( const SocketData &data ) const
+{
+	return inet_ntoa(addr.sin_addr) == inet_ntoa(data.addr.sin_addr) && addr.sin_port == data.addr.sin_port;
 }
 
 void CommunicationServer::Init()
@@ -91,26 +97,16 @@ CommunicationServer::SocketData& CommunicationServer::AddClient()
 	return client;
 }
 
-void CommunicationServer::RemoveThread( const pthread_t *thread )
+void CommunicationServer::RemoveClient( const SocketData& data )
 {
-	if ( !thread )
+	pthread_mutex_lock( &m_clientsM );
+	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), data );
+	if( it !=  m_clients.end() )
 	{
-		return;
+		m_clients.erase( it );
 	}
-	pthread_mutex_lock( &m_threadList );
-	/*
-	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
-	{
-		if ( thread->p == iter->p )
-		{
-			m_listenThreads.erase( iter );
-			break;
-		}
-	}
-	 */
-	pthread_mutex_unlock( &m_threadList );
+	pthread_mutex_unlock( &m_clientsM );
 }
-
 
 void *CommunicationServer::ListenSocketThr( void *arg )
 {
@@ -139,8 +135,7 @@ void CommunicationServer::CreateHandlerThread( SocketData *data )
 		return;
 	}
 
-	data->thread = &AddThread();
-	pthread_create( data->thread, NULL, &DataHandlerThr, (void*)data );
+	pthread_create( &data->thread, NULL, &DataHandlerThr, (void*)data);
 }
 
 void *CommunicationServer::DataHandlerThr( void *arg )
@@ -155,7 +150,7 @@ void *CommunicationServer::DataHandlerThr( void *arg )
 	Log::Add( "Server: accepted connection from " + std::string( inet_ntoa( data->addr.sin_addr ) ) + ":" + Log::IntToStr( htons( data->addr.sin_port ) ) );
 	ReadSocket( data->socket, data->manager->m_run );
 	Log::Add( "Server: disconnected from " + std::string( inet_ntoa( data->addr.sin_addr ) ) + ":" + Log::IntToStr( htons( data->addr.sin_port ) ) );
-	data->manager->RemoveThread( data->thread );
+	//data->manager->RemoveThread( data->thread );
 	delete data;
 	Log::Add( "End handler thread" );
 	pthread_exit(NULL);

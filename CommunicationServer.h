@@ -19,7 +19,6 @@ public:
 	virtual void Init();
 	void Listen( const std::string &addr, const unsigned port );
 
-protected:
 	struct SocketData
 	{
 		SocketData( CommunicationServer *Manager );
@@ -27,7 +26,11 @@ protected:
 		SOCKET socket;
 		pthread_t thread;
 		sockaddr_in addr;
+
+		bool operator==( const SocketData &data ) const;
 	};
+
+protected:
 	typedef std::vector<SocketData> Clients;
 	Clients m_clients;
 
