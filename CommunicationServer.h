@@ -9,6 +9,7 @@
 #define COMMUNICATIONSERVER_H_
 
 #include "CommunicationManager.h"
+#include "Client.h"
 
 class CommunicationServer: public CommunicationManager
 {
@@ -19,29 +20,20 @@ public:
 	virtual void Init();
 	void Listen( const std::string &addr, const unsigned port );
 
-	struct SocketData
-	{
-		SocketData( CommunicationServer *Manager );
-		CommunicationServer *manager;
-		SOCKET socket;
-		pthread_t thread;
-		sockaddr_in addr;
-
-		bool operator==( const SocketData &data ) const;
-	};
-
 protected:
-	typedef std::vector<SocketData> Clients;
+	friend class Client;
+
+	typedef std::vector<Client> Clients;
 	Clients m_clients;
 
 	static void *ListenSocketThr( void *arg );
-	SocketData* CreateInputConn();
+	Client* CreateInputConn();
 
-	void CreateHandlerThread( SocketData *data );
+	void CreateHandlerThread( Client *data );
 	static void *DataHandlerThr( void *arg );
 
-	SocketData& AddClient();
-	void RemoveClient( const SocketData& data );
+	Client& StoreClient( Client &client );
+	void RemoveClient( const Client& data );
 	virtual void CloseAdditionalThreads();
 
 	pthread_mutex_t m_clientsM;

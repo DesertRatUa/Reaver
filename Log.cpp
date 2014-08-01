@@ -10,6 +10,7 @@
 #include <iostream>
 #include <time.h>
 #include <boost/lexical_cast.hpp>
+#include <winsock2.h>
 
 std::string Log::m_logFile("");
 pthread_mutex_t Log::m_messageMut(NULL);
@@ -74,4 +75,9 @@ std::string Log::PrintTime()
 std::string Log::IntToStr( const int value )
 {
 	return boost::lexical_cast<std::string>(value);
+}
+
+std::string Log::AddrToStr( const sockaddr_in& addr )
+{
+	return std::string( inet_ntoa( addr.sin_addr ) + htons( addr.sin_port ) );
 }

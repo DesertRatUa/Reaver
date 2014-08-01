@@ -17,16 +17,6 @@ CommunicationServer::~CommunicationServer()
 {
 }
 
-CommunicationServer::SocketData::SocketData( CommunicationServer *Manager ) : manager(Manager), socket(0)
-{
-	memset( &addr, 0, sizeof(addr) );
-}
-
-bool CommunicationServer::SocketData::operator==( const SocketData &data ) const
-{
-	return inet_ntoa(addr.sin_addr) == inet_ntoa(data.addr.sin_addr) && addr.sin_port == data.addr.sin_port;
-}
-
 void CommunicationServer::Init()
 {
 	CommunicationManager::Init();
@@ -64,45 +54,47 @@ void CommunicationServer::Listen( const std::string &addr, const unsigned port )
 	pthread_create( &m_mainThread, NULL, &ListenSocketThr, (void*)this);
 }
 
-CommunicationServer::SocketData* CommunicationServer::CreateInputConn()
+Client* CommunicationServer::CreateInputConn()
 {
 	fd_set readSet;
 	FD_ZERO(&readSet);
 	FD_SET(m_socket, &readSet);
-	SocketData *data = NULL;
+	Client *client = NULL;
 
 	if( select(m_socket, &readSet, NULL, NULL, &m_timeout) == 1)
 	{
-		data = &AddClient();
-		int fromLen = sizeof(data->addr);
-		data->socket = accept( m_socket, (sockaddr *)&data->addr, &fromLen );
+		client = new Client( this );
+		int fromLen = sizeof(client->addr);
+		client->socket = accept( m_socket, (sockaddr *)&client->addr, &fromLen );
 
-		if ( data->socket == INVALID_SOCKET )
+		if ( client->socket == INVALID_SOCKET )
 		{
 			Log::Add( "Failed init socket for connection: " + Log::IntToStr( WSAGetLastError() ) );
-			RemoveClient( *data );
+			delete client;
 			return NULL;
 		}
 	}
 
-	return data;
-}
-
-CommunicationServer::SocketData& CommunicationServer::AddClient()
-{
-	pthread_mutex_lock( &m_clientsM );
-	m_clients.push_back( SocketData( this ) );
-	SocketData& client = m_clients.back();
-	pthread_mutex_unlock( &m_clientsM );
 	return client;
 }
 
-void CommunicationServer::RemoveClient( const SocketData& data )
+Client& CommunicationServer::StoreClient( Client &client  )
+{
+	pthread_mutex_lock( &m_clientsM );
+	Log::Add( "Add client: " + Log::AddrToStr( client.addr ) );
+	m_clients.push_back( client );
+	Client& sclient = m_clients.back();
+	pthread_mutex_unlock( &m_clientsM );
+	return sclient;
+}
+
+void CommunicationServer::RemoveClient( const Client& data )
 {
 	pthread_mutex_lock( &m_clientsM );
 	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), data );
 	if( it !=  m_clients.end() )
 	{
+		Log::Add( "Remove client: " + Log::AddrToStr( data.addr ) );
 		m_clients.erase( it );
 	}
 	pthread_mutex_unlock( &m_clientsM );
@@ -120,22 +112,24 @@ void *CommunicationServer::ListenSocketThr( void *arg )
 	CommunicationServer *comm = (CommunicationServer*) arg;
 	while ( comm->m_run )
 	{
-		SocketData *data = comm->CreateInputConn();
+		Client *data = comm->CreateInputConn();
 		comm->CreateHandlerThread( data );
+		delete data;
 	}
 	Log::Add( "End listen thread" );
 	pthread_exit(NULL);
 	return NULL;
 }
 
-void CommunicationServer::CreateHandlerThread( SocketData *data )
+void CommunicationServer::CreateHandlerThread( Client *data )
 {
 	if ( data == NULL )
 	{
 		return;
 	}
 
-	pthread_create( &data->thread, NULL, &DataHandlerThr, (void*)data);
+	Client &client = StoreClient( *data );
+	pthread_create( &data->thread, NULL, &DataHandlerThr, (void*)&client);
 }
 
 void *CommunicationServer::DataHandlerThr( void *arg )
@@ -146,11 +140,11 @@ void *CommunicationServer::DataHandlerThr( void *arg )
 		return NULL;
 	}
 	Log::Add( "Start handler thread" );
-	SocketData *data = (SocketData*) arg;
-	Log::Add( "Server: accepted connection from " + std::string( inet_ntoa( data->addr.sin_addr ) ) + ":" + Log::IntToStr( htons( data->addr.sin_port ) ) );
+	Client *data = (Client*) arg;
+	Log::Add( "Server: accepted connection from " + Log::AddrToStr( data->addr ) );
 	ReadSocket( data->socket, data->manager->m_run );
-	Log::Add( "Server: disconnected from " + std::string( inet_ntoa( data->addr.sin_addr ) ) + ":" + Log::IntToStr( htons( data->addr.sin_port ) ) );
-	//data->manager->RemoveThread( data->thread );
+	Log::Add( "Server: disconnected from " + Log::AddrToStr( data->addr ) );
+	data->manager->RemoveClient( *data );
 	delete data;
 	Log::Add( "End handler thread" );
 	pthread_exit(NULL);
@@ -159,10 +153,8 @@ void *CommunicationServer::DataHandlerThr( void *arg )
 
 void CommunicationServer::CloseAdditionalThreads()
 {
-	/*
-	for ( ThreadsList::iterator iter = m_listenThreads.begin(); iter != m_listenThreads.end(); iter++ )
+	for ( Clients::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++ )
 	{
-		pthread_exit( &(*iter) );
+		pthread_join( iter->thread, NULL );
 	}
-	*/
 }
