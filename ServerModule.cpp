@@ -19,6 +19,7 @@ ServerModule::~ServerModule()
 
 void ServerModule::Init()
 {
+	Log::SetName( "Server" );
 	Log::Add( "Init server module" );
 	m_signal.Init();
 	m_connection.Init();

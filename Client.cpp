@@ -6,13 +6,16 @@
  */
 
 #include "Client.h"
+#include "Log.h"
 
 Client::Client( CommunicationServer *Manager ) : manager( Manager ), socket( 0 )
 {
+	Log::Add( "Create empty client" );
 }
 
 Client::~Client()
 {
+	Log::Add( "Remove client: " + Log::AddrToStr( addr ) );
 }
 
 bool Client::operator==( const Client &client ) const

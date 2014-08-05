@@ -16,6 +16,7 @@ std::string Log::m_logFile("");
 pthread_mutex_t Log::m_messageMut(NULL);
 pthread_mutex_t Log::m_logMut(NULL);
 std::ofstream Log::m_log;
+std::string Log::m_name;
 
 Log::Log()
 {
@@ -52,7 +53,12 @@ void Log::AddLog( std::string log )
 {
 	if ( !m_log.is_open() ) return;
 	pthread_mutex_lock( &m_logMut );
-	m_log << PrintTime() << "\t" << log << std::endl;
+	m_log << PrintTime() << "\t";
+	if ( !m_name.empty() )
+	{
+		m_log << m_name.c_str() << ": ";
+	}
+	m_log << log << std::endl;
 	pthread_mutex_unlock( &m_logMut );
 }
 
@@ -80,4 +86,9 @@ std::string Log::IntToStr( const int value )
 std::string Log::AddrToStr( const sockaddr_in& addr )
 {
 	return std::string( inet_ntoa( addr.sin_addr ) + htons( addr.sin_port ) );
+}
+
+void Log::SetName( const std::string &name )
+{
+	m_name = name;
 }

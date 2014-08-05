@@ -27,6 +27,7 @@ public:
 	static void Add( std::string log );
 	static std::string IntToStr( const int value );
 	static std::string AddrToStr( const sockaddr_in& addr );
+	static void SetName( const std::string &name );
 
 protected:
 	static std::string PrintTime();
@@ -36,6 +37,7 @@ protected:
 	static pthread_mutex_t m_logMut;
 
 	static std::ofstream m_log;
+	static std::string m_name;
 };
 
 #endif /* LOG_H_ */

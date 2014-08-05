@@ -18,6 +18,7 @@ ClientModule::~ClientModule()
 
 void ClientModule::Init()
 {
+	Log::SetName( "Client" );
 	Log::Add( "Init client module" );
 	m_signal.Init();
 	m_connection.Init();
