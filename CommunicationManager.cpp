@@ -11,8 +11,9 @@
 #include <sys/types.h>
 #include <algorithm>
 #include <stdexcept>
+#include "MessageProcessor.h"
 
-CommunicationManager::CommunicationManager() : m_run(true), m_socket(0)
+CommunicationManager::CommunicationManager( MessageProcessor &processor ) : m_run(true), m_socket(0), m_processor( processor )
 {
 	m_mainThread.p = NULL;
 	m_mainThread.x = 0;
@@ -58,14 +59,14 @@ void CommunicationManager::Close()
 	Log::Add( "All connections closed" );
 }
 
-void CommunicationManager::ReadSocket( SOCKET &socket, const bool &run )
+void CommunicationManager::ReadSocket( SOCKET &socket, CommunicationManager* manager, const std::string &add )
 {
 	char Buffer[256];
 	memset( Buffer, 0, sizeof(Buffer) );
 
 	int status = recv( socket, Buffer, sizeof(Buffer), 0 );
 
-	while ( status != 0 && run )
+	while ( status != 0 && manager->m_run )
 	{
 		if( status == SOCKET_ERROR )
 		{
@@ -81,15 +82,7 @@ void CommunicationManager::ReadSocket( SOCKET &socket, const bool &run )
 		}
 		else
 		{
-			std::string buff(Buffer);
-			Log::Add( "Recived: " + buff );
-
-			if( int pos = buff.find( "ECHO" ) != -1 )
-			{
-				std::string message = buff.substr( pos + 5, buff.length() - pos - 5 );
-				send( socket, message.c_str(), message.length(), 0);
-			}
-
+			manager->m_processor.ProcessMessage( Buffer, add );
 			memset( Buffer, 0, sizeof(Buffer) );
 		}
 		status = recv( socket, Buffer, sizeof(Buffer), 0 );

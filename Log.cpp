@@ -85,7 +85,7 @@ std::string Log::IntToStr( const int value )
 
 std::string Log::AddrToStr( const sockaddr_in& addr )
 {
-	return std::string( inet_ntoa( addr.sin_addr ) + htons( addr.sin_port ) );
+	return std::string( inet_ntoa( addr.sin_addr ) + std::string(":") + Log::IntToStr( addr.sin_port ) );
 }
 
 void Log::SetName( const std::string &name )

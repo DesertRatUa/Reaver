@@ -10,6 +10,8 @@
 
 #include <winsock2.h>
 #include <pthread.h>
+#include <string>
+#include <boost/shared_ptr.hpp>
 
 class CommunicationServer;
 
@@ -19,16 +21,21 @@ public:
 	Client( CommunicationServer *Manager );
 	virtual ~Client();
 
-	SOCKET socket;
-	pthread_t thread;
+	void Send( const std::string& message );
+
 	sockaddr_in addr;
-	CommunicationServer *manager;
 
 	bool operator==( const Client &client ) const;
 
 protected:
 
+	friend class CommunicationServer;
+	CommunicationServer *manager;
+	SOCKET socket;
+	pthread_t thread;
 
 };
+
+typedef boost::shared_ptr<Client> ClientPtr;
 
 #endif /* CLIENT_H_ */

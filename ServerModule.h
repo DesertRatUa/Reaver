@@ -11,6 +11,7 @@
 #include "CommunicationServer.h"
 #include "SignalHandler.h"
 #include "Module.h"
+#include "ServerMessageProcessor.h"
 
 class ServerModule : public Module
 {
@@ -21,9 +22,14 @@ public:
 	virtual void Init();
 	virtual void Run();
 
+	void EchoPrc( const std::string& message, const std::string& addr );
+
 protected:
+	friend class ServerMessageProcessor;
+
 	CommunicationServer m_connection;
 	SignalHandler m_signal;
+	ServerMessageProcessor m_processor;
 };
 
 #endif /* SERVERMODULE_H_ */

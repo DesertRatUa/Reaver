@@ -10,24 +10,23 @@
 
 #include "CommunicationManager.h"
 #include "Client.h"
-#include <boost/shared_ptr.hpp>
 
 class CommunicationServer: public CommunicationManager
 {
 public:
-	CommunicationServer();
+	CommunicationServer( MessageProcessor &processor );
 	virtual ~CommunicationServer();
 
 	virtual void Init();
 	void Listen( const std::string &addr, const unsigned port );
 
+	Client& GetClient( const std::string &addr );
+
 protected:
 	friend class Client;
 
-	typedef boost::shared_ptr<Client> ClientPtr;
 	typedef std::vector<ClientPtr> Clients;
 	Clients m_clients;
-
 
 	static void *ListenSocketThr( void *arg );
 	ClientPtr CreateInputConn();
@@ -35,7 +34,7 @@ protected:
 	void CreateHandlerThread( ClientPtr &client );
 	static void *DataHandlerThr( void *arg );
 
-	void StoreClient( ClientPtr& client );
+	ClientPtr* StoreClient( ClientPtr& client );
 	void RemoveClient( const ClientPtr& data );
 	virtual void CloseAdditionalThreads();
 

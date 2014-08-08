@@ -13,7 +13,7 @@
 class CommunicationClient: public CommunicationManager
 {
 public:
-	CommunicationClient();
+	CommunicationClient( MessageProcessor &processor );
 	virtual ~CommunicationClient();
 
 	void Connect( const std::string &addr, const unsigned port );

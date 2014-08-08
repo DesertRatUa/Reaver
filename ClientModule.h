@@ -11,6 +11,7 @@
 #include "Module.h"
 #include "CommunicationClient.h"
 #include "SignalHandler.h"
+#include "ClientMessageProcessor.h"
 
 class ClientModule : public Module
 {
@@ -22,8 +23,11 @@ public:
 	virtual void Run();
 
 protected:
+	friend class ClientMessageProcessor;
+
 	CommunicationClient m_connection;
 	SignalHandler m_signal;
+	ClientMessageProcessor m_processor;
 };
 
 #endif /* CLIENTMODULE_H_ */

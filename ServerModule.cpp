@@ -9,7 +9,7 @@
 #include "Log.h"
 #include <windows.h>
 
-ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments )
+ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor ), m_processor(this)
 {
 }
 
@@ -23,6 +23,7 @@ void ServerModule::Init()
 	Log::Add( "Init server module" );
 	m_signal.Init();
 	m_connection.Init();
+	m_processor.Init();
 }
 
 void ServerModule::Run()
@@ -39,4 +40,9 @@ void ServerModule::Run()
 
 	m_connection.Close();
 	Log::Add( "Stop server module" );
+}
+
+void ServerModule::EchoPrc( const std::string& message, const std::string& addr )
+{
+
 }

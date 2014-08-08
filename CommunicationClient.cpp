@@ -8,7 +8,7 @@
 #include "CommunicationClient.h"
 #include "Log.h"
 
-CommunicationClient::CommunicationClient()
+CommunicationClient::CommunicationClient( MessageProcessor &processor ) : CommunicationManager( processor )
 {
 }
 
@@ -60,7 +60,7 @@ void *CommunicationClient::DataHandlerThr( void *arg )
 	Log::Add( "Start handler thread" );
 	CommunicationClient *manager = (CommunicationClient*) arg;
 
-	ReadSocket( manager->m_socket, manager->m_run );
+	ReadSocket( manager->m_socket, manager, Log::AddrToStr( manager->m_address ) );
 
 	Log::Add( "End handler thread" );
 	pthread_exit(NULL);

@@ -18,18 +18,22 @@
 #endif
 #include <pthread.h>
 
+class MessageProcessor;
+
 class CommunicationManager
 {
 public:
-	CommunicationManager();
+	CommunicationManager( MessageProcessor &processor );
 	virtual ~CommunicationManager();
 
 	virtual void Init();
 	void Close();
 
 protected:
-	static void ReadSocket( SOCKET &socket, const bool &run );
+	static void ReadSocket( SOCKET &socket, CommunicationManager *manager, const std::string &addr );
 	virtual void CloseAdditionalThreads();
+
+	MessageProcessor &m_processor;
 
 	bool m_run;
 	WSADATA m_wsaData;

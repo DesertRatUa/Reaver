@@ -8,7 +8,7 @@
 #include "ClientModule.h"
 #include "Log.h"
 
-ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments )
+ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor ), m_processor(this)
 {
 }
 
@@ -22,6 +22,7 @@ void ClientModule::Init()
 	Log::Add( "Init client module" );
 	m_signal.Init();
 	m_connection.Init();
+	m_processor.Init();
 }
 
 void ClientModule::Run()
