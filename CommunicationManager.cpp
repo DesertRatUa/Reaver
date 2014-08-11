@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include "MessageProcessor.h"
 
-CommunicationManager::CommunicationManager( MessageProcessor &processor ) : m_run(true), m_socket(0), m_processor( processor )
+CommunicationManager::CommunicationManager( MessageProcessor &processor, bool &isRun ) : m_socket(0), m_processor( processor ), m_run( isRun )
 {
 	m_mainThread.p = NULL;
 	m_mainThread.x = 0;

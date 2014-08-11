@@ -25,7 +25,7 @@ BOOL WINAPI CatchHandler( DWORD fdwCtrlType )
 	}
 }
 
-SignalHandler::SignalHandler()
+SignalHandler::SignalHandler( bool &isRun ) : m_run( isRun )
 {
 }
 
@@ -45,7 +45,7 @@ void SignalHandler::Wait()
 		Log::Add( "Signal handle failed" );
 		handled = true;
 	}
-	while ( !handled )
+	while ( !handled && m_run )
 	{
 		usleep(100);
 	}

@@ -8,7 +8,7 @@
 #include "ClientModule.h"
 #include "Log.h"
 
-ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor ), m_processor(this)
+ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run )
 {
 }
 
@@ -34,8 +34,11 @@ void ClientModule::Run()
 	ParseIp( m_arguments("address").m_value, ip, port );
 
 	m_connection.Connect( ip, port );
-	m_connection.Send( "ECHO: ECHO: ECHO: Test message 1 2 3" );
-	Sleep( 1000 );
+	m_connection.Send( "ECHO: Test message" );
+	m_processor.SendEchomMessage( "Echo message" );
+	//Sleep( 1000 );
+
+	m_signal.Wait();
 
 	m_connection.Close();
 	Log::Add( "Stop client module" );

@@ -8,7 +8,7 @@
 #include "Client.h"
 #include "Log.h"
 
-Client::Client( CommunicationServer *Manager ) : manager( Manager ), socket( 0 )
+Client::Client( ServerCommunicationManager *Manager ) : manager( Manager ), socket( 0 )
 {
 }
 

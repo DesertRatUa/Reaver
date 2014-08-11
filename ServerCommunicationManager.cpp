@@ -5,30 +5,30 @@
  *      Author: maximm
  */
 
-#include "CommunicationServer.h"
+#include "ServerCommunicationManager.h"
 #include "Log.h"
 #include <algorithm>
 #include <stdexcept>
 #include "MessageProcessor.h"
 
-CommunicationServer::CommunicationServer(  MessageProcessor &processor  ) : m_clientsM(0), CommunicationManager( processor )
+ServerCommunicationManager::ServerCommunicationManager(  MessageProcessor &processor, bool &isRun  ) : m_clientsM(0), CommunicationManager( processor, isRun )
 {
 }
 
-CommunicationServer::~CommunicationServer()
+ServerCommunicationManager::~ServerCommunicationManager()
 {
 }
 
-void CommunicationServer::Init()
+void ServerCommunicationManager::Init()
 {
 	CommunicationManager::Init();
 	pthread_mutex_init( &m_clientsM, NULL );
 }
 
-void CommunicationServer::Listen( const std::string &addr, const unsigned port )
+void ServerCommunicationManager::Listen( const std::string &addr, const unsigned port )
 {
 	Log::Add( "Try listen on " + addr + ":" + Log::IntToStr( port ) );
-
+	m_run = true;
 	m_address.sin_family = AF_INET;
 	m_address.sin_port = htons( port );
 	m_address.sin_addr.s_addr = ( addr == "*" ) ? INADDR_ANY : inet_addr( addr.c_str() );
@@ -56,7 +56,7 @@ void CommunicationServer::Listen( const std::string &addr, const unsigned port )
 	pthread_create( &m_mainThread, NULL, &ListenSocketThr, (void*)this);
 }
 
-ClientPtr CommunicationServer::CreateInputConn()
+ClientPtr ServerCommunicationManager::CreateInputConn()
 {
 	fd_set readSet;
 	FD_ZERO(&readSet);
@@ -77,7 +77,7 @@ ClientPtr CommunicationServer::CreateInputConn()
 	return client;
 }
 
-ClientPtr* CommunicationServer::StoreClient( ClientPtr& client  )
+ClientPtr* ServerCommunicationManager::StoreClient( ClientPtr& client  )
 {
 	pthread_mutex_lock( &m_clientsM );
 	Log::Add( "Store client: " + Log::AddrToStr( client->addr ) );
@@ -87,7 +87,7 @@ ClientPtr* CommunicationServer::StoreClient( ClientPtr& client  )
 	return cl;
 }
 
-void CommunicationServer::RemoveClient( const ClientPtr& client)
+void ServerCommunicationManager::RemoveClient( const ClientPtr& client)
 {
 	pthread_mutex_lock( &m_clientsM );
 	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), client );
@@ -103,7 +103,7 @@ void CommunicationServer::RemoveClient( const ClientPtr& client)
 	pthread_mutex_unlock( &m_clientsM );
 }
 
-Client& CommunicationServer::GetClient( const std::string &addr )
+Client& ServerCommunicationManager::GetClient( const std::string &addr )
 {
 	Client* client = NULL;
 	pthread_mutex_lock( &m_clientsM );
@@ -123,7 +123,7 @@ Client& CommunicationServer::GetClient( const std::string &addr )
 	return *client;
 }
 
-void *CommunicationServer::ListenSocketThr( void *arg )
+void *ServerCommunicationManager::ListenSocketThr( void *arg )
 {
 	if ( !arg )
 	{
@@ -132,7 +132,7 @@ void *CommunicationServer::ListenSocketThr( void *arg )
 	}
 
 	Log::Add( "Start listen thread" );
-	CommunicationServer *comm = (CommunicationServer*) arg;
+	ServerCommunicationManager *comm = (ServerCommunicationManager*) arg;
 	while ( comm->m_run )
 	{
 		ClientPtr client = comm->CreateInputConn();
@@ -146,13 +146,13 @@ void *CommunicationServer::ListenSocketThr( void *arg )
 	return NULL;
 }
 
-void CommunicationServer::CreateHandlerThread( ClientPtr &client )
+void ServerCommunicationManager::CreateHandlerThread( ClientPtr &client )
 {
 	Log::Add( "Start handler thread" );
 	pthread_create( &client->thread, NULL, &DataHandlerThr, (void*)StoreClient( client ) );
 }
 
-void *CommunicationServer::DataHandlerThr( void *arg )
+void *ServerCommunicationManager::DataHandlerThr( void *arg )
 {
 	if ( !arg )
 	{
@@ -171,7 +171,7 @@ void *CommunicationServer::DataHandlerThr( void *arg )
 	return NULL;
 }
 
-void CommunicationServer::CloseAdditionalThreads()
+void ServerCommunicationManager::CloseAdditionalThreads()
 {
 	for ( Clients::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++ )
 	{

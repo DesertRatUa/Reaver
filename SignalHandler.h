@@ -13,10 +13,13 @@
 class SignalHandler
 {
 public:
-	SignalHandler();
+	SignalHandler( bool &isRun );
 	virtual ~SignalHandler();
 	void Init();
 	void Wait();
+
+protected:
+	bool &m_run;
 };
 
 #endif /* SIGNALHANDLER_H_ */

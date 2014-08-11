@@ -9,7 +9,7 @@
 #include "Log.h"
 #include <windows.h>
 
-ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor ), m_processor(this)
+ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run )
 {
 }
 

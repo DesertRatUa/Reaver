@@ -8,7 +8,7 @@
 #ifndef SERVERMODULE_H_
 #define SERVERMODULE_H_
 
-#include "CommunicationServer.h"
+#include "ServerCommunicationManager.h"
 #include "SignalHandler.h"
 #include "Module.h"
 #include "ServerMessageProcessor.h"
@@ -27,7 +27,8 @@ public:
 protected:
 	friend class ServerMessageProcessor;
 
-	CommunicationServer m_connection;
+	bool m_run;
+	ServerCommunicationManager m_connection;
 	SignalHandler m_signal;
 	ServerMessageProcessor m_processor;
 };

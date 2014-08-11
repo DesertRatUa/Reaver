@@ -10,11 +10,11 @@
 
 #include "CommunicationManager.h"
 
-class CommunicationClient: public CommunicationManager
+class ClientCommunicationManager: public CommunicationManager
 {
 public:
-	CommunicationClient( MessageProcessor &processor );
-	virtual ~CommunicationClient();
+	ClientCommunicationManager( MessageProcessor &processor, bool &isRun );
+	virtual ~ClientCommunicationManager();
 
 	void Connect( const std::string &addr, const unsigned port );
 	void Send( const std::string &message );

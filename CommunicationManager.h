@@ -23,7 +23,7 @@ class MessageProcessor;
 class CommunicationManager
 {
 public:
-	CommunicationManager( MessageProcessor &processor );
+	CommunicationManager( MessageProcessor &processor, bool &isRun );
 	virtual ~CommunicationManager();
 
 	virtual void Init();
@@ -35,7 +35,7 @@ protected:
 
 	MessageProcessor &m_processor;
 
-	bool m_run;
+	bool &m_run;
 	WSADATA m_wsaData;
 	SOCKET m_socket;
 	pthread_t m_mainThread;

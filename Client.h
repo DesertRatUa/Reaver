@@ -13,12 +13,12 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
-class CommunicationServer;
+class ServerCommunicationManager;
 
 class Client
 {
 public:
-	Client( CommunicationServer *Manager );
+	Client( ServerCommunicationManager *Manager );
 	virtual ~Client();
 
 	void Send( const std::string& message );
@@ -29,8 +29,8 @@ public:
 
 protected:
 
-	friend class CommunicationServer;
-	CommunicationServer *manager;
+	friend class ServerCommunicationManager;
+	ServerCommunicationManager *manager;
 	SOCKET socket;
 	pthread_t thread;
 

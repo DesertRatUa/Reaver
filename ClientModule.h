@@ -9,7 +9,7 @@
 #define CLIENTMODULE_H_
 
 #include "Module.h"
-#include "CommunicationClient.h"
+#include "ClientCommunicationManager.h"
 #include "SignalHandler.h"
 #include "ClientMessageProcessor.h"
 
@@ -25,7 +25,8 @@ public:
 protected:
 	friend class ClientMessageProcessor;
 
-	CommunicationClient m_connection;
+	bool m_run;
+	ClientCommunicationManager m_connection;
 	SignalHandler m_signal;
 	ClientMessageProcessor m_processor;
 };

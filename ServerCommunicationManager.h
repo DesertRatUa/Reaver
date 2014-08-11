@@ -11,11 +11,11 @@
 #include "CommunicationManager.h"
 #include "Client.h"
 
-class CommunicationServer: public CommunicationManager
+class ServerCommunicationManager: public CommunicationManager
 {
 public:
-	CommunicationServer( MessageProcessor &processor );
-	virtual ~CommunicationServer();
+	ServerCommunicationManager( MessageProcessor &processor, bool &isRun );
+	virtual ~ServerCommunicationManager();
 
 	virtual void Init();
 	void Listen( const std::string &addr, const unsigned port );

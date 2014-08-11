@@ -5,21 +5,21 @@
  *      Author: maximm
  */
 
-#include "CommunicationClient.h"
+#include "ClientCommunicationManager.h"
 #include "Log.h"
 
-CommunicationClient::CommunicationClient( MessageProcessor &processor ) : CommunicationManager( processor )
+ClientCommunicationManager::ClientCommunicationManager( MessageProcessor &processor, bool &isRun ) : CommunicationManager( processor, isRun )
 {
 }
 
-CommunicationClient::~CommunicationClient()
+ClientCommunicationManager::~ClientCommunicationManager()
 {
 }
 
-void CommunicationClient::Connect( const std::string &addr, const unsigned port )
+void ClientCommunicationManager::Connect( const std::string &addr, const unsigned port )
 {
 	Log::Add( "Try connect to " + addr + ":" + Log::IntToStr( port ) );
-
+	m_run = true;
 	unsigned long remote = inet_addr( addr.c_str() );
 	hostent* host = gethostbyaddr( (char*) &remote, 4, AF_INET );
 
@@ -50,7 +50,7 @@ void CommunicationClient::Connect( const std::string &addr, const unsigned port 
 	pthread_create( &m_mainThread, NULL, &DataHandlerThr, (void*)this );
 }
 
-void *CommunicationClient::DataHandlerThr( void *arg )
+void *ClientCommunicationManager::DataHandlerThr( void *arg )
 {
 	if ( !arg )
 	{
@@ -58,16 +58,18 @@ void *CommunicationClient::DataHandlerThr( void *arg )
 		return NULL;
 	}
 	Log::Add( "Start handler thread" );
-	CommunicationClient *manager = (CommunicationClient*) arg;
+	ClientCommunicationManager *manager = (ClientCommunicationManager*) arg;
 
 	ReadSocket( manager->m_socket, manager, Log::AddrToStr( manager->m_address ) );
 
 	Log::Add( "End handler thread" );
+	manager->m_run = false;
 	pthread_exit(NULL);
 	return NULL;
 }
 
-void CommunicationClient::Send( const std::string &message )
+void ClientCommunicationManager::Send( const std::string &message )
 {
-		send( m_socket, message.c_str(), message.length(), 0);
+	Log::Add( "Sending: " + message );
+	send( m_socket, message.c_str(), message.length(), 0);
 }

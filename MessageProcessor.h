@@ -9,7 +9,6 @@
 #define MESSAGEPROCESSOR_H_
 
 #include <string>
-#include "Client.h"
 #include <map>
 
 class MessageProcessor
