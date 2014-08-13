@@ -44,20 +44,26 @@ void ClientMessageProcessor::RecieveEchoMessage( const std::string& message, con
 	}
 }
 
+void ClientMessageProcessor::AddPacketId( tinyxml2::XMLDocument &doc, const unsigned id )
+{
+	AddText( doc, "PacketID", Log::IntToStr( id ) );
+}
+
+void ClientMessageProcessor::AddText( tinyxml2::XMLDocument &doc, const std::string &name, const std::string &text )
+{
+	XMLElement* element = doc.NewElement( name.c_str() );
+	XMLText* txt = doc.NewText( text.c_str() );
+	element->InsertEndChild( txt );
+	doc.InsertEndChild( element );
+}
+
 void ClientMessageProcessor::SendEchomMessage( const std::string& message )
 {
 	XMLDocument doc;
 	XMLPrinter printer;
 
-	XMLElement* element = doc.NewElement( "PacketID" );
-	XMLText* text = doc.NewText("1");
-	element->InsertEndChild( text );
-	doc.InsertEndChild( element );
-
-	element = doc.NewElement( "Echo" );
-	text = doc.NewText( message.c_str() );
-	element->InsertEndChild( text );
-	doc.InsertEndChild( element );
+	AddPacketId( doc, 1 );
+	AddText( doc, "Echo", message );
 
 	doc.Print( &printer );
 	m_parent->m_connection.Send( printer.CStr() );

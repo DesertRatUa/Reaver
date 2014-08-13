@@ -5,6 +5,7 @@
 #endif
 
 #define _CXXTEST_HAVE_STD
+#define _CXXTEST_HAVE_EH
 #include <cxxtest/TestListener.h>
 #include <cxxtest/TestTracker.h>
 #include <cxxtest/TestRunner.h>
@@ -25,13 +26,19 @@ bool suite_UnitTest_init = false;
 static UnitTest suite_UnitTest;
 
 static CxxTest::List Tests_UnitTest = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_UnitTest( "UnitTest.h", 6, "UnitTest", suite_UnitTest, Tests_UnitTest );
+CxxTest::StaticSuiteDescription suiteDescription_UnitTest( "UnitTest.h", 12, "UnitTest", suite_UnitTest, Tests_UnitTest );
 
-static class TestDescription_suite_UnitTest_testAddition : public CxxTest::RealTestDescription {
+static class TestDescription_suite_UnitTest_TestClientMessageProcessor : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_testAddition() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 9, "testAddition" ) {}
- void runTest() { suite_UnitTest.testAddition(); }
-} testDescription_suite_UnitTest_testAddition;
+ TestDescription_suite_UnitTest_TestClientMessageProcessor() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 15, "TestClientMessageProcessor" ) {}
+ void runTest() { suite_UnitTest.TestClientMessageProcessor(); }
+} testDescription_suite_UnitTest_TestClientMessageProcessor;
+
+static class TestDescription_suite_UnitTest_TestLog : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_UnitTest_TestLog() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 29, "TestLog" ) {}
+ void runTest() { suite_UnitTest.TestLog(); }
+} testDescription_suite_UnitTest_TestLog;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

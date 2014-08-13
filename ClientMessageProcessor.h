@@ -11,6 +11,10 @@
 #include "MessageProcessor.h"
 
 class ClientModule;
+namespace tinyxml2
+{
+	class XMLDocument;
+}
 
 class ClientMessageProcessor: public MessageProcessor
 {
@@ -24,6 +28,8 @@ public:
 
 protected:
 	static void RecieveEchoMessage( const std::string& message, const std::string& addr );
+	static void AddPacketId( tinyxml2::XMLDocument &doc, const unsigned id );
+	static void AddText( tinyxml2::XMLDocument &doc, const std::string &name, const std::string &text );
 
 	static ClientModule *m_parent;
 };
