@@ -92,6 +92,14 @@ void ArgumentsMap::ParseArgument( std::string name )
 	}
 }
 
+void ArgumentsMap::ParseArguments( const int argc, char *argv[] )
+{
+	for( int i = 1; i < argc; ++i )
+	{
+		ParseArgument( argv[i] );
+	}
+}
+
 void ArgumentsMap::UnSet( const std::string &name ) throw ( std::exception )
 {
 	Get(name).UnSet();

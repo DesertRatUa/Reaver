@@ -2,7 +2,7 @@
 #define UNITTEST_H_
 
 #define protected public
-
+#define private public
 #include <cxxtest/TestSuite.h>
 #include "ClientMessageProcessor.h"
 #include "tinyxml2.h"
@@ -27,6 +27,7 @@ public:
 		doc.Print( &prnt );
 		TS_ASSERT_EQUALS( prnt.CStr(), "\n<PacketID>5</PacketID>\n\n<Test>Message</Test>\n" ); // WTF????
 	}
+
 	void TestLog(void)
 	{
 		TS_ASSERT_EQUALS( Log::IntToStr( 123 ).c_str(), "123" );
@@ -35,17 +36,41 @@ public:
 		addr.sin_port = 89;
 		TS_ASSERT_EQUALS( Log::AddrToStr( addr ).c_str(), "127.0.0.1:89" );
 
-		TS_ASSERT_THROWS_ANYTHING( Log::Init( "C:\\Tmp_NoExist" ) );
-		TS_ASSERT_THROWS_NOTHING( Log::Init( "C:\\Windows\\Temp" ) );
+		TS_ASSERT_THROWS_ANYTHING( Log::Init( "C:\\Tmp_NoExist\\" ) );
+		TS_ASSERT_THROWS_NOTHING( Log::Init( "C:\\Windows\\Temp\\" ) );
 		std::fstream file( "C:\\Windows\\Temp\\Log.log", std::ios::in );
 		TS_ASSERT_EQUALS( file.is_open(), true );
 		file.close();
+		Log::Close();
 	}
+
 	void TestArgumentMap(void)
 	{
 		ArgumentsMap map;
-		map.AddArgument( "FirstArg", "frst", "", "" );
+		map.AddArgument( "FirstArg", "frst", "SET!", "First agrument descr" );
+		TS_ASSERT_THROWS_NOTHING( map.Get("FirstArg") );
+		TS_ASSERT_THROWS_ANYTHING( map.Get("FirstArg1") );
+		TS_ASSERT_THROWS_NOTHING( map.GetShort("frst") );
+		TS_ASSERT_THROWS_ANYTHING( map.GetShort("frst1") );
+		TS_ASSERT_EQUALS( map.Get("FirstArg").isSet(), false );
+		map.Get("FirstArg").Set();
+		TS_ASSERT_EQUALS( map.Get("FirstArg").isSet(), true );
+		TS_ASSERT_EQUALS( map.Get("FirstArg").m_value, "SET!" );
+	}
+	void TestPacketId(void)
+	{
+		using namespace tinyxml2;
+		XMLDocument doc;
+		ClientMessageProcessor::AddPacketId( doc, 5 );
+		class processor : public MessageProcessor
+		{
+			virtual void Init()
+			{
 
+			}
+		};
+		processor proc;
+		TS_ASSERT_EQUALS( proc.ParseMessageId(doc), 5 );
 	}
 };
 

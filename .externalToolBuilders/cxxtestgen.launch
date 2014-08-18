@@ -3,6 +3,7 @@
 <booleanAttribute key="org.eclipse.debug.core.capture_output" value="false"/>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_BUILD_SCOPE" value="${working_set:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;resources&gt;&#13;&#10;&lt;item path=&quot;/Reaver/UnitTest.cpp&quot; type=&quot;1&quot;/&gt;&#13;&#10;&lt;item path=&quot;/Reaver/UnitTest.h&quot; type=&quot;1&quot;/&gt;&#13;&#10;&lt;/resources&gt;}"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="C:\Python27\python.exe"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value="full,incremental,auto,clean"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="C:\MinGW\bin\cxxtestgen --error-printer -o UnitTest.cpp UnitTest.h"/>

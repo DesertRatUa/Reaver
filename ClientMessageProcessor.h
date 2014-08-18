@@ -24,7 +24,7 @@ public:
 
 	virtual void Init();
 
-	void SendEchomMessage( const std::string& messag );
+	void SendEchoMessage( const std::string& messag );
 
 protected:
 	static void RecieveEchoMessage( const std::string& message, const std::string& addr );

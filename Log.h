@@ -22,6 +22,7 @@ public:
 	virtual ~Log();
 
 	static void Init( std::string path ) throw ( std::exception );
+	static void Close();
 	static void AddMessage( std::string message );
 	static void AddLog( std::string log );
 	static void Add( std::string log );

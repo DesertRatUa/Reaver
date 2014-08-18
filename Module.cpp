@@ -6,6 +6,8 @@
  */
 
 #include "Module.h"
+#include "ServerModule.h"
+#include "ClientModule.h"
 
 Module::Module( Config &config, ArgumentsMap &arguments ) :  m_config( config ), m_arguments( arguments )
 {
@@ -28,4 +30,21 @@ void Module::ParseIp ( const std::string &addr, std::string &ip, unsigned &port 
 	{
 		ip = addr;
 	}
+}
+
+Module* Module::CreateModule( Config &config, ArgumentsMap &arguments )
+{
+	if ( arguments("server").isSet() && arguments("client").isSet() )
+	{
+		throw std::runtime_error( "Conflict of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
+	}
+	else if ( arguments("server").isSet() )
+	{
+		return new ServerModule( config, arguments );
+	}
+	else if ( arguments("client").isSet() )
+	{
+		return new ClientModule( config, arguments );
+	}
+	throw std::runtime_error( "Required one of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
 }

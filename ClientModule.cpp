@@ -35,7 +35,7 @@ void ClientModule::Run()
 
 	m_connection.Connect( ip, port );
 	m_connection.Send( "ECHO: Test message" );
-	m_processor.SendEchomMessage( "Echo message" );
+	m_processor.SendEchoMessage( "Echo message" );
 	//Sleep( 1000 );
 
 	m_signal.Wait();

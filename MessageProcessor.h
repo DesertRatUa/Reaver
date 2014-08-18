@@ -11,6 +11,11 @@
 #include <string>
 #include <map>
 
+namespace tinyxml2
+{
+	class XMLDocument;
+}
+
 class MessageProcessor
 {
 public:
@@ -25,7 +30,7 @@ protected:
 	typedef std::map< unsigned, Processor > Processors;
 	Processors m_processors;
 
-	unsigned ParseMessageId( const std::string& message );
+	unsigned ParseMessageId( const tinyxml2::XMLDocument& doc );
 	void RegisterProcessor( const unsigned id, Processor processor );
 
 };

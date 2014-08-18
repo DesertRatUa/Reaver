@@ -26,19 +26,31 @@ bool suite_UnitTest_init = false;
 static UnitTest suite_UnitTest;
 
 static CxxTest::List Tests_UnitTest = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_UnitTest( "UnitTest.h", 12, "UnitTest", suite_UnitTest, Tests_UnitTest );
+CxxTest::StaticSuiteDescription suiteDescription_UnitTest( "UnitTest.h", 13, "UnitTest", suite_UnitTest, Tests_UnitTest );
 
 static class TestDescription_suite_UnitTest_TestClientMessageProcessor : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_TestClientMessageProcessor() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 15, "TestClientMessageProcessor" ) {}
+ TestDescription_suite_UnitTest_TestClientMessageProcessor() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 16, "TestClientMessageProcessor" ) {}
  void runTest() { suite_UnitTest.TestClientMessageProcessor(); }
 } testDescription_suite_UnitTest_TestClientMessageProcessor;
 
 static class TestDescription_suite_UnitTest_TestLog : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_TestLog() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 29, "TestLog" ) {}
+ TestDescription_suite_UnitTest_TestLog() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 31, "TestLog" ) {}
  void runTest() { suite_UnitTest.TestLog(); }
 } testDescription_suite_UnitTest_TestLog;
+
+static class TestDescription_suite_UnitTest_TestArgumentMap : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_UnitTest_TestArgumentMap() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 47, "TestArgumentMap" ) {}
+ void runTest() { suite_UnitTest.TestArgumentMap(); }
+} testDescription_suite_UnitTest_TestArgumentMap;
+
+static class TestDescription_suite_UnitTest_TestPacketId : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_UnitTest_TestPacketId() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 60, "TestPacketId" ) {}
+ void runTest() { suite_UnitTest.TestPacketId(); }
+} testDescription_suite_UnitTest_TestPacketId;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

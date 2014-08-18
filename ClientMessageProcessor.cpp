@@ -57,7 +57,7 @@ void ClientMessageProcessor::AddText( tinyxml2::XMLDocument &doc, const std::str
 	doc.InsertEndChild( element );
 }
 
-void ClientMessageProcessor::SendEchomMessage( const std::string& message )
+void ClientMessageProcessor::SendEchoMessage( const std::string& message )
 {
 	XMLDocument doc;
 	XMLPrinter printer;

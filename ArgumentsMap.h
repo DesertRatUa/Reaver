@@ -23,6 +23,7 @@ public:
 	void Set( const std::string &name, const std::string &value );
 	void UnSet( const std::string &name ) throw ( std::exception );
 	void ParseArgument( std::string name );
+	void ParseArguments( const int argc, char *argv[] );
 
 	Argument& Get( const std::string &name ) throw ( std::exception );
 	Argument& GetShort( const std::string &name ) throw ( std::exception );

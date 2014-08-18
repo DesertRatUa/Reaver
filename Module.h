@@ -21,6 +21,7 @@ public:
 	virtual void Run() = 0;
 
 	void ParseIp ( const std::string &addr, std::string &ip, unsigned &port );
+	static Module* CreateModule( Config &config, ArgumentsMap &arguments );
 
 protected:
 	Config &m_config;

@@ -36,35 +36,14 @@ int main( int argc, char *argv[] )
 
 	ArgumentsMap arguments;
 	arguments.Init();
-
-	for( int i = 1; i < argc; ++i )
-	{
-		arguments.ParseArgument( argv[i] );
-	}
-
-	Module *module = NULL;
-
-	if ( arguments("server").isSet() )
-	{
-		module = new ServerModule( config, arguments );
-	}
-	else if ( arguments("client").isSet() )
-	{
-		module = new ClientModule( config, arguments );
-	}
-	else
-	{
-		Log::Add( "Required one of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
-	}
+	arguments.ParseArguments( argc, argv );
 
 	try
 	{
-		if ( module )
-		{
-			module->Init();
-			module->Run();
-			delete module;
-		}
+		Module *module = Module::CreateModule( config, arguments );
+		module->Init();
+		module->Run();
+		delete module;
 	}
 	catch ( std::exception &exc )
 	{

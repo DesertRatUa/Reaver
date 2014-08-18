@@ -42,6 +42,10 @@ void Log::Init( std::string path ) throw ( std::exception )
 	}
 }
 
+void Log::Close()
+{
+	m_log.close();
+}
 void Log::AddMessage( std::string message )
 {
 	pthread_mutex_lock( &m_messageMut );
