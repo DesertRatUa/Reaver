@@ -7,6 +7,8 @@
 
 #include "ClientCommunicationManager.h"
 #include "Log.h"
+#include "Messages/Message.h"
+#include <assert.h>
 
 ClientCommunicationManager::ClientCommunicationManager( MessageProcessor &processor, bool &isRun ) : CommunicationManager( processor, isRun )
 {
@@ -16,7 +18,7 @@ ClientCommunicationManager::~ClientCommunicationManager()
 {
 }
 
-void ClientCommunicationManager::Connect( const std::string &addr, const unsigned port )
+void ClientCommunicationManager::Connect( const std::string &addr, const unsigned port ) throw(std::runtime_error)
 {
 	Log::Add( "Try connect to " + addr + ":" + Log::IntToStr( port ) );
 	m_run = true;
@@ -25,8 +27,7 @@ void ClientCommunicationManager::Connect( const std::string &addr, const unsigne
 
 	if ( !host )
 	{
-		Log::Add( "Failed get host by address" );
-		return;
+		throw(std::runtime_error( "Failed get host by address" ));
 	}
 
 	memcpy( &m_address.sin_addr, host->h_addr, host->h_length );
@@ -35,14 +36,13 @@ void ClientCommunicationManager::Connect( const std::string &addr, const unsigne
 
 	if ( connect(m_socket, (sockaddr*) &m_address, sizeof(m_address) ) == SOCKET_ERROR )
 	{
-		Log::Add( "Failed to connect" );
-		return;
+		throw(std::runtime_error( "Failed to connect" ));
 	}
 
 	u_long NonBlock = 1;
 	if ( ioctlsocket( m_socket, FIONBIO, &NonBlock ) == SOCKET_ERROR )
 	{
-		Log::Add( "Setting non blocking failed" );
+		throw(std::runtime_error( "Setting non blocking failed" ));
 	}
 
 	Log::Add( "Connected to " + addr + ":" + Log::IntToStr( port ) );
@@ -52,11 +52,7 @@ void ClientCommunicationManager::Connect( const std::string &addr, const unsigne
 
 void *ClientCommunicationManager::DataHandlerThr( void *arg )
 {
-	if ( !arg )
-	{
-		Log::Add( "Null pointer in handler thread" );
-		return NULL;
-	}
+	assert( arg );
 	Log::Add( "Start handler thread" );
 	ClientCommunicationManager *manager = (ClientCommunicationManager*) arg;
 
@@ -72,4 +68,9 @@ void ClientCommunicationManager::Send( const std::string &message )
 {
 	Log::Add( "Sending: " + message );
 	send( m_socket, message.c_str(), message.length(), 0);
+}
+
+void ClientCommunicationManager::Send( const Message &message )
+{
+	Send( message.Serialize() );
 }

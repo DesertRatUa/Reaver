@@ -9,6 +9,7 @@
 #include "Log.h"
 #include <winsock2.h>
 #include "ArgumentsMap.h"
+#include "Messages/EchoMessage.h"
 
 class UnitTest : public CxxTest::TestSuite
 {
@@ -18,11 +19,12 @@ public:
 		using namespace tinyxml2;
 		XMLDocument doc;
 		XMLPrinter prnt;
-		ClientMessageProcessor::AddPacketId( doc, 5 );
+		EchoMessage mess;
+		mess.AddPacketId( doc, 5 );
 		doc.Print( &prnt );
 		TS_ASSERT_EQUALS( prnt.CStr(), "<PacketID>5</PacketID>\n" );
 
-		ClientMessageProcessor::AddText( doc, "Test", "Message" );
+		mess.AddText( doc, "Test", "Message" );
 		prnt.ClearBuffer();
 		doc.Print( &prnt );
 		TS_ASSERT_EQUALS( prnt.CStr(), "\n<PacketID>5</PacketID>\n\n<Test>Message</Test>\n" ); // WTF????
@@ -61,15 +63,16 @@ public:
 	{
 		using namespace tinyxml2;
 		XMLDocument doc;
-		ClientMessageProcessor::AddPacketId( doc, 5 );
-		class processor : public MessageProcessor
+		EchoMessage mess;
+		mess.AddPacketId( doc, 5 );
+		class Processor : public MessageProcessor
 		{
 			virtual void Init()
 			{
 
 			}
 		};
-		processor proc;
+		Processor proc;
 		TS_ASSERT_EQUALS( proc.ParseMessageId(doc), 5 );
 	}
 };

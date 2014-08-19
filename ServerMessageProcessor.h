@@ -21,7 +21,7 @@ public:
 
 protected:
 	static ServerModule *m_parent;
-	static void RecieveEchoMessage( const std::string& message, const std::string& addr );
+	static void RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 };
 
 #endif /* SERVERMESSAGEPROCESSOR_H_ */

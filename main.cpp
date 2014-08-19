@@ -26,7 +26,7 @@ int main( int argc, char *argv[] )
 	}
 	catch ( std::exception &exc )
 	{
-		std::cout << "Exception: "<< exc.what() << std::endl;
+		std::cout << "Log init exception: "<< exc.what() << std::endl;
 	}
 	Log::Add( "Server running" );
 
@@ -47,7 +47,7 @@ int main( int argc, char *argv[] )
 	}
 	catch ( std::exception &exc )
 	{
-		Log::Add( "Exeption: " + std::string( exc.what() ) );
+		Log::Add( "Module exeption: " + std::string( exc.what() ) );
 	}
 
 	Log::Add( "Stopping Server" );

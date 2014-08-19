@@ -26,7 +26,7 @@ public:
 	void ProcessMessage( const std::string& message, const std::string& addr );
 
 protected:
-	typedef void (*Processor)( const std::string& message, const std::string& addr );
+	typedef void (*Processor)( const tinyxml2::XMLDocument& doc, const std::string& addr );
 	typedef std::map< unsigned, Processor > Processors;
 	Processors m_processors;
 

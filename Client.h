@@ -14,6 +14,7 @@
 #include <boost/shared_ptr.hpp>
 
 class ServerCommunicationManager;
+class Message;
 
 class Client
 {
@@ -22,6 +23,7 @@ public:
 	virtual ~Client();
 
 	void Send( const std::string& message );
+	void Send( const Message& message );
 
 	sockaddr_in addr;
 

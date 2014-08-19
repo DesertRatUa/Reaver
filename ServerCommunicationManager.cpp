@@ -8,7 +8,6 @@
 #include "ServerCommunicationManager.h"
 #include "Log.h"
 #include <algorithm>
-#include <stdexcept>
 #include "MessageProcessor.h"
 
 ServerCommunicationManager::ServerCommunicationManager(  MessageProcessor &processor, bool &isRun  ) : m_clientsM(0), CommunicationManager( processor, isRun )
@@ -25,7 +24,7 @@ void ServerCommunicationManager::Init()
 	pthread_mutex_init( &m_clientsM, NULL );
 }
 
-void ServerCommunicationManager::Listen( const std::string &addr, const unsigned port )
+void ServerCommunicationManager::Listen( const std::string &addr, const unsigned port ) throw( std::runtime_error )
 {
 	Log::Add( "Try listen on " + addr + ":" + Log::IntToStr( port ) );
 	m_run = true;
@@ -35,20 +34,18 @@ void ServerCommunicationManager::Listen( const std::string &addr, const unsigned
 
 	if ( bind( m_socket, (sockaddr*) &m_address, sizeof(m_address) ) == SOCKET_ERROR)
 	{
-		Log::Add( "Failed to bind socket" );
-		return;
+		throw( std::runtime_error( "Failed to bind socket" ));
 	}
 
 	if ( listen( m_socket, 1024 ) == SOCKET_ERROR)
 	{
-		Log::Add( "Failed to listen socket" );
-		return;
+		throw( std::runtime_error( "Failed to listen socket" ));
 	}
 
 	u_long NonBlock = 1;
 	if ( ioctlsocket( m_socket, FIONBIO, &NonBlock ) == SOCKET_ERROR )
 	{
-		Log::Add( "Setting non blocking failed" );
+		throw( std::runtime_error( "Setting non blocking failed" ));
 	}
 
 	Log::Add( "Listen on " + addr + ":" + Log::IntToStr( port ) );

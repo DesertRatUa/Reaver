@@ -10,6 +10,7 @@
 
 #include "CommunicationManager.h"
 #include "Client.h"
+#include <stdexcept>
 
 class ServerCommunicationManager: public CommunicationManager
 {
@@ -18,7 +19,7 @@ public:
 	virtual ~ServerCommunicationManager();
 
 	virtual void Init();
-	void Listen( const std::string &addr, const unsigned port );
+	void Listen( const std::string &addr, const unsigned port ) throw( std::runtime_error );
 
 	Client& GetClient( const std::string &addr );
 

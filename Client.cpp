@@ -7,6 +7,7 @@
 
 #include "Client.h"
 #include "Log.h"
+#include <Messages/Message.h>
 
 Client::Client( ServerCommunicationManager *Manager ) : manager( Manager ), socket( 0 )
 {
@@ -25,4 +26,9 @@ bool Client::operator==( const Client &client ) const
 void  Client::Send( const std::string& message )
 {
 	send( socket, message.c_str(), message.length(), 0);
+}
+
+void Client::Send( const Message& message )
+{
+	Send( message.Serialize() );
 }

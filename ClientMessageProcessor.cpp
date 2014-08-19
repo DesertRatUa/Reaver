@@ -8,9 +8,8 @@
 #include "ClientMessageProcessor.h"
 #include "ClientModule.h"
 #include "Log.h"
-#include "tinyxml2.h"
 
-using namespace tinyxml2;
+#include "Messages/EchoMessage.h"
 
 ClientModule *ClientMessageProcessor::m_parent(NULL);
 
@@ -28,43 +27,23 @@ void ClientMessageProcessor::Init()
 	RegisterProcessor( 1, &ClientMessageProcessor::RecieveEchoMessage );
 }
 
-void ClientMessageProcessor::RecieveEchoMessage( const std::string& message, const std::string& addr )
+void ClientMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
 {
-	if ( !m_parent )
-	{
-		return;
-	}
-
-	Log::Add( "Recived: " + message );
-
+	assert( m_parent );
+	EchoMessage message;
+	message.Deserialize( doc );
+	Log::Add( "Echo message return: " + message.Text );
+	/*
 	if( int pos = message.find( "ECHO" ) != -1 )
 	{
 		std::string rpt = message.substr( pos + 5, message.length() - pos - 5 );
 		m_parent->m_connection.Send( rpt );
 	}
-}
-
-void ClientMessageProcessor::AddPacketId( tinyxml2::XMLDocument &doc, const unsigned id )
-{
-	AddText( doc, "PacketID", Log::IntToStr( id ) );
-}
-
-void ClientMessageProcessor::AddText( tinyxml2::XMLDocument &doc, const std::string &name, const std::string &text )
-{
-	XMLElement* element = doc.NewElement( name.c_str() );
-	XMLText* txt = doc.NewText( text.c_str() );
-	element->InsertEndChild( txt );
-	doc.InsertEndChild( element );
+	*/
 }
 
 void ClientMessageProcessor::SendEchoMessage( const std::string& message )
 {
-	XMLDocument doc;
-	XMLPrinter printer;
-
-	AddPacketId( doc, 1 );
-	AddText( doc, "Echo", message );
-
-	doc.Print( &printer );
-	m_parent->m_connection.Send( printer.CStr() );
+	EchoMessage mess( message );
+	m_parent->m_connection.Send( mess );
 }

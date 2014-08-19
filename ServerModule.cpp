@@ -34,9 +34,15 @@ void ServerModule::Run()
 
 	ParseIp( m_arguments("address").m_value, ip, port );
 
-	m_connection.Listen( ip, port );
-
-	m_signal.Wait();
+	try
+	{
+		m_connection.Listen( ip, port );
+		m_signal.Wait();
+	}
+	catch ( std::exception &exc )
+	{
+		Log::Add( "ServerModule exception: " + std::string( exc.what() ) );
+	}
 
 	m_connection.Close();
 	Log::Add( "Stop server module" );

@@ -28,7 +28,7 @@ void MessageProcessor::ProcessMessage( const std::string& message, const std::st
 		Log::Add( "No processor for message " + Log::IntToStr( id ) + ": " + message );
 		return;
 	}
-	(*prc->second)( message, addr );
+	(*prc->second)( doc, addr );
 }
 
 unsigned MessageProcessor::ParseMessageId( const tinyxml2::XMLDocument& doc )
