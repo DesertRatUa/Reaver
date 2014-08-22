@@ -33,6 +33,7 @@ void ClientMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& do
 	EchoMessage message;
 	message.Deserialize( doc );
 	Log::Add( "Echo message return: " + message.Text );
+	m_parent->UpdateState();
 	/*
 	if( int pos = message.find( "ECHO" ) != -1 )
 	{

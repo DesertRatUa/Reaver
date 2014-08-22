@@ -22,13 +22,30 @@ public:
 	virtual void Init();
 	virtual void Run();
 
+	void UpdateState();
+	void TestConnection();
+	void ConnectionRespond();
+	void RegisterClient();
+	void Stop();
+
 protected:
 	friend class ClientMessageProcessor;
+
+	enum State
+	{
+		FAILED = 0,
+		TEST_CONNECTION = 1,
+		WAIT_CONNECTION = 2,
+		REGISTER_CLIENT = 3,
+		WAIT_REGISTER = 4,
+		DONE = 5,
+	} m_state;
 
 	bool m_run;
 	ClientCommunicationManager m_connection;
 	SignalHandler m_signal;
 	ClientMessageProcessor m_processor;
+	unsigned long m_respondTime;
 };
 
 #endif /* CLIENTMODULE_H_ */

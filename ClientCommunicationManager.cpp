@@ -66,7 +66,6 @@ void *ClientCommunicationManager::DataHandlerThr( void *arg )
 
 void ClientCommunicationManager::Send( const std::string &message )
 {
-	Log::Add( "Sending: " + message );
 	send( m_socket, message.c_str(), message.length(), 0);
 }
 
