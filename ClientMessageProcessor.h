@@ -20,9 +20,11 @@ public:
 	virtual void Init();
 
 	void SendEchoMessage( const std::string& messag );
+	void SendRegisterMessage();
 
 protected:
 	static void RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
+	static void RecieveRegisterMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 
 	static ClientModule *m_parent;
 };

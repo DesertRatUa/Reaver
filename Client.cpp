@@ -30,5 +30,10 @@ void  Client::Send( const std::string& message )
 
 void Client::Send( const Message& message )
 {
-	Send( message.Serialize() );
+	Send( message.SerializeReqest() );
+}
+
+std::string Client::GetAddr()
+{
+	return Log::AddrToStr( addr );
 }

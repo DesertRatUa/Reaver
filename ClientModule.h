@@ -25,6 +25,7 @@ public:
 	void UpdateState();
 	void TestConnection();
 	void ConnectionRespond();
+	void RegisterRespond();
 	void RegisterClient();
 	void Stop();
 
@@ -46,6 +47,7 @@ protected:
 	SignalHandler m_signal;
 	ClientMessageProcessor m_processor;
 	unsigned long m_respondTime;
+	pthread_mutex_t m_mut;
 };
 
 #endif /* CLIENTMODULE_H_ */

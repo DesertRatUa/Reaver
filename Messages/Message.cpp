@@ -19,11 +19,22 @@ Message::~Message()
 {
 }
 
-void Message::Deserialize( const std::string &message )
+std::string Message::SerializeReqest() const
 {
-	tinyxml2::XMLDocument doc;
-	doc.Parse( message.c_str(), message.length() );
-	Deserialize( doc );
+	XMLDocument doc;
+	XMLPrinter printer;
+	_SerializeReqest( doc );
+	doc.Print( &printer );
+	return printer.CStr();
+}
+
+std::string Message::SerializeRespond() const
+{
+	XMLDocument doc;
+	XMLPrinter printer;
+	_SerializeRespond( doc );
+	doc.Print( &printer );
+	return printer.CStr();
 }
 
 void Message::AddPacketId( tinyxml2::XMLDocument &doc, const unsigned id ) const
@@ -37,4 +48,9 @@ void Message::AddText( tinyxml2::XMLDocument &doc, const std::string &name, cons
 	XMLText* txt = doc.NewText( text.c_str() );
 	element->InsertEndChild( txt );
 	doc.InsertEndChild( element );
+}
+
+void Message::AddNum( tinyxml2::XMLDocument &doc, const std::string &name, const int num ) const
+{
+	AddText( doc,name, Log::IntToStr(num) );
 }

@@ -9,7 +9,7 @@
 #include "Log.h"
 #include "stdexcept"
 
-ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_state( TEST_CONNECTION ), m_respondTime(0)
+ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_state( TEST_CONNECTION ), m_respondTime(0), m_mut(0)
 {
 }
 
@@ -24,6 +24,7 @@ void ClientModule::Init()
 	m_signal.Init();
 	m_connection.Init();
 	m_processor.Init();
+	pthread_mutex_init( &m_mut, NULL );
 }
 
 void ClientModule::Run()
@@ -51,6 +52,7 @@ void ClientModule::Run()
 
 void ClientModule::UpdateState()
 {
+	pthread_mutex_lock( &m_mut );
 	switch ( m_state )
 	{
 		case TEST_CONNECTION : TestConnection();
@@ -62,10 +64,13 @@ void ClientModule::UpdateState()
 		case REGISTER_CLIENT : RegisterClient();
 			break;
 
+		case WAIT_REGISTER : RegisterRespond();
+
 		case FAILED :
 		case DONE: Stop();
 			break;
 	}
+	pthread_mutex_unlock( &m_mut );
 }
 
 void ClientModule::TestConnection()
@@ -83,6 +88,11 @@ void ClientModule::ConnectionRespond()
 	UpdateState();
 }
 
+void ClientModule::RegisterRespond()
+{
+
+}
+
 void ClientModule::Stop()
 {
 	m_run = false;
@@ -90,5 +100,6 @@ void ClientModule::Stop()
 
 void ClientModule::RegisterClient()
 {
-
+	m_processor.SendRegisterMessage();
+	m_state = WAIT_REGISTER;
 }

@@ -1,28 +1,27 @@
 /*
- * EchoMessage.h
+ * RegisterMessage.h
  *
- *  Created on: 19 рту. 2014 у.
+ *  Created on: 26 рту. 2014 у.
  *      Author: maximm
  */
 
-#ifndef ECHOMESSAGE_H_
-#define ECHOMESSAGE_H_
+#ifndef REGISTERMESSAGE_H_
+#define REGISTERMESSAGE_H_
+
 #include <Messages/Message.h>
 
-class EchoMessage : public Message
-{
+class RegisterMessage: public Message {
 public:
-	EchoMessage();
-	EchoMessage( std::string text );
-	virtual ~EchoMessage();
+	RegisterMessage();
+	virtual ~RegisterMessage();
 
 	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;
 	virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const;
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc );
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 
-	std::string Text;
-protected:
+	unsigned ClientId;
+	std::string ErrorMsg;
 };
 
-#endif /* ECHOMESSAGE_H_ */
+#endif /* REGISTERMESSAGE_H_ */

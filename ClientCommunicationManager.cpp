@@ -71,5 +71,5 @@ void ClientCommunicationManager::Send( const std::string &message )
 
 void ClientCommunicationManager::Send( const Message &message )
 {
-	Send( message.Serialize() );
+	Send( message.SerializeReqest() );
 }

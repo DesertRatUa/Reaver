@@ -24,6 +24,7 @@ public:
 
 	void Send( const std::string& message );
 	void Send( const Message& message );
+	std::string GetAddr();
 
 	sockaddr_in addr;
 

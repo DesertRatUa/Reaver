@@ -9,7 +9,7 @@
 #include "Log.h"
 #include <windows.h>
 
-ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run )
+ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_mut(0), m_nodesID(0)
 {
 }
 
@@ -24,6 +24,7 @@ void ServerModule::Init()
 	m_signal.Init();
 	m_connection.Init();
 	m_processor.Init();
+	pthread_mutex_init( &m_mut, NULL );
 }
 
 void ServerModule::Run()
@@ -48,7 +49,22 @@ void ServerModule::Run()
 	Log::Add( "Stop server module" );
 }
 
-void ServerModule::EchoPrc( const std::string& message, const std::string& addr )
+void ServerModule::RegisterNode( const std::string& addr )
 {
+	pthread_mutex_lock( &m_mut );
 
+	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), addr );
+	if ( iter == m_nodes.end() )
+	{
+		m_nodes.push_back( Node( m_connection.GetClient( addr ),  ++m_nodesID ) );
+		m_processor.SendRegisterMessage( addr, m_nodes.back().GetID(), NULL );
+	}
+	else
+	{
+		std::string error = "Node: " + addr + " already registered";
+		Log::Add( error );
+		m_processor.SendRegisterMessage( addr, 0, &error );
+	}
+
+	pthread_mutex_unlock( &m_mut );
 }

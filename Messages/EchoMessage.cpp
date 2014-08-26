@@ -21,19 +21,28 @@ EchoMessage::~EchoMessage()
 {
 }
 
-std::string EchoMessage::Serialize() const
+void EchoMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
-	XMLDocument doc;
-	XMLPrinter printer;
-
 	AddPacketId( doc, 1 );
 	AddText( doc, "Echo", Text );
-
-	doc.Print( &printer );
-	return printer.CStr();
 }
 
-void EchoMessage::Deserialize( const tinyxml2::XMLDocument &doc )
+void EchoMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
+{
+	AddPacketId( doc, 1 );
+	AddText( doc, "Echo", Text );
+}
+
+void EchoMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
+{
+	const XMLElement *text = doc.FirstChildElement( "Echo" );
+	if ( text )
+	{
+		Text = text->GetText();
+	}
+}
+
+void EchoMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
 	const XMLElement *text = doc.FirstChildElement( "Echo" );
 	if ( text )
