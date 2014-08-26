@@ -25,6 +25,7 @@ ServerMessageProcessor::~ServerMessageProcessor()
 void ServerMessageProcessor::Init()
 {
 	RegisterProcessor( 1, &ServerMessageProcessor::RecieveEchoMessage );
+	RegisterProcessor( 2, &ServerMessageProcessor::RecieveRegisterMessage );
 }
 
 void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const unsigned id, const std::string *error )

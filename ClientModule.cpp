@@ -52,7 +52,7 @@ void ClientModule::Run()
 
 void ClientModule::UpdateState()
 {
-	pthread_mutex_lock( &m_mut );
+	//pthread_mutex_lock( &m_mut );
 	switch ( m_state )
 	{
 		case TEST_CONNECTION : TestConnection();
@@ -65,12 +65,13 @@ void ClientModule::UpdateState()
 			break;
 
 		case WAIT_REGISTER : RegisterRespond();
+			break;
 
 		case FAILED :
 		case DONE: Stop();
 			break;
 	}
-	pthread_mutex_unlock( &m_mut );
+	//pthread_mutex_unlock( &m_mut );
 }
 
 void ClientModule::TestConnection()
@@ -101,5 +102,6 @@ void ClientModule::Stop()
 void ClientModule::RegisterClient()
 {
 	m_processor.SendRegisterMessage();
+	Log::Add( "Request register node" );
 	m_state = WAIT_REGISTER;
 }
