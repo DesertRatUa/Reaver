@@ -66,7 +66,7 @@ void* ClientModule::SequenceThread( void *arg )
 
 	while ( client->m_run )
 	{
-		pthread_mutex_lock( &m_mut );
+		pthread_mutex_lock( &client->m_mut );
 		switch ( client->m_state )
 		{
 			case INIT : client->m_state = TEST_CONNECTION;
@@ -83,7 +83,7 @@ void* ClientModule::SequenceThread( void *arg )
 				client->Stop();
 		}
 		Sleep(1);
-		pthread_mutex_unlock( &m_mut );
+		pthread_mutex_unlock( &client->m_mut );
 	}
 	return NULL;
 }
