@@ -9,8 +9,9 @@
 #include "Log.h"
 #include <algorithm>
 #include "MessageProcessor.h"
+#include "ServerModule.h"
 
-ServerCommunicationManager::ServerCommunicationManager(  MessageProcessor &processor, bool &isRun  ) : m_clientsM(0), CommunicationManager( processor, isRun )
+ServerCommunicationManager::ServerCommunicationManager( ServerModule &server, MessageProcessor &processor, bool &isRun  ) : m_clientsM(0), CommunicationManager( processor, isRun ), m_server( server )
 {
 }
 
@@ -90,7 +91,9 @@ void ServerCommunicationManager::RemoveClient( const ClientPtr& client)
 	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), client );
 	if( it !=  m_clients.end() )
 	{
-		Log::Add( "Remove client: " + Log::AddrToStr( (*it)->addr ) );
+		std::string addr =  Log::AddrToStr( (*it)->addr );
+		Log::Add( "Remove client: " + addr );
+		m_server.UnregisterNode( addr );
 		m_clients.erase( it );
 	}
 	else

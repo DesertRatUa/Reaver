@@ -22,12 +22,18 @@ public:
 	virtual void Init();
 	virtual void Run();
 
-	void UpdateState();
+	void RunSequence();
+	static void* SequenceThread( void *arg );
+
 	void TestConnection();
 	void ConnectionRespond();
 	void RegisterRespond();
 	void RegisterClient();
 	void Stop();
+	unsigned GetLastTick();
+	void Respond();
+
+
 
 protected:
 	friend class ClientMessageProcessor;
@@ -35,12 +41,12 @@ protected:
 	enum State
 	{
 		FAILED = 0,
-		TEST_CONNECTION = 1,
-		WAIT_CONNECTION = 2,
+		INIT = 1,
+		TEST_CONNECTION = 2,
 		REGISTER_CLIENT = 3,
-		WAIT_REGISTER = 4,
+		UNREGISTER_CLIENT = 4,
 		DONE = 5,
-	} m_state;
+	} m_state, m_lastState;
 
 	bool m_run;
 	ClientCommunicationManager m_connection;
@@ -48,6 +54,8 @@ protected:
 	ClientMessageProcessor m_processor;
 	unsigned long m_respondTime;
 	pthread_mutex_t m_mut;
+	pthread_t m_sequence;
+	unsigned m_count;
 };
 
 #endif /* CLIENTMODULE_H_ */

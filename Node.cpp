@@ -8,7 +8,7 @@
 #include <Node.h>
 #include "Client.h"
 
-Node::Node( Client &client, const unsigned id ) : m_busy( false ), m_id( id ), m_client( &client )
+Node::Node( Client &client, const unsigned id ) : m_busy( false ), m_client( &client )
 {
 }
 
@@ -21,14 +21,14 @@ bool Node::isBusy() const
 	return m_busy;
 }
 
-unsigned Node::GetID() const
+std::string Node::GetID() const
 {
-	return m_id;
+	return m_client->GetAddr();
 }
 
 bool Node::operator==( const Node& node ) const
 {
-	return m_id == node.m_id;
+	return GetID() == node.GetID();
 }
 
 bool Node::operator==( const Client& client ) const
@@ -39,9 +39,4 @@ bool Node::operator==( const Client& client ) const
 bool Node::operator==( const std::string& addr ) const
 {
 	return m_client->GetAddr() == addr;
-}
-
-bool Node::operator==( const unsigned id ) const
-{
-	return m_id == id;
 }

@@ -18,7 +18,7 @@ public:
 	virtual ~ServerMessageProcessor();
 
 	virtual void Init();
-	void SendRegisterMessage( const std::string &addr, const unsigned id, const std::string *error );
+	void SendRegisterMessage( const std::string &addr, const std::string *error );
 
 protected:
 	static ServerModule *m_parent;

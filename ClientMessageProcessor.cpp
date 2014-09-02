@@ -35,14 +35,7 @@ void ClientMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& do
 	EchoMessage message;
 	message.DeserializeRespond( doc );
 	Log::Add( "Echo message return: " + message.Text );
-	m_parent->UpdateState();
-	/*
-	if( int pos = message.find( "ECHO" ) != -1 )
-	{
-		std::string rpt = message.substr( pos + 5, message.length() - pos - 5 );
-		m_parent->m_connection.Send( rpt );
-	}
-	*/
+	m_parent->ConnectionRespond();
 }
 
 void ClientMessageProcessor::RecieveRegisterMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
@@ -50,8 +43,9 @@ void ClientMessageProcessor::RecieveRegisterMessage( const tinyxml2::XMLDocument
 	assert( m_parent );
 	RegisterMessage mess;
 	mess.DeserializeRespond( doc );
-	Log::Add( "Client registered with ID: " + Log::IntToStr( mess.ClientId ) );
-	m_parent->UpdateState();
+	Log::Add( "Client registered with ID: " + mess.ClientId );
+	m_parent->RegisterRespond();
+	m_parent->Respond();
 }
 
 void ClientMessageProcessor::SendEchoMessage( const std::string& message )

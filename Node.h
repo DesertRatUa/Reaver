@@ -18,17 +18,14 @@ public:
 	virtual ~Node();
 
 	bool isBusy() const;
-	unsigned GetID() const;
+	std::string GetID() const;
 
 	bool operator==( const Node& node ) const;
 	bool operator==( const Client& client ) const;
 	bool operator==( const std::string& addr ) const;
-	bool operator==( const unsigned id ) const;
 
 protected:
 	bool m_busy;
-	unsigned m_id;
-
 	Client *m_client;
 };
 

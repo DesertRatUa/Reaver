@@ -23,7 +23,7 @@ void RegisterMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 void RegisterMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	AddPacketId( doc, 2 );
-	AddNum( doc, "ClientID", ClientId );
+	AddText( doc, "ClientID", ClientId );
 	AddText( doc, "ErrorMsg", ErrorMsg );
 }
 
@@ -37,7 +37,7 @@ void RegisterMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 	const tinyxml2::XMLElement *client = doc.FirstChildElement( "ClientID" );
 	if ( client )
 	{
-		ClientId = atoi( client->GetText() );
+		ClientId = client->GetText();
 	}
 	const tinyxml2::XMLElement *error = doc.FirstChildElement( "ErrorMsg" );
 	if ( error )

@@ -28,14 +28,14 @@ void ServerMessageProcessor::Init()
 	RegisterProcessor( 2, &ServerMessageProcessor::RecieveRegisterMessage );
 }
 
-void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const unsigned id, const std::string *error )
+void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const std::string *error )
 {
 	RegisterMessage mess;
 	if ( error )
 	{
 		mess.ErrorMsg = *error;
 	}
-	mess.ClientId = id;
+	mess.ClientId = addr;
 	m_parent->m_connection.GetClient( addr ).Send( mess );
 }
 
@@ -53,5 +53,6 @@ void ServerMessageProcessor::RecieveRegisterMessage( const tinyxml2::XMLDocument
 	assert( m_parent );
 	RegisterMessage mess;
 	mess.DeserializeReqest( doc );
+	Log::Add( "Recive register message: " + addr );
 	m_parent->RegisterNode( addr );
 }

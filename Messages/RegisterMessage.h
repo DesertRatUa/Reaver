@@ -20,7 +20,7 @@ public:
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc );
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 
-	unsigned ClientId;
+	std::string ClientId;
 	std::string ErrorMsg;
 };
 

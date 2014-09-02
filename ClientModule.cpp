@@ -9,7 +9,7 @@
 #include "Log.h"
 #include "stdexcept"
 
-ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_state( TEST_CONNECTION ), m_respondTime(0), m_mut(0)
+ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_respondTime(0), m_mut(0), m_state( INIT ), m_lastState( INIT ), m_count(0)
 {
 }
 
@@ -38,7 +38,7 @@ void ClientModule::Run()
 	try
 	{
 		m_connection.Connect( ip, port );
-		UpdateState();
+		TestConnection();
 		m_signal.Wait();
 	}
 	catch ( std::exception &exc )
@@ -50,48 +50,71 @@ void ClientModule::Run()
 	Log::Add( "Stop client module" );
 }
 
-void ClientModule::UpdateState()
+void ClientModule::RunSequence()
 {
-	//pthread_mutex_lock( &m_mut );
-	switch ( m_state )
+	pthread_create( &m_sequence, NULL, ClientModule::SequenceThread, (void* ) this );
+}
+
+void* ClientModule::SequenceThread( void *arg )
+{
+	assert( arg );
+
+	ClientModule *client = (ClientModule*) arg;
+
+	assert( client->m_state == INIT );
+	assert( client->m_lastState == INIT );
+
+	while ( client->m_run )
 	{
-		case TEST_CONNECTION : TestConnection();
-			break;
+		pthread_mutex_lock( &m_mut );
+		switch ( client->m_state )
+		{
+			case INIT : client->m_state = TEST_CONNECTION;
+				break;
 
-		case WAIT_CONNECTION :	ConnectionRespond();
-			break;
+			case TEST_CONNECTION : client->TestConnection();
+				break;
 
-		case REGISTER_CLIENT : RegisterClient();
-			break;
+			case REGISTER_CLIENT : client->RegisterClient();
+				break;
 
-		case WAIT_REGISTER : RegisterRespond();
-			break;
-
-		case FAILED :
-		case DONE: Stop();
-			break;
+			case FAILED:
+			case DONE:
+				client->Stop();
+		}
+		Sleep(1);
+		pthread_mutex_unlock( &m_mut );
 	}
-	//pthread_mutex_unlock( &m_mut );
+	return NULL;
 }
 
 void ClientModule::TestConnection()
 {
-	m_respondTime = GetTickCount();
-	m_processor.SendEchoMessage( "TestConnection message" );
-	m_state = WAIT_CONNECTION;
+	if ( m_lastState != INIT )
+	{
+		if ( ++m_count >= 10 )
+		{
+			Log::Add( "TimeOut for test connection" );
+			m_state = FAILED;
+		}
+	}
+	else
+	{
+		m_respondTime = GetTickCount();
+		m_processor.SendEchoMessage( "TestConnection message" );
+		m_lastState = TEST_CONNECTION;
+	}
 }
 
 void ClientModule::ConnectionRespond()
 {
-	m_respondTime =  GetTickCount() - m_respondTime;
-	Log::Add( "Query delay: " + Log::IntToStr( m_respondTime ) + " ms" );
-	m_state = REGISTER_CLIENT;
-	UpdateState();
+	Log::Add( "Query delay: " + Log::IntToStr( GetTickCount() - m_respondTime ) + " ms" );
+	Respond();
 }
 
 void ClientModule::RegisterRespond()
 {
-
+	Stop();
 }
 
 void ClientModule::Stop()
@@ -99,9 +122,34 @@ void ClientModule::Stop()
 	m_run = false;
 }
 
+unsigned ClientModule::GetLastTick()
+{
+	return m_respondTime;
+}
+
 void ClientModule::RegisterClient()
 {
-	m_processor.SendRegisterMessage();
-	Log::Add( "Request register node" );
-	m_state = WAIT_REGISTER;
+	if ( m_lastState != INIT )
+	{
+		if ( ++m_count >= 10 )
+		{
+			Log::Add( "TimeOut for Register Client" );
+			m_state = FAILED;
+		}
+	}
+	else
+	{
+		m_processor.SendRegisterMessage();
+		Log::Add( "Request register" );
+	}
+}
+
+void ClientModule::Respond()
+{
+	pthread_mutex_lock( &m_mut );
+	if ( m_state < DONE )
+	{
+		m_state = (State)(m_state + 1);
+	}
+	pthread_mutex_unlock( &m_mut );
 }

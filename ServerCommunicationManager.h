@@ -12,10 +12,12 @@
 #include "Client.h"
 #include <stdexcept>
 
+class ServerModule;
+
 class ServerCommunicationManager: public CommunicationManager
 {
 public:
-	ServerCommunicationManager( MessageProcessor &processor, bool &isRun );
+	ServerCommunicationManager( ServerModule &server, MessageProcessor &processor, bool &isRun );
 	virtual ~ServerCommunicationManager();
 
 	virtual void Init();
@@ -25,9 +27,6 @@ public:
 
 protected:
 	friend class Client;
-
-	typedef std::vector<ClientPtr> Clients;
-	Clients m_clients;
 
 	static void *ListenSocketThr( void *arg );
 	ClientPtr CreateInputConn();
@@ -39,7 +38,10 @@ protected:
 	void RemoveClient( const ClientPtr& data );
 	virtual void CloseAdditionalThreads();
 
+	typedef std::vector<ClientPtr> Clients;
+	Clients m_clients;
 	pthread_mutex_t m_clientsM;
+	ServerModule& m_server;
 };
 
 #endif /* COMMUNICATIONSERVER_H_ */

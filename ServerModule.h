@@ -24,6 +24,7 @@ public:
 	virtual void Run();
 
 	void RegisterNode( const std::string& addr );
+	void UnregisterNode( const std::string& addr );
 
 protected:
 	friend class ServerMessageProcessor;
