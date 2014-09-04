@@ -85,3 +85,8 @@ void ServerModule::UnregisterNode( const std::string& addr )
 	}
 	pthread_mutex_unlock( &m_mut );
 }
+
+void ServerModule::TaskRespond( const std::string& addr )
+{
+
+}

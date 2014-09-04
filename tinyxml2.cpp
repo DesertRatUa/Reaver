@@ -1256,7 +1256,7 @@ const char* XMLElement::GetText() const
     if ( FirstChild() && FirstChild()->ToText() ) {
         return FirstChild()->ToText()->Value();
     }
-    return 0;
+    return "";
 }
 
 

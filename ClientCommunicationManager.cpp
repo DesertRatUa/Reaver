@@ -69,7 +69,12 @@ void ClientCommunicationManager::Send( const std::string &message )
 	send( m_socket, message.c_str(), message.length(), 0);
 }
 
-void ClientCommunicationManager::Send( const Message &message )
+void ClientCommunicationManager::SendRequest( const Message &message )
 {
 	Send( message.SerializeReqest() );
+}
+
+void ClientCommunicationManager::SendRespond( const Message &message )
+{
+	Send( message.SerializeRespond() );
 }

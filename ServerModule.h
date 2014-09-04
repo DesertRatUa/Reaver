@@ -25,6 +25,7 @@ public:
 
 	void RegisterNode( const std::string& addr );
 	void UnregisterNode( const std::string& addr );
+	void TaskRespond( const std::string& addr );
 
 protected:
 	friend class ServerMessageProcessor;

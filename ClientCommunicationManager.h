@@ -20,7 +20,8 @@ public:
 
 	void Connect( const std::string &addr, const unsigned port ) throw(std::runtime_error);
 	void Send( const std::string &message );
-	void Send( const Message &message );
+	void SendRequest( const Message &message );
+	void SendRespond( const Message &message );
 
 private:
 	static void *DataHandlerThr( void *arg );

@@ -28,7 +28,12 @@ void  Client::Send( const std::string& message )
 	send( socket, message.c_str(), message.length(), 0);
 }
 
-void Client::Send( const Message& message )
+void Client::SendRespond( const Message& message )
+{
+	Send( message.SerializeRespond() );
+}
+
+void Client::SendRequest( const Message& message )
 {
 	Send( message.SerializeReqest() );
 }

@@ -19,11 +19,13 @@ public:
 
 	virtual void Init();
 	void SendRegisterMessage( const std::string &addr, const std::string *error );
+	void SendTaskMessage( const std::string &addr );
 
 protected:
 	static ServerModule *m_parent;
 	static void RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 	static void RecieveRegisterMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
+	static void RecieveTaskMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 };
 
 #endif /* SERVERMESSAGEPROCESSOR_H_ */

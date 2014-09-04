@@ -10,6 +10,7 @@
 #include "Log.h"
 #include "Messages/EchoMessage.h"
 #include "Messages/RegisterMessage.h"
+#include "Messages/TaskMessage.h"
 
 ServerModule *ServerMessageProcessor::m_parent(NULL);
 
@@ -36,7 +37,13 @@ void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const
 		mess.ErrorMsg = *error;
 	}
 	mess.ClientId = addr;
-	m_parent->m_connection.GetClient( addr ).Send( mess );
+	m_parent->m_connection.GetClient( addr ).SendRespond( mess );
+}
+
+void ServerMessageProcessor::SendTaskMessage( const std::string &addr )
+{
+	TaskMessage mess;
+	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
 }
 
 void ServerMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
@@ -45,7 +52,7 @@ void ServerMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& do
 	EchoMessage message;
 	message.DeserializeReqest( doc );
 	Log::Add( "Recived echo message: " + message.Text + " respond" );
-	m_parent->m_connection.GetClient( addr ).Send( message );
+	m_parent->m_connection.GetClient( addr ).SendRespond( message );
 }
 
 void ServerMessageProcessor::RecieveRegisterMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
@@ -55,4 +62,13 @@ void ServerMessageProcessor::RecieveRegisterMessage( const tinyxml2::XMLDocument
 	mess.DeserializeReqest( doc );
 	Log::Add( "Recive register message: " + addr );
 	m_parent->RegisterNode( addr );
+}
+
+void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
+{
+	assert( m_parent );
+	TaskMessage mess;
+	mess.DeserializeRespond( doc );
+	Log::Add( "Recived task respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
+	m_parent->TaskRespond( addr );
 }

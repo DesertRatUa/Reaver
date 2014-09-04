@@ -7,7 +7,7 @@
 
 #include <Messages/RegisterMessage.h>
 
-RegisterMessage::RegisterMessage() : ClientId(0)
+RegisterMessage::RegisterMessage()
 {
 }
 

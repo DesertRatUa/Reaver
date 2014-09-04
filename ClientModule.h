@@ -22,18 +22,9 @@ public:
 	virtual void Init();
 	virtual void Run();
 
-	void RunSequence();
-	static void* SequenceThread( void *arg );
-
-	void TestConnection();
 	void ConnectionRespond();
 	void RegisterRespond();
-	void RegisterClient();
-	void Stop();
-	unsigned GetLastTick();
-	void Respond();
-
-
+	void TaskRequest();
 
 protected:
 	friend class ClientMessageProcessor;
@@ -44,11 +35,11 @@ protected:
 		INIT = 1,
 		TEST_CONNECTION = 2,
 		REGISTER_CLIENT = 3,
-		UNREGISTER_CLIENT = 4,
-		DONE = 5,
-	} m_state, m_lastState;
+		WAIT_FOR_JOB = 4,
+	} m_state;
 
 	bool m_run;
+	bool m_respond;
 	ClientCommunicationManager m_connection;
 	SignalHandler m_signal;
 	ClientMessageProcessor m_processor;
@@ -56,6 +47,15 @@ protected:
 	pthread_mutex_t m_mut;
 	pthread_t m_sequence;
 	unsigned m_count;
+
+	void Respond();
+	void Wait();
+	void Stop();
+	void RegisterClient();
+	void TestConnection();
+
+	void RunSequence();
+	static void* SequenceThread( void *arg );
 };
 
 #endif /* CLIENTMODULE_H_ */

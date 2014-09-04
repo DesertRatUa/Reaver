@@ -10,6 +10,7 @@
 #include <winsock2.h>
 #include "ArgumentsMap.h"
 #include "Messages/EchoMessage.h"
+#include "Messages/RegisterMessage.h"
 
 class UnitTest : public CxxTest::TestSuite
 {
@@ -59,6 +60,7 @@ public:
 		TS_ASSERT_EQUALS( map.Get("FirstArg").isSet(), true );
 		TS_ASSERT_EQUALS( map.Get("FirstArg").m_value, "SET!" );
 	}
+
 	void TestPacketId(void)
 	{
 		using namespace tinyxml2;
@@ -74,6 +76,37 @@ public:
 		};
 		Processor proc;
 		TS_ASSERT_EQUALS( proc.ParseMessageId(doc), 5 );
+	}
+
+	void TestEchoMessage(void)
+	{
+		EchoMessage mess1, mess2;
+		tinyxml2::XMLDocument doc;
+		mess1.Text = " TeStT ";
+		std::string buff = mess1.SerializeReqest();
+		doc.Parse( buff.c_str(), buff.length() );
+		mess2.DeserializeReqest( doc );
+		TS_ASSERT_EQUALS( mess1.Text, mess2.Text );
+		mess2.Text = "Test";
+		buff = mess2.SerializeRespond();
+		doc.Clear();
+		doc.Parse( buff.c_str(), buff.length() );
+		mess1.DeserializeRespond( doc );
+		TS_ASSERT_EQUALS( mess1.Text, mess2.Text );
+	}
+
+	void TestRegisterMessage(void)
+	{
+		RegisterMessage mess1, mess2;
+		tinyxml2::XMLDocument doc;
+		std::string buff = mess1.SerializeReqest();
+		doc.Parse( buff.c_str(), buff.length() );
+		mess2.DeserializeReqest( doc );
+		buff = mess2.SerializeRespond();
+		doc.Clear();
+		doc.Parse( buff.c_str(), buff.length() );
+		mess1.DeserializeRespond( doc );
+		TS_ASSERT_EQUALS( mess1.ClientId, mess2.ClientId );
 	}
 };
 

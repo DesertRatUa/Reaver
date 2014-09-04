@@ -23,7 +23,8 @@ public:
 	virtual ~Client();
 
 	void Send( const std::string& message );
-	void Send( const Message& message );
+	void SendRequest( const Message& message );
+	void SendRespond( const Message& message );
 	std::string GetAddr();
 
 	sockaddr_in addr;
