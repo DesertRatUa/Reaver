@@ -8,13 +8,16 @@
 #ifndef TASKMESSAGE_H_
 #define TASKMESSAGE_H_
 
-#include <Messages/Message.h>
+#include "Messages/Message.h"
+#include "Tasks/Task.h"
+#include <boost/shared_ptr.hpp>
 
 class TaskMessage: public Message
 {
 public:
 	TaskMessage();
 	TaskMessage( const unsigned spendTime );
+	TaskMessage( Task &tsk );
 	virtual ~TaskMessage();
 
 	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;
@@ -23,6 +26,7 @@ public:
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 
 	unsigned SpendTime;
+	boost::shared_ptr<Task> task;
 };
 
 #endif /* TASKMESSAGE_H_ */

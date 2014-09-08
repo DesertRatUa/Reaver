@@ -7,8 +7,7 @@
 
 #ifndef MESSAGE_H_
 #define MESSAGE_H_
-#include <string>
-#include <tinyxml2.h>
+#include <include.h>
 
 class ClientModule;
 

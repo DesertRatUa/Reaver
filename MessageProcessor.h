@@ -8,13 +8,8 @@
 #ifndef MESSAGEPROCESSOR_H_
 #define MESSAGEPROCESSOR_H_
 
-#include <string>
 #include <map>
-
-namespace tinyxml2
-{
-	class XMLDocument;
-}
+#include <include.h>
 
 class MessageProcessor
 {

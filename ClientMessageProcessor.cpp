@@ -12,6 +12,7 @@
 #include "Messages/RegisterMessage.h"
 #include "Messages/EchoMessage.h"
 #include "Messages/TaskMessage.h"
+#include "Tasks/Task.h"
 
 ClientModule *ClientMessageProcessor::m_parent(NULL);
 
@@ -55,7 +56,8 @@ void ClientMessageProcessor::ReciveTaskMessage( const tinyxml2::XMLDocument& doc
 	TaskMessage mess;
 	mess.DeserializeReqest( doc );
 	Log::Add( "Recive Task" );
-	m_parent->TaskRequest();
+	assert( mess.task.get() );
+	m_parent->TaskRequest( *mess.task );
 }
 
 void ClientMessageProcessor::SendEchoMessage( const std::string& message )
@@ -70,8 +72,9 @@ void ClientMessageProcessor::SendRegisterMessage()
 	m_parent->m_connection.SendRequest( mess );
 }
 
-void ClientMessageProcessor::SendTaskMessage( const unsigned time )
+void ClientMessageProcessor::SendTaskMessage( const unsigned time, Task& task )
 {
 	TaskMessage mess( time );
+	mess.task.reset( &task );
 	m_parent->m_connection.SendRespond( mess );
 }

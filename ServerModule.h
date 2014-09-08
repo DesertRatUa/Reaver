@@ -14,6 +14,8 @@
 #include "ServerMessageProcessor.h"
 #include "Node.h"
 
+class Task;
+
 class ServerModule : public Module
 {
 public:
@@ -25,7 +27,7 @@ public:
 
 	void RegisterNode( const std::string& addr );
 	void UnregisterNode( const std::string& addr );
-	void TaskRespond( const std::string& addr );
+	void TaskRespond( const std::string& addr, Task &task );
 
 protected:
 	friend class ServerMessageProcessor;

@@ -13,6 +13,8 @@
 #include "SignalHandler.h"
 #include "ClientMessageProcessor.h"
 
+class Task;
+
 class ClientModule : public Module
 {
 public:
@@ -24,7 +26,7 @@ public:
 
 	void ConnectionRespond();
 	void RegisterRespond();
-	void TaskRequest();
+	void TaskRequest( Task &task );
 
 protected:
 	friend class ClientMessageProcessor;
@@ -35,7 +37,7 @@ protected:
 		INIT = 1,
 		TEST_CONNECTION = 2,
 		REGISTER_CLIENT = 3,
-		WAIT_FOR_JOB = 4,
+		WAIT_FOR_TASK = 4,
 	} m_state;
 
 	bool m_run;

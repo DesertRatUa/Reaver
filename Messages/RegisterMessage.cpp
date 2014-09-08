@@ -6,6 +6,7 @@
  */
 
 #include <Messages/RegisterMessage.h>
+#include "tinyxml2.h"
 
 RegisterMessage::RegisterMessage()
 {

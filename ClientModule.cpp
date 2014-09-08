@@ -8,6 +8,7 @@
 #include "ClientModule.h"
 #include "Log.h"
 #include "stdexcept"
+#include "Tasks/Task.h"
 
 ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_respondTime(0), m_mut(0), m_state( INIT ), m_count(0), m_respond(false)
 {
@@ -65,7 +66,7 @@ void* ClientModule::SequenceThread( void *arg )
 
 	Log::Add( "Start SequenceThread" );
 
-	while ( client->m_state < WAIT_FOR_JOB )
+	while ( client->m_state < WAIT_FOR_TASK )
 	{
 		pthread_mutex_lock( &client->m_mut );
 		switch ( client->m_state )
@@ -116,15 +117,16 @@ void ClientModule::RegisterRespond()
 	Respond();
 }
 
-void ClientModule::TaskRequest()
+void ClientModule::TaskRequest( Task &task )
 {
-	if ( m_state != WAIT_FOR_JOB )
+	if ( m_state != WAIT_FOR_TASK )
 	{
 		Log::Add( "Wrong task request" );
 		return;
 	}
 	m_respond = GetTickCount();
-
+	task.Process();
+	m_processor.SendTaskMessage( GetTickCount() - m_respond, task );
 }
 
 void ClientModule::Stop()
@@ -144,7 +146,7 @@ void ClientModule::Respond()
 {
 	//pthread_mutex_lock( &m_mut );
 	m_respond = true;
-	if ( m_state < WAIT_FOR_JOB  )
+	if ( m_state < WAIT_FOR_TASK  )
 	{
 		m_state = (State)(m_state + 1);
 	}

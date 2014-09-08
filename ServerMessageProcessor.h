@@ -10,6 +10,7 @@
 #include "MessageProcessor.h"
 
 class ServerModule;
+class Task;
 
 class ServerMessageProcessor : public MessageProcessor
 {
@@ -19,7 +20,7 @@ public:
 
 	virtual void Init();
 	void SendRegisterMessage( const std::string &addr, const std::string *error );
-	void SendTaskMessage( const std::string &addr );
+	void SendTaskMessage( const std::string &addr, Task &task );
 
 protected:
 	static ServerModule *m_parent;

@@ -11,6 +11,7 @@
 #include "Messages/EchoMessage.h"
 #include "Messages/RegisterMessage.h"
 #include "Messages/TaskMessage.h"
+#include "Tasks/Task.h"
 
 ServerModule *ServerMessageProcessor::m_parent(NULL);
 
@@ -40,9 +41,9 @@ void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const
 	m_parent->m_connection.GetClient( addr ).SendRespond( mess );
 }
 
-void ServerMessageProcessor::SendTaskMessage( const std::string &addr )
+void ServerMessageProcessor::SendTaskMessage( const std::string &addr, Task &task )
 {
-	TaskMessage mess;
+	TaskMessage mess(task);
 	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
 }
 
@@ -70,5 +71,6 @@ void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& do
 	TaskMessage mess;
 	mess.DeserializeRespond( doc );
 	Log::Add( "Recived task respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
-	m_parent->TaskRespond( addr );
+	assert( mess.task.get() );
+	m_parent->TaskRespond( addr, *mess.task );
 }
