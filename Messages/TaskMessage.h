@@ -16,8 +16,8 @@ class TaskMessage: public Message
 {
 public:
 	TaskMessage();
-	TaskMessage( const unsigned spendTime );
-	TaskMessage( Task &tsk );
+	TaskMessage( const unsigned spendTime, TaskPtr &tsk );
+	TaskMessage( TaskPtr &tsk );
 	virtual ~TaskMessage();
 
 	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;

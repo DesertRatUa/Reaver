@@ -9,6 +9,7 @@
 #define CLIENTMESSAGEPROCESSOR_H_
 
 #include "MessageProcessor.h"
+#include "Tasks/Task.h"
 
 class ClientModule;
 class Task;
@@ -23,7 +24,7 @@ public:
 
 	void SendEchoMessage( const std::string& messag );
 	void SendRegisterMessage();
-	void SendTaskMessage( const unsigned time, Task& task );
+	void SendTaskMessage( const unsigned long time, TaskPtr &task );
 
 protected:
 	static void RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );

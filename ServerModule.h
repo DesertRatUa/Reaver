@@ -25,9 +25,14 @@ public:
 	virtual void Init();
 	virtual void Run();
 
+	static void* TaskPlannerThread ( void *arg );
+	void TaskPlanner();
+
 	void RegisterNode( const std::string& addr );
 	void UnregisterNode( const std::string& addr );
 	void TaskRespond( const std::string& addr, Task &task );
+	Node& GetNode( const std::string& addr );
+	Node* GetFreeNode();
 
 protected:
 	friend class ServerMessageProcessor;
@@ -36,7 +41,7 @@ protected:
 	SignalHandler m_signal;
 	ServerMessageProcessor m_processor;
 	pthread_mutex_t m_mut;
-	unsigned m_nodesID;
+	pthread_t m_taskPlanner;
 
 	typedef std::vector<Node> Nodes;
 	Nodes m_nodes;

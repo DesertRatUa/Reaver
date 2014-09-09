@@ -26,7 +26,7 @@ public:
 
 	void ConnectionRespond();
 	void RegisterRespond();
-	void TaskRequest( Task &task );
+	void TaskRequest( TaskPtr &task );
 
 protected:
 	friend class ClientMessageProcessor;

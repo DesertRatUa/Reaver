@@ -6,18 +6,18 @@
  */
 
 #include <Messages/TaskMessage.h>
-#include <tinyxml2.h>
+#include "XMLUtils.h"
 #include "Tasks/Task.h"
 
 TaskMessage::TaskMessage() : SpendTime(0)
 {
 }
 
-TaskMessage::TaskMessage( const unsigned spendTime ) : SpendTime( spendTime )
+TaskMessage::TaskMessage( const unsigned spendTime, TaskPtr &tsk ) : SpendTime( spendTime ),  task( tsk )
 {
 }
 
-TaskMessage::TaskMessage( Task &tsk ): SpendTime(0), task( &tsk )
+TaskMessage::TaskMessage( TaskPtr &tsk ): SpendTime(0), task( tsk )
 {
 }
 
@@ -27,35 +27,42 @@ TaskMessage::~TaskMessage()
 
 void TaskMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
-	AddPacketId( doc, 3 );
-	if ( task.get() )
-	{
-		AddNum( doc, "TaskID", task->GetID() );
-		task->SerializeRequest( doc );
-	}
+	assert( task.get() );
+	XMLUtils::AddPacketId( doc, 3 );
+	XMLUtils::AddUnsigned( doc, "TaskID", task->GetID() );
+	task->SerializeRequest( doc );
 }
 
 void TaskMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
-	AddPacketId( doc, 3 );
-	AddNum( doc, "SpendTime", SpendTime );
+	assert( task.get() );
+	XMLUtils::AddPacketId( doc, 3 );
+	XMLUtils::AddUnsigned( doc, "SpendTime", SpendTime );
+	XMLUtils::AddUnsigned( doc, "TaskID", task->GetID() );
+	task->SerializeRespond( doc );
 }
 
 void TaskMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
 {
-	const tinyxml2::XMLElement *taskID = doc.FirstChildElement( "TaskID" );
-	if ( taskID )
+	unsigned taskId = 0;
+	XMLUtils::GetUnsigned( doc, "TaskID", taskId );
+	if ( taskId != 0 )
 	{
-		task.reset( Task::CreateTask( atoi( taskID->GetText() ) ) );
+		task.reset( Task::CreateTask( taskId ) );
+		assert( task.get() );
 		task->DeserializeRequest( doc );
 	}
 }
 
 void TaskMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
-	const tinyxml2::XMLElement *time = doc.FirstChildElement( "SpendTime" );
-	if ( time )
+	unsigned taskId = 0;
+	XMLUtils::GetUnsigned( doc, "SpendTime", SpendTime );
+	XMLUtils::GetUnsigned( doc, "TaskID", taskId );
+	if ( taskId != 0 )
 	{
-		SpendTime = atoi( time->GetText() );
+		task.reset( Task::CreateTask( taskId ) );
+		assert( task.get() );
+		task->DeserializeRespond( doc );
 	}
 }

@@ -117,16 +117,18 @@ void ClientModule::RegisterRespond()
 	Respond();
 }
 
-void ClientModule::TaskRequest( Task &task )
+void ClientModule::TaskRequest( TaskPtr &task )
 {
 	if ( m_state != WAIT_FOR_TASK )
 	{
 		Log::Add( "Wrong task request" );
 		return;
 	}
-	m_respond = GetTickCount();
-	task.Process();
-	m_processor.SendTaskMessage( GetTickCount() - m_respond, task );
+	Log::Add( "Recive Task: " + Log::IntToStr( task->GetID() ) );
+	m_respondTime = GetTickCount();
+	task->Process();
+	Log::Add( "Task done" );
+	m_processor.SendTaskMessage( GetTickCount() - m_respondTime, task );
 }
 
 void ClientModule::Stop()

@@ -28,6 +28,7 @@ void ServerMessageProcessor::Init()
 {
 	RegisterProcessor( 1, &ServerMessageProcessor::RecieveEchoMessage );
 	RegisterProcessor( 2, &ServerMessageProcessor::RecieveRegisterMessage );
+	RegisterProcessor( 3, &ServerMessageProcessor::RecieveTaskMessage );
 }
 
 void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const std::string *error )
@@ -41,7 +42,7 @@ void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const
 	m_parent->m_connection.GetClient( addr ).SendRespond( mess );
 }
 
-void ServerMessageProcessor::SendTaskMessage( const std::string &addr, Task &task )
+void ServerMessageProcessor::SendTaskMessage( const std::string &addr, TaskPtr &task )
 {
 	TaskMessage mess(task);
 	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
@@ -70,7 +71,8 @@ void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& do
 	assert( m_parent );
 	TaskMessage mess;
 	mess.DeserializeRespond( doc );
-	Log::Add( "Recived task respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
+	assert( mess.task );
+	Log::Add( "Recived task: " + Log::UnsignedToStr( mess.task->GetID() ) + " respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
 	assert( mess.task.get() );
 	m_parent->TaskRespond( addr, *mess.task );
 }

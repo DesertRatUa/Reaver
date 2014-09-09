@@ -27,6 +27,7 @@ public:
 	static void AddLog( std::string log );
 	static void Add( std::string log );
 	static std::string IntToStr( const int value );
+	static std::string UnsignedToStr( const unsigned value );
 	static std::string AddrToStr( const sockaddr_in& addr );
 	static void SetName( const std::string &name );
 
