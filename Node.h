@@ -16,10 +16,11 @@ class ServerMessageProcessor;
 class Node
 {
 public:
-	Node( const std::string &addr, ServerMessageProcessor &manager );
+	Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessor &manager );
 	virtual ~Node();
 
 	bool isBusy() const;
+	bool isThreadsAvalible() const;
 	std::string GetID() const;
 
 	bool operator==( const Node& node ) const;
@@ -32,6 +33,8 @@ public:
 
 protected:
 
+	unsigned m_threads;
+	unsigned m_threadsLimit;
 	bool m_busy;
 	std::string m_addr;
 

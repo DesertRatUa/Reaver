@@ -13,8 +13,8 @@
 #ifdef WIN32
    #include <winsock2.h>
 #else
-   #include <sys/socket.h>
-   #include <sys/un.h>
+   //#include <sys/socket.h>
+   //#include <sys/un.h>
 #endif
 #include <pthread.h>
 

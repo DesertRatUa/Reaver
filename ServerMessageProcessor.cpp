@@ -63,7 +63,7 @@ void ServerMessageProcessor::RecieveRegisterMessage( const tinyxml2::XMLDocument
 	RegisterMessage mess;
 	mess.DeserializeReqest( doc );
 	Log::Add( "Recive register message: " + addr );
-	m_parent->RegisterNode( addr );
+	m_parent->RegisterNode( addr, mess.ThreadNum );
 }
 
 void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )

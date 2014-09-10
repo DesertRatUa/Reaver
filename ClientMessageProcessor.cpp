@@ -66,7 +66,7 @@ void ClientMessageProcessor::SendEchoMessage( const std::string& message )
 
 void ClientMessageProcessor::SendRegisterMessage()
 {
-	RegisterMessage mess;
+	RegisterMessage mess(4);
 	m_parent->m_connection.SendRequest( mess );
 }
 

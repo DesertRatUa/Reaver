@@ -13,6 +13,7 @@
 class RegisterMessage: public Message {
 public:
 	RegisterMessage();
+	RegisterMessage( const unsigned threadNum );
 	virtual ~RegisterMessage();
 
 	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;
@@ -22,6 +23,7 @@ public:
 
 	std::string ClientId;
 	std::string ErrorMsg;
+	unsigned ThreadNum;
 };
 
 #endif /* REGISTERMESSAGE_H_ */

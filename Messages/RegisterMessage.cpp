@@ -9,7 +9,11 @@
 //#include "tinyxml2.h"
 #include "XMLUtils.h"
 
-RegisterMessage::RegisterMessage()
+RegisterMessage::RegisterMessage() : ThreadNum(0)
+{
+}
+
+RegisterMessage::RegisterMessage( const unsigned threadNum ) : ThreadNum( threadNum )
 {
 }
 
@@ -20,6 +24,7 @@ RegisterMessage::~RegisterMessage()
 void RegisterMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddPacketId( doc, 2 );
+	XMLUtils::AddUnsigned( doc, "ThreadNum", ThreadNum );
 }
 
 void RegisterMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
@@ -31,7 +36,7 @@ void RegisterMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 
 void RegisterMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
 {
-
+	XMLUtils::GetUnsigned( doc, "ThreadNum", ThreadNum );
 }
 
 void RegisterMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )

@@ -10,7 +10,7 @@
 #include "ServerMessageProcessor.h"
 #include "Log.h"
 
-Node::Node( const std::string &addr, ServerMessageProcessor &manager ) : m_busy( false ), m_addr( addr ), m_proccessor( manager )
+Node::Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessor &manager ) : m_busy( false ), m_addr( addr ), m_proccessor( manager ), m_threads(0), m_threadsLimit( threadNum )
 {
 }
 
@@ -21,6 +21,11 @@ Node::~Node()
 bool Node::isBusy() const
 {
 	return m_busy;
+}
+
+bool Node::isThreadsAvalible() const
+{
+	return ( m_threadsLimit - m_threads ) >= 1;
 }
 
 std::string Node::GetID() const
@@ -49,11 +54,14 @@ Node& Node::operator=(const Node& node )
 void Node::SendTask( TaskPtr& task )
 {
 	m_busy = true;
-	Log::Add( "Task: " + Log::UnsignedToStr( task->GetID() ) + " send to " + m_addr );
+	++m_threads;
+	Log::Add( "Task: " + Log::UnsignedToStr( task->GetID() ) + " send to " + m_addr + " Avalible threads: " + Log::UnsignedToStr( m_threadsLimit - m_threads ) );
 	m_proccessor.SendTaskMessage( m_addr, task );
 }
 
 void Node::TaskComplete()
 {
+	Log::Add( "Node: " + m_addr + " complete job" );
 	m_busy = false;
+	--m_threads;
 }
