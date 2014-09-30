@@ -11,21 +11,21 @@
 #include "ArgumentsMap.h"
 #include "Messages/EchoMessage.h"
 #include "Messages/RegisterMessage.h"
+#include "XMLUtils.h"
 
 class UnitTest : public CxxTest::TestSuite
 {
 public:
-	void TestClientMessageProcessor(void)
+	void TestXMLUtils(void)
 	{
 		using namespace tinyxml2;
 		XMLDocument doc;
 		XMLPrinter prnt;
-		EchoMessage mess;
-		mess.AddPacketId( doc, 5 );
+		XMLUtils::AddPacketId( doc, 5 );
 		doc.Print( &prnt );
 		TS_ASSERT_EQUALS( prnt.CStr(), "<PacketID>5</PacketID>\n" );
 
-		mess.AddText( doc, "Test", "Message" );
+		XMLUtils::AddText( doc, "Test", "Message" );
 		prnt.ClearBuffer();
 		doc.Print( &prnt );
 		TS_ASSERT_EQUALS( prnt.CStr(), "\n<PacketID>5</PacketID>\n\n<Test>Message</Test>\n" ); // WTF????
@@ -65,8 +65,7 @@ public:
 	{
 		using namespace tinyxml2;
 		XMLDocument doc;
-		EchoMessage mess;
-		mess.AddPacketId( doc, 5 );
+		XMLUtils::AddPacketId( doc, 5 );
 		class Processor : public MessageProcessor
 		{
 			virtual void Init()
