@@ -7,6 +7,7 @@
 
 #include "SignalHandler.h"
 #include "Log.h"
+#include <windows.h>
 #include <unistd.h>
 
 bool handled = false;

@@ -3,7 +3,7 @@
 
 #define protected public
 #define private public
-#include <cxxtest/TestSuite.h>
+#include "TestSuite.h"
 #include "ClientMessageProcessor.h"
 #include "tinyxml2.h"
 #include "Log.h"
@@ -12,6 +12,7 @@
 #include "Messages/EchoMessage.h"
 #include "Messages/RegisterMessage.h"
 #include "XMLUtils.h"
+#include "NodesMap.h"
 
 class UnitTest : public CxxTest::TestSuite
 {
@@ -106,6 +107,22 @@ public:
 		doc.Parse( buff.c_str(), buff.length() );
 		mess1.DeserializeRespond( doc );
 		TS_ASSERT_EQUALS( mess1.ClientId, mess2.ClientId );
+	}
+
+	void TestNodesMap(void)
+	{
+		NodesMap map;
+		map.RegisterNode( "1", 2 );
+		TS_ASSERT_THROWS_NOTHING( map.GetNode("1") );
+		map.UnregisterNode( "1" );
+		TS_ASSERT_THROWS_ANYTHING( map.GetNode("1") );
+		map.RegisterNode( "1", 2 );
+		map.RegisterNode( "2", 2 );
+		Node *free = map.GetFreeNode();
+		TS_ASSERT_NO_EQUALS( free, NULL );
+		TS_ASSERT_EQUALS( free->isBusy(), false );
+		TS_ASSERT_EQUALS( free->isThreadsAvalible(), true );
+
 	}
 };
 

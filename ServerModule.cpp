@@ -8,9 +8,12 @@
 #include "ServerModule.h"
 #include "Log.h"
 #include <windows.h>
+#include "Tasks/TestTask.h"
 #include <thread>
 
-ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_mut(0), m_nodes( m_processor )
+ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) :
+	Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this),
+	m_run(false), m_signal( m_run ), m_mut(0), m_nodes( m_processor ), m_taskPlanner(0)
 {
 }
 
@@ -29,11 +32,18 @@ void ServerModule::Init()
 	pthread_mutex_init( &m_mut, NULL );
 }
 
+void testThread()
+{
+	Log::Add( "Test thread" );
+}
+
 void ServerModule::Run()
 {
 	Log::Add( "Run server module" );
 	unsigned port = 2222;
 	std::string ip = "*";
+
+	std::thread thr ( testThread );
 
 	ParseIp( m_arguments("address").m_value, ip, port );
 

@@ -60,18 +60,21 @@ void ClientMessageProcessor::ReciveTaskMessage( const tinyxml2::XMLDocument& doc
 
 void ClientMessageProcessor::SendEchoMessage( const std::string& message )
 {
+	assert( m_parent );
 	EchoMessage mess( message );
 	m_parent->m_connection.SendRequest( mess );
 }
 
 void ClientMessageProcessor::SendRegisterMessage()
 {
+	assert( m_parent );
 	RegisterMessage mess(4);
 	m_parent->m_connection.SendRequest( mess );
 }
 
 void ClientMessageProcessor::SendTaskMessage( const unsigned long time, TaskPtr &task )
 {
+	assert( m_parent );
 	TaskMessage mess( time, task );
 	m_parent->m_connection.SendRespond( mess );
 }

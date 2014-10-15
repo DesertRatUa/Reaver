@@ -24,7 +24,7 @@ public:
 
 	void RegisterNode( const std::string& addr, const unsigned threadNum );
 	void UnregisterNode( const std::string& addr );
-	Node& GetNode( const std::string& addr );
+	Node& GetNode( const std::string& addr ) throw ( std::exception );
 	Node* GetFreeNode();
 	void TaskComplete( const std::string& addr );
 

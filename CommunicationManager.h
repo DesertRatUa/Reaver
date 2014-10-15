@@ -10,12 +10,12 @@
 
 #include <string>
 #include <vector>
-#ifdef WIN32
+//#ifdef WIN32
    #include <winsock2.h>
-#else
+//#else
    //#include <sys/socket.h>
    //#include <sys/un.h>
-#endif
+//#endif
 #include <pthread.h>
 
 class MessageProcessor;

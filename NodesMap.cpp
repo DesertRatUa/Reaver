@@ -61,7 +61,7 @@ void NodesMap::UnregisterNode( const std::string& addr )
 	pthread_mutex_unlock( &m_mut );
 }
 
-Node& NodesMap::GetNode( const std::string& addr )
+Node& NodesMap::GetNode( const std::string& addr ) throw ( std::exception )
 {
 	pthread_mutex_lock( &m_mut );
 

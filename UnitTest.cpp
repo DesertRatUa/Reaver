@@ -26,29 +26,29 @@ bool suite_UnitTest_init = false;
 static UnitTest suite_UnitTest;
 
 static CxxTest::List Tests_UnitTest = { 0, 0 };
-CxxTest::StaticSuiteDescription suiteDescription_UnitTest( "UnitTest.h", 15, "UnitTest", suite_UnitTest, Tests_UnitTest );
+CxxTest::StaticSuiteDescription suiteDescription_UnitTest( "UnitTest.h", 17, "UnitTest", suite_UnitTest, Tests_UnitTest );
 
-static class TestDescription_suite_UnitTest_TestClientMessageProcessor : public CxxTest::RealTestDescription {
+static class TestDescription_suite_UnitTest_TestXMLUtils : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_TestClientMessageProcessor() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 18, "TestClientMessageProcessor" ) {}
- void runTest() { suite_UnitTest.TestClientMessageProcessor(); }
-} testDescription_suite_UnitTest_TestClientMessageProcessor;
+ TestDescription_suite_UnitTest_TestXMLUtils() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 20, "TestXMLUtils" ) {}
+ void runTest() { suite_UnitTest.TestXMLUtils(); }
+} testDescription_suite_UnitTest_TestXMLUtils;
 
 static class TestDescription_suite_UnitTest_TestLog : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_TestLog() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 34, "TestLog" ) {}
+ TestDescription_suite_UnitTest_TestLog() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 35, "TestLog" ) {}
  void runTest() { suite_UnitTest.TestLog(); }
 } testDescription_suite_UnitTest_TestLog;
 
 static class TestDescription_suite_UnitTest_TestArgumentMap : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_TestArgumentMap() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 50, "TestArgumentMap" ) {}
+ TestDescription_suite_UnitTest_TestArgumentMap() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 51, "TestArgumentMap" ) {}
  void runTest() { suite_UnitTest.TestArgumentMap(); }
 } testDescription_suite_UnitTest_TestArgumentMap;
 
 static class TestDescription_suite_UnitTest_TestPacketId : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_UnitTest_TestPacketId() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 64, "TestPacketId" ) {}
+ TestDescription_suite_UnitTest_TestPacketId() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 65, "TestPacketId" ) {}
  void runTest() { suite_UnitTest.TestPacketId(); }
 } testDescription_suite_UnitTest_TestPacketId;
 
@@ -63,6 +63,12 @@ public:
  TestDescription_suite_UnitTest_TestRegisterMessage() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 98, "TestRegisterMessage" ) {}
  void runTest() { suite_UnitTest.TestRegisterMessage(); }
 } testDescription_suite_UnitTest_TestRegisterMessage;
+
+static class TestDescription_suite_UnitTest_TestNodesMap : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_UnitTest_TestNodesMap() : CxxTest::RealTestDescription( Tests_UnitTest, suiteDescription_UnitTest, 112, "TestNodesMap" ) {}
+ void runTest() { suite_UnitTest.TestNodesMap(); }
+} testDescription_suite_UnitTest_TestNodesMap;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

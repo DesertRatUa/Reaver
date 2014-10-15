@@ -5,7 +5,7 @@
  *      Author: maximm
  */
 
-#include <Messages/RegisterMessage.h>
+#include "Messages/RegisterMessage.h"
 //#include "tinyxml2.h"
 #include "XMLUtils.h"
 
