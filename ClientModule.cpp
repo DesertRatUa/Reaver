@@ -10,7 +10,11 @@
 #include "stdexcept"
 #include "Tasks/Task.h"
 
-ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) : Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this), m_run(false), m_signal( m_run ), m_respondTime(0), m_mut(0), m_state( INIT ), m_count(0), m_respond(false)
+ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) :
+	Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this),
+	m_run(false), m_signal( m_run ), m_respondTime(0), m_mut(0), m_state( INIT ), m_count(0),
+	m_respond(false), m_sequence(0)
+
 {
 }
 
@@ -47,6 +51,7 @@ void ClientModule::Run()
 		Log::Add( "Client module exception:" + std::string( exc.what() )  );
 	}
 
+	Stop();
 	m_connection.Close();
 	Log::Add( "Stop client module" );
 }
@@ -133,7 +138,7 @@ void ClientModule::TaskRequest( TaskPtr &task )
 
 void ClientModule::Stop()
 {
-	//m_run = false;
+	m_run = false;
 }
 
 void ClientModule::RegisterClient()

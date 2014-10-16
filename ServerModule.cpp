@@ -13,7 +13,7 @@
 
 ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) :
 	Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this),
-	m_run(false), m_signal( m_run ), m_mut(0), m_nodes( m_processor ), m_taskPlanner(0)
+	m_run(false), m_signal( m_run ), m_mut(0), m_nodes( m_processor )
 {
 }
 
@@ -43,14 +43,12 @@ void ServerModule::Run()
 	unsigned port = 2222;
 	std::string ip = "*";
 
-	std::thread thr ( testThread );
-
 	ParseIp( m_arguments("address").m_value, ip, port );
 
 	try
 	{
 		m_connection.Listen( ip, port );
-		pthread_create( &m_taskPlanner, NULL, ServerModule::TaskPlannerThread, this );
+		m_taskPlanner.reset( new std::thread( ServerModule::TaskPlannerThread, this ) );
 		m_signal.Wait();
 	}
 	catch ( std::exception &exc )
@@ -58,8 +56,15 @@ void ServerModule::Run()
 		Log::Add( "ServerModule exception: " + std::string( exc.what() ) );
 	}
 
+	Stop();
+	m_taskPlanner->join();
 	m_connection.Close();
 	Log::Add( "Stop server module" );
+}
+
+void ServerModule::Stop()
+{
+	m_run = false;
 }
 
 void* ServerModule::TaskPlannerThread ( void *arg )

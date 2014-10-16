@@ -13,8 +13,14 @@
 #include "Module.h"
 #include "ServerMessageProcessor.h"
 #include "NodesMap.h"
+#include <auto_ptr.h>
 
 class Task;
+
+namespace std
+{
+	class thread;
+}
 
 class ServerModule : public Module
 {
@@ -33,6 +39,8 @@ public:
 	void TaskRespond( const std::string& addr, Task &task );
 
 protected:
+	void Stop();
+
 	friend class ServerMessageProcessor;
 	bool m_run;
 	ServerCommunicationManager m_connection;
@@ -40,7 +48,8 @@ protected:
 	ServerMessageProcessor m_processor;
 	NodesMap m_nodes;
 	pthread_mutex_t m_mut;
-	pthread_t m_taskPlanner;
+
+	std::auto_ptr<std::thread> m_taskPlanner;
 };
 
 #endif /* SERVERMODULE_H_ */

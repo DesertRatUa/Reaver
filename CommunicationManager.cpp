@@ -49,7 +49,6 @@ void CommunicationManager::Close()
 {
 	Log::Add( "Close all connections" );
 
-	m_run = false;
 	pthread_join( m_mainThread, NULL );
 
 	closesocket( m_socket );
