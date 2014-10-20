@@ -8,7 +8,7 @@
 #ifndef COMMUNICATIONMANAGER_H_
 #define COMMUNICATIONMANAGER_H_
 
-#include <string>
+#include "include.h"
 #include <vector>
 //#ifdef WIN32
    #include <winsock2.h>
@@ -16,7 +16,7 @@
    //#include <sys/socket.h>
    //#include <sys/un.h>
 //#endif
-#include <pthread.h>
+#include <memory>
 
 class MessageProcessor;
 
@@ -30,7 +30,7 @@ public:
 	void Close();
 
 protected:
-	static void ReadSocket( SOCKET &socket, CommunicationManager *manager, const std::string &addr );
+	static void ReadSocket( SOCKET &socket, CommunicationManager &manager, const std::string &addr );
 	virtual void CloseAdditionalThreads();
 
 	MessageProcessor &m_processor;
@@ -38,7 +38,7 @@ protected:
 	bool &m_run;
 	WSADATA m_wsaData;
 	SOCKET m_socket;
-	pthread_t m_mainThread;
+	std::unique_ptr<std::thread> m_mainThread;
 	timeval m_timeout;
 	sockaddr_in m_address;
 };

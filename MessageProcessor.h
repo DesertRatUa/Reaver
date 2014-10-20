@@ -8,8 +8,8 @@
 #ifndef MESSAGEPROCESSOR_H_
 #define MESSAGEPROCESSOR_H_
 
-#include <map>
 #include <include.h>
+#include <map>
 
 class MessageProcessor
 {

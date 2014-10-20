@@ -9,8 +9,6 @@
 #define MESSAGE_H_
 #include <include.h>
 
-class ClientModule;
-
 class Message
 {
 public:

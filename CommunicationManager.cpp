@@ -12,11 +12,11 @@
 #include <algorithm>
 #include <stdexcept>
 #include "MessageProcessor.h"
+#include <thread>
 
-CommunicationManager::CommunicationManager( MessageProcessor &processor, bool &isRun ) : m_socket(0), m_processor( processor ), m_run( isRun ), m_mainThread(0)
+CommunicationManager::CommunicationManager( MessageProcessor &processor, bool &isRun ) :
+	m_socket(0), m_processor( processor ), m_run( isRun )
 {
-	//m_mainThread.p = NULL;
-	//m_mainThread.x = 0;
 }
 
 CommunicationManager::~CommunicationManager()
@@ -49,7 +49,10 @@ void CommunicationManager::Close()
 {
 	Log::Add( "Close all connections" );
 
-	pthread_join( m_mainThread, NULL );
+	if ( m_mainThread.get() )
+	{
+		m_mainThread->join();
+	}
 
 	closesocket( m_socket );
 	CloseAdditionalThreads();
@@ -58,14 +61,14 @@ void CommunicationManager::Close()
 	Log::Add( "All connections closed" );
 }
 
-void CommunicationManager::ReadSocket( SOCKET &socket, CommunicationManager* manager, const std::string &add )
+void CommunicationManager::ReadSocket( SOCKET &socket, CommunicationManager& manager, const std::string &add )
 {
 	char Buffer[256];
 	memset( Buffer, 0, sizeof(Buffer) );
 
 	int status = recv( socket, Buffer, sizeof(Buffer), 0 );
 
-	while ( status != 0 && manager->m_run )
+	while ( status != 0 && manager.m_run )
 	{
 		if( status == SOCKET_ERROR )
 		{
@@ -81,7 +84,7 @@ void CommunicationManager::ReadSocket( SOCKET &socket, CommunicationManager* man
 		}
 		else
 		{
-			manager->m_processor.ProcessMessage( Buffer, add );
+			manager.m_processor.ProcessMessage( Buffer, add );
 			memset( Buffer, 0, sizeof(Buffer) );
 		}
 		status = recv( socket, Buffer, sizeof(Buffer), 0 );

@@ -10,8 +10,8 @@
 
 #include <exception>
 #include <string>
-#include <pthread.h>
 #include <fstream>
+#include <mutex>
 
 struct sockaddr_in;
 
@@ -35,8 +35,8 @@ protected:
 	static std::string PrintTime();
 
 	static std::string m_logFile;
-	static pthread_mutex_t m_messageMut;
-	static pthread_mutex_t m_logMut;
+	static std::mutex m_messageMut;
+	static std::mutex m_logMut;
 
 	static std::ofstream m_log;
 	static std::string m_name;

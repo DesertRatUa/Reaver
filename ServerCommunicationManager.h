@@ -8,11 +8,11 @@
 #ifndef COMMUNICATIONSERVER_H_
 #define COMMUNICATIONSERVER_H_
 
+#include "include.h"
 #include "CommunicationManager.h"
 #include "Client.h"
 #include <stdexcept>
-
-class ServerModule;
+#include <mutex>
 
 class ServerCommunicationManager: public CommunicationManager
 {
@@ -28,11 +28,11 @@ public:
 protected:
 	friend class Client;
 
-	static void *ListenSocketThr( void *arg );
+	static void ListenSocketThr( ServerCommunicationManager &parent );
 	ClientPtr CreateInputConn();
 
 	void CreateHandlerThread( ClientPtr &client );
-	static void *DataHandlerThr( void *arg );
+	static void DataHandlerThr( ClientPtr client );
 
 	ClientPtr* StoreClient( ClientPtr& client );
 	void RemoveClient( const ClientPtr& data );
@@ -40,7 +40,7 @@ protected:
 
 	typedef std::vector<ClientPtr> Clients;
 	Clients m_clients;
-	pthread_mutex_t m_clientsM;
+	std::mutex m_clientsM;
 	ServerModule& m_server;
 };
 

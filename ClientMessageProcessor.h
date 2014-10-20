@@ -8,11 +8,9 @@
 #ifndef CLIENTMESSAGEPROCESSOR_H_
 #define CLIENTMESSAGEPROCESSOR_H_
 
+#include "include.h"
 #include "MessageProcessor.h"
 #include "Tasks/Task.h"
-
-class ClientModule;
-class Task;
 
 class ClientMessageProcessor: public MessageProcessor
 {

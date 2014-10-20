@@ -7,11 +7,9 @@
 
 #ifndef NODE_H_
 #define NODE_H_
-#include <string>
-#include <Tasks/Task.h>
 
-class Task;
-class ServerMessageProcessor;
+#include "include.h"
+#include <Tasks/Task.h>
 
 class Node
 {

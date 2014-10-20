@@ -7,12 +7,11 @@
 
 #ifndef NODESMAP_H_
 #define NODESMAP_H_
-#include <string>
-#include <pthread.h>
+
+#include "include.h"
 #include <vector>
 #include "Node.h"
-
-class ServerMessageProcessor;
+#include <mutex>
 
 class NodesMap
 {
@@ -32,7 +31,7 @@ protected:
 
 	typedef std::vector<Node> Nodes;
 	Nodes m_nodes;
-	pthread_mutex_t m_mut;
+	std::mutex m_mut;
 	ServerMessageProcessor &m_processor;
 };
 

@@ -8,9 +8,20 @@
 #define INCLUDE_H_
 #include <string>
 
+class Task;
+class ServerModule;
+class ServerMessageProcessor;
+class Message;
+class ClientModule;
+
 namespace tinyxml2
 {
 	class XMLDocument;
+}
+
+namespace std
+{
+	class thread;
 }
 
 #endif /* INCLUDE_H_ */

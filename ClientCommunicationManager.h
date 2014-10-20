@@ -8,9 +8,9 @@
 #ifndef COMUNNICATIONCLIENT_H_
 #define COMUNNICATIONCLIENT_H_
 
+#include "include.h"
 #include "CommunicationManager.h"
 #include <stdexcept>
-class Message;
 
 class ClientCommunicationManager: public CommunicationManager
 {
@@ -24,7 +24,7 @@ public:
 	void SendRespond( const Message &message );
 
 private:
-	static void *DataHandlerThr( void *arg );
+	static void DataHandlerThr( ClientCommunicationManager &parent );
 };
 
 #endif /* COMUNNICATIONCLIENT_H_ */

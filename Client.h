@@ -8,18 +8,22 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
+#include "include.h"
 #include <winsock2.h>
-#include <pthread.h>
-#include <string>
 #include <boost/shared_ptr.hpp>
+#include <thread>
 
 class ServerCommunicationManager;
-class Message;
+
+namespace std
+{
+	class thread;
+}
 
 class Client
 {
 public:
-	Client( ServerCommunicationManager *Manager );
+	Client( ServerCommunicationManager&Manager );
 	virtual ~Client();
 
 	void Send( const std::string& message );
@@ -34,10 +38,9 @@ public:
 protected:
 
 	friend class ServerCommunicationManager;
-	ServerCommunicationManager *manager;
+	ServerCommunicationManager &manager;
 	SOCKET socket;
-	pthread_t thread;
-
+	std::unique_ptr<std::thread> thread;
 };
 
 typedef boost::shared_ptr<Client> ClientPtr;

@@ -8,12 +8,12 @@
 #ifndef CLIENTMODULE_H_
 #define CLIENTMODULE_H_
 
+#include "include.h"
 #include "Module.h"
 #include "ClientCommunicationManager.h"
 #include "SignalHandler.h"
 #include "ClientMessageProcessor.h"
-
-class Task;
+#include <mutex>
 
 class ClientModule : public Module
 {
@@ -46,8 +46,8 @@ protected:
 	SignalHandler m_signal;
 	ClientMessageProcessor m_processor;
 	unsigned long m_respondTime;
-	pthread_mutex_t m_mut;
-	pthread_t m_sequence;
+	std::mutex m_mut;
+	std::auto_ptr<std::thread> m_sequence;
 	unsigned m_count;
 
 	void Respond();
@@ -56,8 +56,7 @@ protected:
 	void RegisterClient();
 	void TestConnection();
 
-	void RunSequence();
-	static void* SequenceThread( void *arg );
+	static void SequenceThread( ClientModule &parent );
 };
 
 #endif /* CLIENTMODULE_H_ */

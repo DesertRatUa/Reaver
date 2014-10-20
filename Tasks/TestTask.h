@@ -8,8 +8,8 @@
 #ifndef TESTTASK_H_
 #define TESTTASK_H_
 
-#include "Tasks/Task.h"
 #include "include.h"
+#include "Tasks/Task.h"
 
 class TestTask: public Task
 {

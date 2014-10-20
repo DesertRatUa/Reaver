@@ -13,7 +13,7 @@
 
 ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) :
 	Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this),
-	m_run(false), m_signal( m_run ), m_mut(0), m_nodes( m_processor )
+	m_run(false), m_signal( m_run ), m_nodes( m_processor )
 {
 }
 
@@ -29,12 +29,6 @@ void ServerModule::Init()
 	m_connection.Init();
 	m_processor.Init();
 	m_nodes.Init();
-	pthread_mutex_init( &m_mut, NULL );
-}
-
-void testThread()
-{
-	Log::Add( "Test thread" );
 }
 
 void ServerModule::Run()
@@ -48,7 +42,7 @@ void ServerModule::Run()
 	try
 	{
 		m_connection.Listen( ip, port );
-		m_taskPlanner.reset( new std::thread( ServerModule::TaskPlannerThread, this ) );
+		m_taskPlanner.reset( new std::thread( ServerModule::TaskPlannerThread, std::ref( *this ) ) );
 		m_signal.Wait();
 	}
 	catch ( std::exception &exc )
@@ -67,14 +61,11 @@ void ServerModule::Stop()
 	m_run = false;
 }
 
-void* ServerModule::TaskPlannerThread ( void *arg )
+void ServerModule::TaskPlannerThread ( ServerModule &parent )
 {
-	assert( arg );
 	Log::Add( "Start task planner thread" );
-	ServerModule *module = (ServerModule*)arg;
-	module->TaskPlanner();
+	parent.TaskPlanner();
 	Log::Add( "Stop task planner thread" );
-	return NULL;
 }
 
 void ServerModule::TaskPlanner()

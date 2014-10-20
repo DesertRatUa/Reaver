@@ -8,8 +8,6 @@
 #ifndef SIGNALHANDLER_H_
 #define SIGNALHANDLER_H_
 
-#include <pthread.h>
-
 class SignalHandler
 {
 public:

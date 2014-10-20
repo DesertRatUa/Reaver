@@ -7,11 +7,10 @@
 
 #ifndef SERVERMESSAGEPROCESSOR_H_
 #define SERVERMESSAGEPROCESSOR_H_
+
+#include "include.h"
 #include "MessageProcessor.h"
 #include "Tasks/Task.h"
-
-class ServerModule;
-class Task;
 
 class ServerMessageProcessor : public MessageProcessor
 {

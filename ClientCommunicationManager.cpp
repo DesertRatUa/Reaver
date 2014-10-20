@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Messages/Message.h"
 #include <assert.h>
+#include <thread>
 
 ClientCommunicationManager::ClientCommunicationManager( MessageProcessor &processor, bool &isRun ) : CommunicationManager( processor, isRun )
 {
@@ -47,21 +48,16 @@ void ClientCommunicationManager::Connect( const std::string &addr, const unsigne
 
 	Log::Add( "Connected to " + addr + ":" + Log::IntToStr( port ) );
 
-	pthread_create( &m_mainThread, NULL, &DataHandlerThr, (void*)this );
+	m_mainThread.reset( new std::thread( DataHandlerThr, std::ref( *this ) ) );
 }
 
-void *ClientCommunicationManager::DataHandlerThr( void *arg )
+void ClientCommunicationManager::DataHandlerThr( ClientCommunicationManager &parent )
 {
-	assert( arg );
 	Log::Add( "Start handler thread" );
-	ClientCommunicationManager *manager = (ClientCommunicationManager*) arg;
-
-	ReadSocket( manager->m_socket, manager, Log::AddrToStr( manager->m_address ) );
+	ReadSocket( parent.m_socket, parent, Log::AddrToStr( parent.m_address ) );
 
 	Log::Add( "End handler thread" );
-	manager->m_run = false;
-	pthread_exit(NULL);
-	return NULL;
+	parent.m_run = false;
 }
 
 void ClientCommunicationManager::Send( const std::string &message )
