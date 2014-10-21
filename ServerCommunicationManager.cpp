@@ -52,7 +52,7 @@ void ServerCommunicationManager::Listen( const std::string &addr, const unsigned
 
 	Log::Add( "Listen on " + addr + ":" + Log::IntToStr( port ) );
 
-	m_mainThread.reset( new std::thread( ServerCommunicationManager::ListenSocketThr, std::ref ( *this ) ) );
+	m_mainThread.reset( new std::thread( ServerCommunicationManager::ListenSocketThread, std::ref ( *this ) ) );
 }
 
 ClientPtr ServerCommunicationManager::CreateInputConn()
@@ -76,13 +76,16 @@ ClientPtr ServerCommunicationManager::CreateInputConn()
 	return client;
 }
 
-ClientPtr* ServerCommunicationManager::StoreClient( ClientPtr& client  )
+void ServerCommunicationManager::StoreClient( ClientPtr& client  )
 {
 	std::lock_guard<std::mutex> lock( m_clientsM );
+	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), client );
+	if( it !=  m_clients.end() )
+	{
+		throw std::runtime_error( "Client " + Log::AddrToStr( client->addr ) + " already stored " );
+	}
 	Log::Add( "Store client: " + Log::AddrToStr( client->addr ) );
 	m_clients.push_back( client );
-	ClientPtr *cl = &m_clients.back();
-	return cl;
 }
 
 void ServerCommunicationManager::RemoveClient( const ClientPtr& client)
@@ -105,50 +108,63 @@ void ServerCommunicationManager::RemoveClient( const ClientPtr& client)
 Client& ServerCommunicationManager::GetClient( const std::string &addr )
 {
 	std::lock_guard<std::mutex> lock( m_clientsM );
-	Client* client = NULL;
-	for( Clients::iterator it = m_clients.begin(); it != m_clients.end(); ++it )
+	Clients::iterator it;
+	for( it = m_clients.begin(); it != m_clients.end(); ++it )
 	{
 		if ( Log::AddrToStr( (*it)->addr ) == addr )
 		{
-			client = it->get();
 			break;
 		}
 	}
-	if ( !client )
+	if ( it == m_clients.end() )
 	{
 		throw( std::runtime_error( "Client: " + addr + "  not found!" ) );
 	}
-	return *client;
+	return *it->get();
 }
 
-void ServerCommunicationManager::ListenSocketThr( ServerCommunicationManager &parent )
+void ServerCommunicationManager::ListenSocketThread( ServerCommunicationManager &parent )
 {
 	Log::Add( "Start listen thread" );
-	while ( parent.m_run )
+	try
 	{
-		ClientPtr client = parent.CreateInputConn();
-		if ( client.get() )
-		{
-			parent.CreateHandlerThread( client );
-		}
+		parent.ListenSocket();
+	}
+	catch( std::exception &exc )
+	{
+		Log::AddException( "Listen thread", exc );
 	}
 	Log::Add( "End listen thread" );
 }
 
-void ServerCommunicationManager::CreateHandlerThread( ClientPtr &client )
+void ServerCommunicationManager::ListenSocket()
 {
-	Log::Add( "Start handler thread" );
-	client->thread.reset( new std::thread( ServerCommunicationManager::DataHandlerThr, StoreClient( client ) ) );
+	while ( m_run )
+	{
+		ClientPtr client = CreateInputConn();
+		if ( client.get() )
+		{
+			StoreClient( client );
+			//Log::Add( "Start handler thread for client: " + Log::AddrToStr(client->addr) );
+			client->thread.reset( new std::thread( ServerCommunicationManager::DataHandlerThread, client ) );
+		}
+	}
 }
 
-void ServerCommunicationManager::DataHandlerThr( ClientPtr client )
+void ServerCommunicationManager::DataHandlerThread( ClientPtr client )
 {
 	std::string addr = Log::AddrToStr( client->addr );
 	Log::Add( "Connected from " + addr );
-	ReadSocket( client->socket, client->manager, addr );
+	try
+	{
+		ReadSocket( client->socket, client->manager, addr );
+	}
+	catch( std::exception &exc )
+	{
+		Log::AddException( "Client " + addr, exc );
+	}
 	Log::Add( "Disconnected from " + addr );
 	client->manager.RemoveClient( client );
-	Log::Add( "End handler thread" );
 }
 
 void ServerCommunicationManager::CloseAdditionalThreads()

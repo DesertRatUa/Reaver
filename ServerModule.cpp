@@ -47,7 +47,7 @@ void ServerModule::Run()
 	}
 	catch ( std::exception &exc )
 	{
-		Log::Add( "ServerModule exception: " + std::string( exc.what() ) );
+		Log::AddException( "ServerModule", exc );
 	}
 
 	Stop();
@@ -64,7 +64,14 @@ void ServerModule::Stop()
 void ServerModule::TaskPlannerThread ( ServerModule &parent )
 {
 	Log::Add( "Start task planner thread" );
-	parent.TaskPlanner();
+	try
+	{
+		parent.TaskPlanner();
+	}
+	catch( std::exception &exc )
+	{
+		Log::AddException( "Task planner thread", exc );
+	}
 	Log::Add( "Stop task planner thread" );
 }
 

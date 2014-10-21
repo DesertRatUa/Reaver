@@ -23,8 +23,8 @@ public:
 	void SendRequest( const Message &message );
 	void SendRespond( const Message &message );
 
-private:
-	static void DataHandlerThr( ClientCommunicationManager &parent );
+protected:
+	static void DataHandlerThread( ClientCommunicationManager &parent );
 };
 
 #endif /* COMUNNICATIONCLIENT_H_ */

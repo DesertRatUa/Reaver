@@ -47,7 +47,7 @@ int main( int argc, char *argv[] )
 	}
 	catch ( std::exception &exc )
 	{
-		Log::Add( "Module exeption: " + std::string( exc.what() ) );
+		Log::AddException( "Module", exc );
 	}
 
 	Log::Add( "Stopping Server" );

@@ -67,6 +67,13 @@ void Log::Add( std::string log )
 	AddLog( log );
 }
 
+void Log::AddException( std::string name, const std::exception &exc )
+{
+	name += " exception: ";
+	name += exc.what();
+	Add( name );
+}
+
 std::string Log::PrintTime()
 {
 	time_t now = time(NULL);

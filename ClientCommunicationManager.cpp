@@ -48,14 +48,20 @@ void ClientCommunicationManager::Connect( const std::string &addr, const unsigne
 
 	Log::Add( "Connected to " + addr + ":" + Log::IntToStr( port ) );
 
-	m_mainThread.reset( new std::thread( DataHandlerThr, std::ref( *this ) ) );
+	m_mainThread.reset( new std::thread( ClientCommunicationManager::DataHandlerThread, std::ref( *this ) ) );
 }
 
-void ClientCommunicationManager::DataHandlerThr( ClientCommunicationManager &parent )
+void ClientCommunicationManager::DataHandlerThread( ClientCommunicationManager &parent )
 {
 	Log::Add( "Start handler thread" );
+	try
+	{
 	ReadSocket( parent.m_socket, parent, Log::AddrToStr( parent.m_address ) );
-
+	}
+	catch( std::exception &exc )
+	{
+		Log::AddException( "Handler thread", exc );
+	}
 	Log::Add( "End handler thread" );
 	parent.m_run = false;
 }

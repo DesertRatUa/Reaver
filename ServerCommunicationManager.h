@@ -28,13 +28,13 @@ public:
 protected:
 	friend class Client;
 
-	static void ListenSocketThr( ServerCommunicationManager &parent );
+	static void ListenSocketThread( ServerCommunicationManager &parent );
+	void ListenSocket();
 	ClientPtr CreateInputConn();
 
-	void CreateHandlerThread( ClientPtr &client );
-	static void DataHandlerThr( ClientPtr client );
+	static void DataHandlerThread( ClientPtr client );
 
-	ClientPtr* StoreClient( ClientPtr& client );
+	void StoreClient( ClientPtr& client );
 	void RemoveClient( const ClientPtr& data );
 	virtual void CloseAdditionalThreads();
 

@@ -48,7 +48,7 @@ void ClientModule::Run()
 	}
 	catch ( std::exception &exc )
 	{
-		Log::Add( "Client module exception:" + std::string( exc.what() )  );
+		Log::AddException( "Client module", exc );
 	}
 
 	Stop();
@@ -58,27 +58,37 @@ void ClientModule::Run()
 
 void ClientModule::SequenceThread( ClientModule &parent )
 {
-
 	assert( parent.m_state == INIT );
-
 	Log::Add( "Start SequenceThread" );
-
-	while ( parent.m_state < WAIT_FOR_TASK )
+	try
 	{
-		std::lock_guard<std::mutex> lock( parent.m_mut );
-		switch ( parent.m_state )
+		parent.Sequence();
+	}
+	catch ( std::exception &exc )
+	{
+		Log::AddException( "Sequence thread", exc );
+	}
+
+	Log::Add( "End SequenceThread" );
+}
+
+void ClientModule::Sequence()
+{
+	while ( m_state < WAIT_FOR_TASK )
+	{
+		std::lock_guard<std::mutex> lock( m_mut );
+		switch ( m_state )
 		{
-			case INIT : parent.m_state = TEST_CONNECTION;
+			case INIT : m_state = TEST_CONNECTION;
 				break;
 
-			case TEST_CONNECTION : parent.TestConnection();
+			case TEST_CONNECTION : TestConnection();
 				break;
 
-			case REGISTER_CLIENT : parent.RegisterClient();
+			case REGISTER_CLIENT : RegisterClient();
 				break;
 		}
 	}
-	Log::Add( "End SequenceThread" );
 }
 
 void ClientModule::TestConnection()

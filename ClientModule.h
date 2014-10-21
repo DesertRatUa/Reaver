@@ -47,7 +47,7 @@ protected:
 	ClientMessageProcessor m_processor;
 	unsigned long m_respondTime;
 	std::mutex m_mut;
-	std::auto_ptr<std::thread> m_sequence;
+	std::unique_ptr<std::thread> m_sequence;
 	unsigned m_count;
 
 	void Respond();
@@ -55,6 +55,7 @@ protected:
 	void Stop();
 	void RegisterClient();
 	void TestConnection();
+	void Sequence();
 
 	static void SequenceThread( ClientModule &parent );
 };
