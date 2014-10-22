@@ -52,6 +52,10 @@ void ClientModule::Run()
 	}
 
 	Stop();
+	if ( m_sequence.get() )
+	{
+		m_sequence->join();
+	}
 	m_connection.Close();
 	Log::Add( "Stop client module" );
 }
@@ -74,7 +78,7 @@ void ClientModule::SequenceThread( ClientModule &parent )
 
 void ClientModule::Sequence()
 {
-	while ( m_state < WAIT_FOR_TASK )
+	while ( m_state < WAIT_FOR_TASK && m_run )
 	{
 		std::lock_guard<std::mutex> lock( m_mut );
 		switch ( m_state )

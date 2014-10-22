@@ -10,6 +10,7 @@
 #include "Log.h"
 #include <stdexcept>
 #include <thread>
+#include <algorithm>
 
 NodesMap::NodesMap( ServerMessageProcessor &processor ) : m_processor(processor)
 {
@@ -54,6 +55,7 @@ void NodesMap::UnregisterNode( const std::string& addr )
 	else
 	{
 		m_nodes.erase( iter );
+		Log::AddMessage( "Node: " + addr + " unregistered" );
 	}
 }
 

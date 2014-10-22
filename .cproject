@@ -41,6 +41,8 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/cygdrive/d/eclipse/plugins/net.sf.webcat.eclipse.cxxtest.framework_1.7.0/runner-include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/cygdrive/d/eclipse/plugins/net.sf.webcat.eclipse.cxxtest.framework_1.7.0/include&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1550055019" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1330259086" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -77,6 +79,8 @@
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value="ws2_32"/>
 								</option>
+								<option id="gnu.cpp.link.option.debugging.prof.482113170" superClass="gnu.cpp.link.option.debugging.prof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.link.option.debugging.gprof.542985877" superClass="gnu.cpp.link.option.debugging.gprof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.2047376912" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

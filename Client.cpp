@@ -16,6 +16,10 @@ Client::Client( ServerCommunicationManager &Manager ) :
 
 Client::~Client()
 {
+	if ( thread.get() )
+	{
+		thread->detach();
+	}
 	Log::Add( "Destroy client: " + Log::AddrToStr( addr ) );
 }
 

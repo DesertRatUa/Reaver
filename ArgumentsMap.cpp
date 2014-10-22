@@ -45,7 +45,7 @@ void ArgumentsMap::ParseArgument( std::string name )
 		return;
 	}
 
-	Log::AddMessage( "Argument: " + name );
+	//Log::AddMessage( "Argument: " + name );
 	name = name.substr( delimeter + 1, name.length() - delimeter - 1 );
 
 	Argument tmpArg("tmp","t","","");
@@ -65,13 +65,13 @@ void ArgumentsMap::ParseArgument( std::string name )
 
 	if ( delimeter == -1 )
 	{
-		Log::AddMessage( "Short name: " + name );
+		//Log::AddMessage( "Short name: " + name );
 		tmpArg.m_shortName = name;
 	}
 	else
 	{
 		name = name.substr( delimeter + 1, name.length() - delimeter -1 );
-		Log::AddMessage( "Name: " + name );
+		//Log::AddMessage( "Name: " + name );
 		tmpArg.m_name = name;
 	}
 	try

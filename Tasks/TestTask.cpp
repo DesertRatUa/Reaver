@@ -48,6 +48,7 @@ void TestTask::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 
 void TestTask::Process()
 {
+	Sleep(3000);
 	for( unsigned i = start; i < end; ++i )
 	{
 		if ( (i + 5)*35 == hash )

@@ -8,6 +8,7 @@
 #include <Messages/TaskMessage.h>
 #include "XMLUtils.h"
 #include "Tasks/Task.h"
+#include <assert.h>
 
 TaskMessage::TaskMessage() : SpendTime(0)
 {

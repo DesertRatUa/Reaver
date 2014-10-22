@@ -8,7 +8,7 @@
 #ifndef TASK_H_
 #define TASK_H_
 #include "include.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Task
 {
@@ -28,6 +28,6 @@ public:
 	static Task* CreateTask( const unsigned id );
 };
 
-typedef boost::shared_ptr<Task> TaskPtr;
+typedef std::shared_ptr<Task> TaskPtr;
 
 #endif /* TASK_H_ */

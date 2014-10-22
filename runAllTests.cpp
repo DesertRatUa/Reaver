@@ -51,6 +51,20 @@ public:
 	void runTest() { if(suite_ArgumentsMapTest) suite_ArgumentsMapTest->testSet(); }
 } testDescription_ArgumentsMapTest_testSet;
 
+// Test suite: ServerCommunicationManagerTest
+
+#include "ServerCommunicationManagerTest.h"
+static ServerCommunicationManagerTest *suite_ServerCommunicationManagerTest;
+static CxxTest::List Tests_ServerCommunicationManagerTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_ServerCommunicationManagerTest;
+
+
+static class TestDescription_ServerCommunicationManagerTest_testRegisterClient : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ServerCommunicationManagerTest) suite_ServerCommunicationManagerTest->testRegisterClient(); }
+} testDescription_ServerCommunicationManagerTest_testRegisterClient;
+
 
 
 // END: Test world
@@ -75,12 +89,26 @@ namespace CxxTest
 		testDescription_ArgumentsMapTest_testDefaultSet.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 27, "testDefaultSet");
 		testDescription_ArgumentsMapTest_testSet.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 38, "testSet");
 
+		// Initialize test suite: ServerCommunicationManagerTest
+		Tests_ServerCommunicationManagerTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_ServerCommunicationManagerTest = new ServerCommunicationManagerTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("ServerCommunicationManagerTest", "Exception thrown when initializing " "ServerCommunicationManagerTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ServerCommunicationManagerTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_ServerCommunicationManagerTest.initialize(
+			"ServerCommunicationManagerTest.h", 8,
+			"ServerCommunicationManagerTest", *suite_ServerCommunicationManagerTest, Tests_ServerCommunicationManagerTest);
+		testDescription_ServerCommunicationManagerTest_testRegisterClient.initialize(Tests_ServerCommunicationManagerTest, suiteDescription_ServerCommunicationManagerTest, 11, "testRegisterClient");
+
 
 	}
 	
 	void cleanup()
 	{
 		delete suite_ArgumentsMapTest;
+		delete suite_ServerCommunicationManagerTest;
 
 	}
 }

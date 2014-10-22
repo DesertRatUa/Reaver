@@ -10,7 +10,7 @@
 
 #include "Messages/Message.h"
 #include "Tasks/Task.h"
-#include <boost/shared_ptr.hpp>
+#include "memory"
 
 class TaskMessage: public Message
 {
@@ -26,7 +26,7 @@ public:
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 
 	unsigned SpendTime;
-	boost::shared_ptr<Task> task;
+	std::shared_ptr<Task> task;
 };
 
 #endif /* TASKMESSAGE_H_ */

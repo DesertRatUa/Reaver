@@ -98,6 +98,7 @@ void ServerCommunicationManager::RemoveClient( const ClientPtr& client)
 		Log::Add( "Remove client: " + addr );
 		m_server.UnregisterNode( addr );
 		m_clients.erase( it );
+		Log::Add( "Client Removed: " + addr );
 	}
 	else
 	{

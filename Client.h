@@ -10,15 +10,9 @@
 
 #include "include.h"
 #include <winsock2.h>
-#include <boost/shared_ptr.hpp>
 #include <thread>
 
 class ServerCommunicationManager;
-
-namespace std
-{
-	class thread;
-}
 
 class Client
 {
@@ -43,6 +37,6 @@ protected:
 	std::unique_ptr<std::thread> thread;
 };
 
-typedef boost::shared_ptr<Client> ClientPtr;
+typedef std::shared_ptr<Client> ClientPtr;
 
 #endif /* CLIENT_H_ */
