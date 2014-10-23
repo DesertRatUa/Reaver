@@ -23,7 +23,11 @@ public:
 	void Send( const std::string& message );
 	void SendRequest( const Message& message );
 	void SendRespond( const Message& message );
+	void Disconnect();
+	void Join();
+	bool isDisconnected();
 	std::string GetAddr();
+
 
 	sockaddr_in addr;
 
@@ -31,6 +35,7 @@ public:
 
 protected:
 
+	bool m_disconnected;
 	friend class ServerCommunicationManager;
 	ServerCommunicationManager &manager;
 	SOCKET socket;

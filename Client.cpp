@@ -10,16 +10,13 @@
 #include <Messages/Message.h>
 
 Client::Client( ServerCommunicationManager &Manager ) :
-	manager( Manager ), socket( 0 )
+	manager( Manager ), socket( 0 ), m_disconnected( false )
 {
 }
 
 Client::~Client()
 {
-	if ( thread.get() )
-	{
-		thread->detach();
-	}
+	//thread->detach();
 	Log::Add( "Destroy client: " + Log::AddrToStr( addr ) );
 }
 
@@ -46,4 +43,22 @@ void Client::SendRequest( const Message& message )
 std::string Client::GetAddr()
 {
 	return Log::AddrToStr( addr );
+}
+
+void Client::Disconnect()
+{
+	m_disconnected = true;
+}
+
+bool Client::isDisconnected()
+{
+	return m_disconnected;
+}
+
+void Client::Join()
+{
+	if (thread.get())
+	{
+		thread->join();
+	}
 }

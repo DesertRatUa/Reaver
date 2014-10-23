@@ -13,7 +13,7 @@
 #include <thread>
 
 ServerCommunicationManager::ServerCommunicationManager( ServerModule &server, MessageProcessor &processor, bool &isRun  ) :
-	CommunicationManager( processor, isRun ), m_server( server )
+	CommunicationManager( processor, isRun ), m_server( server ), m_haveDisconnected( false )
 {
 }
 
@@ -24,6 +24,7 @@ ServerCommunicationManager::~ServerCommunicationManager()
 void ServerCommunicationManager::Init()
 {
 	CommunicationManager::Init();
+	m_clients.Init();
 }
 
 void ServerCommunicationManager::Listen( const std::string &addr, const unsigned port ) throw( std::runtime_error )
@@ -76,53 +77,11 @@ ClientPtr ServerCommunicationManager::CreateInputConn()
 	return client;
 }
 
-void ServerCommunicationManager::StoreClient( ClientPtr& client  )
-{
-	std::lock_guard<std::mutex> lock( m_clientsM );
-	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), client );
-	if( it !=  m_clients.end() )
-	{
-		throw std::runtime_error( "Client " + Log::AddrToStr( client->addr ) + " already stored " );
-	}
-	Log::Add( "Store client: " + Log::AddrToStr( client->addr ) );
-	m_clients.push_back( client );
-}
-
-void ServerCommunicationManager::RemoveClient( const ClientPtr& client)
-{
-	std::lock_guard<std::mutex> lock( m_clientsM );
-	Clients::iterator it = std::find( m_clients.begin(), m_clients.end(), client );
-	if( it !=  m_clients.end() )
-	{
-		std::string addr =  Log::AddrToStr( (*it)->addr );
-		Log::Add( "Remove client: " + addr );
-		m_server.UnregisterNode( addr );
-		m_clients.erase( it );
-		Log::Add( "Client Removed: " + addr );
-	}
-	else
-	{
-		Log::Add( "Client: " + Log::AddrToStr( client->addr ) +" not found" );
-	}
-}
-
 Client& ServerCommunicationManager::GetClient( const std::string &addr )
 {
-	std::lock_guard<std::mutex> lock( m_clientsM );
-	Clients::iterator it;
-	for( it = m_clients.begin(); it != m_clients.end(); ++it )
-	{
-		if ( Log::AddrToStr( (*it)->addr ) == addr )
-		{
-			break;
-		}
-	}
-	if ( it == m_clients.end() )
-	{
-		throw( std::runtime_error( "Client: " + addr + "  not found!" ) );
-	}
-	return *it->get();
+	return m_clients.Get( addr );
 }
+
 
 void ServerCommunicationManager::ListenSocketThread( ServerCommunicationManager &parent )
 {
@@ -145,9 +104,13 @@ void ServerCommunicationManager::ListenSocket()
 		ClientPtr client = CreateInputConn();
 		if ( client.get() )
 		{
-			StoreClient( client );
+			m_clients.Add( client );
 			//Log::Add( "Start handler thread for client: " + Log::AddrToStr(client->addr) );
 			client->thread.reset( new std::thread( ServerCommunicationManager::DataHandlerThread, client ) );
+		}
+		if ( m_haveDisconnected )
+		{
+			RemoveDisconnected();
 		}
 	}
 }
@@ -165,13 +128,25 @@ void ServerCommunicationManager::DataHandlerThread( ClientPtr client )
 		Log::AddException( "Client " + addr, exc );
 	}
 	Log::Add( "Disconnected from " + addr );
-	client->manager.RemoveClient( client );
+	client->manager.m_server.UnregisterNode( addr );
+	client->Disconnect();
+	client->manager.ClientDisconnect();
 }
 
 void ServerCommunicationManager::CloseAdditionalThreads()
 {
-	for ( Clients::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++ )
-	{
-		 (*iter)->thread->join();
-	}
+	m_clients.Clear();
+}
+
+void ServerCommunicationManager::ClientDisconnect()
+{
+	std::lock_guard<std::mutex> lock( m_discon );
+	m_haveDisconnected = true;
+}
+
+void ServerCommunicationManager::RemoveDisconnected()
+{
+	std::lock_guard<std::mutex> lock( m_discon );
+	m_clients.RemoveDisconnected();
+	m_haveDisconnected = false;
 }

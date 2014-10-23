@@ -13,6 +13,7 @@
 #include "Client.h"
 #include <stdexcept>
 #include <mutex>
+#include "ClientsMap.h"
 
 class ServerCommunicationManager: public CommunicationManager
 {
@@ -26,22 +27,20 @@ public:
 	Client& GetClient( const std::string &addr );
 
 protected:
-	friend class Client;
-
 	static void ListenSocketThread( ServerCommunicationManager &parent );
 	void ListenSocket();
 	ClientPtr CreateInputConn();
 
 	static void DataHandlerThread( ClientPtr client );
-
-	void StoreClient( ClientPtr& client );
-	void RemoveClient( const ClientPtr& data );
 	virtual void CloseAdditionalThreads();
 
-	typedef std::vector<ClientPtr> Clients;
-	Clients m_clients;
-	std::mutex m_clientsM;
 	ServerModule& m_server;
+	ClientsMap m_clients;
+
+	void ClientDisconnect();
+	void RemoveDisconnected();
+	bool m_haveDisconnected;
+	std::mutex m_discon;
 };
 
 #endif /* COMMUNICATIONSERVER_H_ */
