@@ -9,8 +9,7 @@
 #include "Log.h"
 #include <Messages/Message.h>
 
-Client::Client( ServerCommunicationManager &Manager ) :
-	manager( Manager ), socket( 0 ), m_disconnected( false )
+Client::Client() : socket( 0 ), m_disconnected( false )
 {
 }
 

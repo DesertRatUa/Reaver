@@ -51,6 +51,37 @@ public:
 	void runTest() { if(suite_ArgumentsMapTest) suite_ArgumentsMapTest->testSet(); }
 } testDescription_ArgumentsMapTest_testSet;
 
+// Test suite: ClientsMapTest
+
+#include "ClientsMapTest.h"
+static ClientsMapTest *suite_ClientsMapTest;
+static CxxTest::List Tests_ClientsMapTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_ClientsMapTest;
+
+
+static class TestDescription_ClientsMapTest_testRegister : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ClientsMapTest) suite_ClientsMapTest->testRegister(); }
+} testDescription_ClientsMapTest_testRegister;
+static class TestDescription_ClientsMapTest_testUnregister : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ClientsMapTest) suite_ClientsMapTest->testUnregister(); }
+} testDescription_ClientsMapTest_testUnregister;
+static class TestDescription_ClientsMapTest_testRemoveDisconnected : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ClientsMapTest) suite_ClientsMapTest->testRemoveDisconnected(); }
+} testDescription_ClientsMapTest_testRemoveDisconnected;
+
+// Test suite: LogTest
+
+#include "LogTest.h"
+static LogTest *suite_LogTest;
+static CxxTest::List Tests_LogTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_LogTest;
+
+
 
 
 // END: Test world
@@ -75,12 +106,40 @@ namespace CxxTest
 		testDescription_ArgumentsMapTest_testDefaultSet.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 27, "testDefaultSet");
 		testDescription_ArgumentsMapTest_testSet.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 38, "testSet");
 
+		// Initialize test suite: ClientsMapTest
+		Tests_ClientsMapTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_ClientsMapTest = new ClientsMapTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("ClientsMapTest", "Exception thrown when initializing " "ClientsMapTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ClientsMapTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_ClientsMapTest.initialize(
+			"ClientsMapTest.h", 8,
+			"ClientsMapTest", *suite_ClientsMapTest, Tests_ClientsMapTest);
+		testDescription_ClientsMapTest_testRegister.initialize(Tests_ClientsMapTest, suiteDescription_ClientsMapTest, 11, "testRegister");
+		testDescription_ClientsMapTest_testUnregister.initialize(Tests_ClientsMapTest, suiteDescription_ClientsMapTest, 27, "testUnregister");
+		testDescription_ClientsMapTest_testRemoveDisconnected.initialize(Tests_ClientsMapTest, suiteDescription_ClientsMapTest, 41, "testRemoveDisconnected");
+
+		// Initialize test suite: LogTest
+		Tests_LogTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_LogTest = new LogTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("LogTest", "Exception thrown when initializing " "LogTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("LogTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_LogTest.initialize(
+			"LogTest.h", 8,
+			"LogTest", *suite_LogTest, Tests_LogTest);
 
 	}
 	
 	void cleanup()
 	{
 		delete suite_ArgumentsMapTest;
+		delete suite_ClientsMapTest;
+		delete suite_LogTest;
 
 	}
 }

@@ -65,7 +65,7 @@ ClientPtr ServerCommunicationManager::CreateInputConn()
 
 	if( select(m_socket, &readSet, NULL, NULL, &m_timeout) == 1)
 	{
-		client.reset( new Client( *this ) );
+		client.reset( new Client() );
 		int fromLen = sizeof(client->addr);
 		client->socket = accept( m_socket, (sockaddr *)&client->addr, &fromLen );
 		if ( client->socket == INVALID_SOCKET )
@@ -106,7 +106,7 @@ void ServerCommunicationManager::ListenSocket()
 		{
 			m_clients.Add( client );
 			//Log::Add( "Start handler thread for client: " + Log::AddrToStr(client->addr) );
-			client->thread.reset( new std::thread( ServerCommunicationManager::DataHandlerThread, client ) );
+			client->thread.reset( new std::thread( ServerCommunicationManager::DataHandlerThread, client, std::ref( *this ) ) );
 		}
 		if ( m_haveDisconnected )
 		{
@@ -115,22 +115,22 @@ void ServerCommunicationManager::ListenSocket()
 	}
 }
 
-void ServerCommunicationManager::DataHandlerThread( ClientPtr client )
+void ServerCommunicationManager::DataHandlerThread( ClientPtr client, ServerCommunicationManager &parent )
 {
 	std::string addr = Log::AddrToStr( client->addr );
 	Log::Add( "Connected from " + addr );
 	try
 	{
-		ReadSocket( client->socket, client->manager, addr );
+		ReadSocket( client->socket, parent, addr );
 	}
 	catch( std::exception &exc )
 	{
 		Log::AddException( "Client " + addr, exc );
 	}
 	Log::Add( "Disconnected from " + addr );
-	client->manager.m_server.UnregisterNode( addr );
+	parent.m_server.UnregisterNode( addr );
 	client->Disconnect();
-	client->manager.ClientDisconnect();
+	parent.ClientDisconnect();
 }
 
 void ServerCommunicationManager::CloseAdditionalThreads()

@@ -12,12 +12,10 @@
 #include <winsock2.h>
 #include <thread>
 
-class ServerCommunicationManager;
-
 class Client
 {
 public:
-	Client( ServerCommunicationManager&Manager );
+	Client();
 	virtual ~Client();
 
 	void Send( const std::string& message );
@@ -37,7 +35,6 @@ protected:
 
 	bool m_disconnected;
 	friend class ServerCommunicationManager;
-	ServerCommunicationManager &manager;
 	SOCKET socket;
 	std::unique_ptr<std::thread> thread;
 };

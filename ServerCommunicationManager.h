@@ -28,10 +28,10 @@ public:
 
 protected:
 	static void ListenSocketThread( ServerCommunicationManager &parent );
+	static void DataHandlerThread( ClientPtr client, ServerCommunicationManager &parent );
+
 	void ListenSocket();
 	ClientPtr CreateInputConn();
-
-	static void DataHandlerThread( ClientPtr client );
 	virtual void CloseAdditionalThreads();
 
 	ServerModule& m_server;
