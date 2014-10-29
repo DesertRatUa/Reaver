@@ -688,8 +688,11 @@ public:
     */
     const XMLElement* FirstChildElement( const char* value=0 ) const;
 
-    XMLElement* FirstChildElement( const char* value=0 )	{
-        return const_cast<XMLElement*>(const_cast<const XMLNode*>(this)->FirstChildElement( value ));
+
+    XMLElement* FirstChildElement( const char* value=0 )
+    {
+    	const tinyxml2::XMLNode* node = const_cast<const tinyxml2::XMLNode*>(this);
+        return const_cast<tinyxml2::XMLElement*>(node->FirstChildElement( value ));
     }
 
     /// Get the last child node, or null if none exists.
@@ -697,8 +700,10 @@ public:
         return _lastChild;
     }
 
-    XMLNode*		LastChild()								{
-        return const_cast<XMLNode*>(const_cast<const XMLNode*>(this)->LastChild() );
+    XMLNode*		LastChild()
+    {
+    	const tinyxml2::XMLNode* node = const_cast<const tinyxml2::XMLNode*>(this);
+        return const_cast<XMLNode*>(node->LastChild() );
     }
 
     /** Get the last child element or optionally the last child
@@ -706,8 +711,10 @@ public:
     */
     const XMLElement* LastChildElement( const char* value=0 ) const;
 
-    XMLElement* LastChildElement( const char* value=0 )	{
-        return const_cast<XMLElement*>(const_cast<const XMLNode*>(this)->LastChildElement(value) );
+    XMLElement* LastChildElement( const char* value=0 )
+    {
+    	const tinyxml2::XMLNode* node = const_cast<const tinyxml2::XMLNode*>(this);
+        return const_cast<XMLElement*>(node->LastChildElement(value) );
     }
 
     /// Get the previous (left) sibling node of this node.
@@ -722,8 +729,10 @@ public:
     /// Get the previous (left) sibling element of this node, with an optionally supplied name.
     const XMLElement*	PreviousSiblingElement( const char* value=0 ) const ;
 
-    XMLElement*	PreviousSiblingElement( const char* value=0 ) {
-        return const_cast<XMLElement*>(const_cast<const XMLNode*>(this)->PreviousSiblingElement( value ) );
+    XMLElement*	PreviousSiblingElement( const char* value=0 )
+    {
+    	const tinyxml2::XMLNode* node = const_cast<const tinyxml2::XMLNode*>(this);
+        return const_cast<XMLElement*>(node->PreviousSiblingElement( value ) );
     }
 
     /// Get the next (right) sibling node of this node.
@@ -738,8 +747,10 @@ public:
     /// Get the next (right) sibling element of this node, with an optionally supplied name.
     const XMLElement*	NextSiblingElement( const char* value=0 ) const;
 
-    XMLElement*	NextSiblingElement( const char* value=0 )	{
-        return const_cast<XMLElement*>(const_cast<const XMLNode*>(this)->NextSiblingElement( value ) );
+    XMLElement*	NextSiblingElement( const char* value=0 )
+    {
+    	const tinyxml2::XMLNode* node = const_cast<const tinyxml2::XMLNode*>(this);
+        return const_cast<XMLElement*>(node->NextSiblingElement( value ) );
     }
 
     /**

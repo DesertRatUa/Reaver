@@ -24,7 +24,7 @@ RegisterMessage::~RegisterMessage()
 void RegisterMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddPacketId( doc, 2 );
-	XMLUtils::AddUnsigned( doc, "ThreadNum", ThreadNum );
+	XMLUtils::AddInt( doc, "ThreadNum", ThreadNum );
 }
 
 void RegisterMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
@@ -36,7 +36,7 @@ void RegisterMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 
 void RegisterMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
 {
-	XMLUtils::GetUnsigned( doc, "ThreadNum", ThreadNum );
+	XMLUtils::GetInt( doc, "ThreadNum", ThreadNum );
 }
 
 void RegisterMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )

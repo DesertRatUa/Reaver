@@ -45,7 +45,7 @@ void XMLUtils::GetText( const tinyxml2::XMLDocument &doc, const std::string &nam
 	}
 }
 
-void XMLUtils::GetUnsigned( const tinyxml2::XMLDocument &doc, const std::string &name, unsigned &variable )
+void XMLUtils::GetInt( const tinyxml2::XMLDocument &doc, const std::string &name, unsigned &variable )
 {
 	std::string num;
 	GetText( doc, name, num );
@@ -62,7 +62,12 @@ void XMLUtils::GetUnsigned( const tinyxml2::XMLDocument &doc, const std::string 
 	}
 }
 
-void XMLUtils::AddUnsigned( tinyxml2::XMLDocument &doc, const std::string &name, const unsigned num )
+void XMLUtils::GetPacketId( const tinyxml2::XMLDocument &doc, unsigned &variable )
 {
-	AddText( doc,name, Log::UnsignedToStr(num) );
+	GetInt( doc, "PacketID", variable );
+}
+
+void XMLUtils::AddInt( tinyxml2::XMLDocument &doc, const std::string &name, const unsigned num )
+{
+	AddText( doc,name, Log::IntToStr(num) );
 }

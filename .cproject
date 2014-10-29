@@ -27,6 +27,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.251852542" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -43,14 +44,15 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/cygdrive/d/eclipse/plugins/net.sf.webcat.eclipse.cxxtest.framework_1.7.0/runner-include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/cygdrive/d/eclipse/plugins/net.sf.webcat.eclipse.cxxtest.framework_1.7.0/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1550055019" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1330259086" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.warnings.allwarn.562259190" name="All warnings (-Wall)" superClass="gnu.cpp.compiler.option.warnings.allwarn" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.dialect.std.405347592" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.other.other.301763776" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -std=c++11 -Wno-int-to-pointer-cast -Wno-reorder -Wno-switch" valueType="string"/>
-								<option id="gnu.cpp.compiler.option.debugging.prof.1236079525" superClass="gnu.cpp.compiler.option.debugging.prof" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.debugging.gprof.570481712" superClass="gnu.cpp.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.debugging.prof.1236079525" name="Generate prof information (-p)" superClass="gnu.cpp.compiler.option.debugging.prof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.debugging.gprof.570481712" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1453020859" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1799214667" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
@@ -63,14 +65,15 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.243809370" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.level.1865801838" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.warnings.allwarn.930778981" name="All warnings (-Wall)" superClass="gnu.c.compiler.option.warnings.allwarn" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="gnu.c.compiler.option.misc.other.1050903676" name="Other flags" superClass="gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
-								<option id="gnu.c.compiler.option.dialect.std.1072951772" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.prof.1453856761" superClass="gnu.c.compiler.option.debugging.prof" value="true" valueType="boolean"/>
-								<option id="gnu.c.compiler.option.debugging.gprof.1252279508" superClass="gnu.c.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.misc.other.1050903676" name="Other flags" superClass="gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0" valueType="string"/>
+								<option id="gnu.c.compiler.option.dialect.std.1072951772" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.debugging.prof.1453856761" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.debugging.gprof.1252279508" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.906981319" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.929453120" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base"/>
@@ -78,9 +81,11 @@
 								<option id="gnu.cpp.link.option.libs.1084242272" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value="ws2_32"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="crypto"/>
 								</option>
-								<option id="gnu.cpp.link.option.debugging.prof.482113170" superClass="gnu.cpp.link.option.debugging.prof" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.link.option.debugging.gprof.542985877" superClass="gnu.cpp.link.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.link.option.debugging.prof.482113170" name="Generate prof information (-p)" superClass="gnu.cpp.link.option.debugging.prof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.link.option.debugging.gprof.542985877" name="Generate gprof information (-pg)" superClass="gnu.cpp.link.option.debugging.gprof" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.link.option.paths.693628723" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.2047376912" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -130,6 +135,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.761951535" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -150,6 +156,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.247962305" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.3740823" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -181,6 +188,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.327831915" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -227,6 +235,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1469790776" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -248,6 +257,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.96416574" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1418533823" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -276,6 +286,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\boost&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\x86_64-w64-mingw32\include\c++\x86_64-w64-mingw32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\x86_64-w64-mingw32\4.9.1\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\msys\1.0\include&quot;"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.1104268962" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.level.888697707" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>

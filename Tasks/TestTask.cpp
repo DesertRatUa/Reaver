@@ -24,26 +24,26 @@ TestTask::~TestTask()
 
 void TestTask::SerializeRequest( tinyxml2::XMLDocument &doc ) const
 {
-	XMLUtils::AddUnsigned( doc, "Start", start );
-	XMLUtils::AddUnsigned( doc, "End", end );
-	XMLUtils::AddUnsigned( doc, "Hash", hash );
+	XMLUtils::AddInt( doc, "Start", start );
+	XMLUtils::AddInt( doc, "End", end );
+	XMLUtils::AddInt( doc, "Hash", hash );
 }
 
 void TestTask::DeserializeRequest( const tinyxml2::XMLDocument &doc )
 {
-	XMLUtils::GetUnsigned( doc, "Start", start );
-	XMLUtils::GetUnsigned( doc, "End", end );
-	XMLUtils::GetUnsigned( doc, "Hash", hash );
+	XMLUtils::GetInt( doc, "Start", start );
+	XMLUtils::GetInt( doc, "End", end );
+	XMLUtils::GetInt( doc, "Hash", hash );
 }
 
 void TestTask::SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
-	XMLUtils::AddUnsigned( doc, "Result", result );
+	XMLUtils::AddInt( doc, "Result", result );
 }
 
 void TestTask::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
-	XMLUtils::GetUnsigned( doc, "Result", result );
+	XMLUtils::GetInt( doc, "Result", result );
 }
 
 void TestTask::Process()

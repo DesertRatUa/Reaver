@@ -111,7 +111,7 @@ void ClientModule::ConnectionRespond()
 		Log::Add( "Wrong echo message" );
 		return;
 	}
-	Log::Add( "Query delay: " + Log::IntToStr( GetTickCount() - m_respondTime ) + " ms" );
+	Log::Add( "Query delay: " + Log::IntToStr( int( GetTickCount() - m_respondTime ) ) + " ms" );
 	Respond();
 }
 

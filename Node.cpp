@@ -55,7 +55,7 @@ void Node::SendTask( TaskPtr& task )
 {
 	m_busy = true;
 	++m_threads;
-	Log::Add( "Task: " + Log::UnsignedToStr( task->GetID() ) + " send to " + m_addr + " Avalible threads: " + Log::UnsignedToStr( m_threadsLimit - m_threads ) );
+	Log::Add( "Task: " + Log::IntToStr( task->GetID() ) + " send to " + m_addr + " Avalible threads: " + Log::IntToStr( m_threadsLimit - m_threads ) );
 	m_proccessor.SendTaskMessage( m_addr, task );
 }
 

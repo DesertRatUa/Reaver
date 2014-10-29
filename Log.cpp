@@ -89,7 +89,7 @@ std::string Log::IntToStr( const int value )
 	return boost::lexical_cast<std::string>(value);
 }
 
-std::string Log::UnsignedToStr( const unsigned value )
+std::string Log::IntToStr( const unsigned value )
 {
 	return boost::lexical_cast<std::string>(value);
 }

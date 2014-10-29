@@ -30,7 +30,7 @@ void TaskMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
 	assert( task.get() );
 	XMLUtils::AddPacketId( doc, 3 );
-	XMLUtils::AddUnsigned( doc, "TaskID", task->GetID() );
+	XMLUtils::AddInt( doc, "TaskID", task->GetID() );
 	task->SerializeRequest( doc );
 }
 
@@ -38,15 +38,15 @@ void TaskMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	assert( task.get() );
 	XMLUtils::AddPacketId( doc, 3 );
-	XMLUtils::AddUnsigned( doc, "SpendTime", SpendTime );
-	XMLUtils::AddUnsigned( doc, "TaskID", task->GetID() );
+	XMLUtils::AddInt( doc, "SpendTime", SpendTime );
+	XMLUtils::AddInt( doc, "TaskID", task->GetID() );
 	task->SerializeRespond( doc );
 }
 
 void TaskMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
 {
 	unsigned taskId = 0;
-	XMLUtils::GetUnsigned( doc, "TaskID", taskId );
+	XMLUtils::GetInt( doc, "TaskID", taskId );
 	if ( taskId != 0 )
 	{
 		task.reset( Task::CreateTask( taskId ) );
@@ -58,8 +58,8 @@ void TaskMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
 void TaskMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
 	unsigned taskId = 0;
-	XMLUtils::GetUnsigned( doc, "SpendTime", SpendTime );
-	XMLUtils::GetUnsigned( doc, "TaskID", taskId );
+	XMLUtils::GetInt( doc, "SpendTime", SpendTime );
+	XMLUtils::GetInt( doc, "TaskID", taskId );
 	if ( taskId != 0 )
 	{
 		task.reset( Task::CreateTask( taskId ) );

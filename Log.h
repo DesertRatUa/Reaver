@@ -28,7 +28,7 @@ public:
 	static void Add( std::string log );
 	static void AddException( std::string name, const std::exception &exc );
 	static std::string IntToStr( const int value );
-	static std::string UnsignedToStr( const unsigned value );
+	static std::string IntToStr( const unsigned value );
 	static std::string AddrToStr( const sockaddr_in& addr );
 	static void SetName( const std::string &name );
 

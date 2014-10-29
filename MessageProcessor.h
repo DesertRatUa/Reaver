@@ -25,8 +25,7 @@ protected:
 	typedef std::map< unsigned, Processor > Processors;
 	Processors m_processors;
 
-	unsigned ParseMessageId( const tinyxml2::XMLDocument& doc );
-	void RegisterProcessor( const unsigned id, Processor processor );
+	void RegisterProcessor( const unsigned id, Processor processor ) throw (std::runtime_error);
 
 };
 

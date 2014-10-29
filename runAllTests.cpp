@@ -82,6 +82,75 @@ static CxxTest::List Tests_LogTest;
 CxxTest::StaticSuiteDescription suiteDescription_LogTest;
 
 
+static class TestDescription_LogTest_testInit : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_LogTest) suite_LogTest->testInit(); }
+} testDescription_LogTest_testInit;
+static class TestDescription_LogTest_testAddrToStr : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_LogTest) suite_LogTest->testAddrToStr(); }
+} testDescription_LogTest_testAddrToStr;
+static class TestDescription_LogTest_testIntToStr : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_LogTest) suite_LogTest->testIntToStr(); }
+} testDescription_LogTest_testIntToStr;
+
+// Test suite: MessageProcessorTest
+
+#include "MessageProcessorTest.h"
+static MessageProcessorTest *suite_MessageProcessorTest;
+static CxxTest::List Tests_MessageProcessorTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_MessageProcessorTest;
+
+
+static class TestDescription_MessageProcessorTest_testRegisterProcessor : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_MessageProcessorTest) suite_MessageProcessorTest->testRegisterProcessor(); }
+} testDescription_MessageProcessorTest_testRegisterProcessor;
+static class TestDescription_MessageProcessorTest_testProcessMessage : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_MessageProcessorTest) suite_MessageProcessorTest->testProcessMessage(); }
+} testDescription_MessageProcessorTest_testProcessMessage;
+
+// Test suite: XMLUtilsTest
+
+#include "XMLUtilsTest.h"
+static XMLUtilsTest *suite_XMLUtilsTest;
+static CxxTest::List Tests_XMLUtilsTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_XMLUtilsTest;
+
+
+static class TestDescription_XMLUtilsTest_testAddPacketID : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testAddPacketID(); }
+} testDescription_XMLUtilsTest_testAddPacketID;
+static class TestDescription_XMLUtilsTest_testAddText : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testAddText(); }
+} testDescription_XMLUtilsTest_testAddText;
+static class TestDescription_XMLUtilsTest_testAddInt : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testAddInt(); }
+} testDescription_XMLUtilsTest_testAddInt;
+static class TestDescription_XMLUtilsTest_testGetText : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testGetText(); }
+} testDescription_XMLUtilsTest_testGetText;
+static class TestDescription_XMLUtilsTest_testGetInt : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testGetInt(); }
+} testDescription_XMLUtilsTest_testGetInt;
+static class TestDescription_XMLUtilsTest_testGetPacketId : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testGetPacketId(); }
+} testDescription_XMLUtilsTest_testGetPacketId;
+static class TestDescription_XMLUtilsTest_testPacketId : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testPacketId(); }
+} testDescription_XMLUtilsTest_testPacketId;
+
 
 
 // END: Test world
@@ -132,6 +201,43 @@ namespace CxxTest
 		suiteDescription_LogTest.initialize(
 			"LogTest.h", 8,
 			"LogTest", *suite_LogTest, Tests_LogTest);
+		testDescription_LogTest_testInit.initialize(Tests_LogTest, suiteDescription_LogTest, 11, "testInit");
+		testDescription_LogTest_testAddrToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 21, "testAddrToStr");
+		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 29, "testIntToStr");
+
+		// Initialize test suite: MessageProcessorTest
+		Tests_MessageProcessorTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_MessageProcessorTest = new MessageProcessorTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("MessageProcessorTest", "Exception thrown when initializing " "MessageProcessorTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("MessageProcessorTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_MessageProcessorTest.initialize(
+			"MessageProcessorTest.h", 10,
+			"MessageProcessorTest", *suite_MessageProcessorTest, Tests_MessageProcessorTest);
+		testDescription_MessageProcessorTest_testRegisterProcessor.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 29, "testRegisterProcessor");
+		testDescription_MessageProcessorTest_testProcessMessage.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 37, "testProcessMessage");
+
+		// Initialize test suite: XMLUtilsTest
+		Tests_XMLUtilsTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_XMLUtilsTest = new XMLUtilsTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("XMLUtilsTest", "Exception thrown when initializing " "XMLUtilsTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("XMLUtilsTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_XMLUtilsTest.initialize(
+			"XMLUtilsTest.h", 8,
+			"XMLUtilsTest", *suite_XMLUtilsTest, Tests_XMLUtilsTest);
+		testDescription_XMLUtilsTest_testAddPacketID.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 11, "testAddPacketID");
+		testDescription_XMLUtilsTest_testAddText.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 20, "testAddText");
+		testDescription_XMLUtilsTest_testAddInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 29, "testAddInt");
+		testDescription_XMLUtilsTest_testGetText.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 38, "testGetText");
+		testDescription_XMLUtilsTest_testGetInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 47, "testGetInt");
+		testDescription_XMLUtilsTest_testGetPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 57, "testGetPacketId");
+		testDescription_XMLUtilsTest_testPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 67, "testPacketId");
+
 
 	}
 	
@@ -140,6 +246,8 @@ namespace CxxTest
 		delete suite_ArgumentsMapTest;
 		delete suite_ClientsMapTest;
 		delete suite_LogTest;
+		delete suite_MessageProcessorTest;
+		delete suite_XMLUtilsTest;
 
 	}
 }

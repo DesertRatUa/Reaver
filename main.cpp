@@ -38,17 +38,18 @@ int main( int argc, char *argv[] )
 	arguments.Init();
 	arguments.ParseArguments( argc, argv );
 
+	Module *module = NULL;
 	try
 	{
-		Module *module = Module::CreateModule( config, arguments );
+		module = Module::CreateModule( config, arguments );
 		module->Init();
 		module->Run();
-		delete module;
 	}
 	catch ( std::exception &exc )
 	{
 		Log::AddException( "Module", exc );
 	}
+	delete module;
 
 	Log::Add( "Stopping Server" );
 	config.Write();

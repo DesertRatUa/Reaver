@@ -33,7 +33,7 @@ void NodesMap::RegisterNode( const std::string& addr, const unsigned threadNum )
 	{
 		m_nodes.push_back( Node( addr, threadNum, m_processor ) );
 		m_processor.SendRegisterMessage( addr, NULL );
-		Log::Add( "Node: " + addr + " registered with avalible threads: " + Log::UnsignedToStr( threadNum ) );
+		Log::Add( "Node: " + addr + " registered with avalible threads: " + Log::IntToStr( threadNum ) );
 	}
 	else
 	{

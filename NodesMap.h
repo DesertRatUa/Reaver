@@ -23,12 +23,11 @@ public:
 
 	void RegisterNode( const std::string& addr, const unsigned threadNum );
 	void UnregisterNode( const std::string& addr );
-	Node& GetNode( const std::string& addr ) throw ( std::exception );
-	Node* GetFreeNode();
+	Node& GetNode( const std::string& addr )throw ( std::exception );
+	Node* GetFreeNode() ;
 	void TaskComplete( const std::string& addr );
 
 protected:
-
 	typedef std::vector<Node> Nodes;
 	Nodes m_nodes;
 	std::mutex m_mut;
