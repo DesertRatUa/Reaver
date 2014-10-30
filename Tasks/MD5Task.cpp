@@ -44,16 +44,12 @@ void MD5Task::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 
 void MD5Task::Process()
 {
-	unsigned char digest[MD5_DIGEST_LENGTH];
-	char mdString[33];
-	std::string text;
 	for ( unsigned i = begin; i < end; ++i )
 	{
-		text = Log::IntToStr(i);
-		MD5((unsigned char*)text.c_str(), text.length(), (unsigned char*)&digest);
-		for( unsigned k = 0; k < MD5_DIGEST_LENGTH; ++k )
-		         sprintf(&mdString[k*2], "%02x", (unsigned int)digest[i]);
-		text = mdString;
+		if ( Hash == GetMD5( Log::IntToStr(i) ) )
+		{
+			result = i;
+		}
 	}
 }
 
@@ -73,4 +69,14 @@ void MD5Task::SetHash( const std::string &hash ) throw ( std::exception )
 std::string MD5Task::GetResult()
 {
 	return Log::IntToStr( result );
+}
+
+std::string MD5Task::GetMD5( const std::string &text )
+{
+	MD5((unsigned char*)text.c_str(), text.length(), (unsigned char*)&digest);
+	for( unsigned k = 0; k < MD5_DIGEST_LENGTH; ++k )
+	{
+		sprintf(&mdString[k*2], "%02x", (unsigned int)digest[k]);
+	}
+	return std::string( mdString );
 }

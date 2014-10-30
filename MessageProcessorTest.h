@@ -4,8 +4,10 @@
 #include <cxxtest/TestSuite.h>
 #include "tinyxml2.h"
 #include "XMLUtils.h"
+
 #define protected public
 #include "MessageProcessor.h"
+#undef protected
 
 class MessageProcessorTest : public CxxTest::TestSuite
 {

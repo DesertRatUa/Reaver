@@ -95,6 +95,24 @@ public:
 	void runTest() { if(suite_LogTest) suite_LogTest->testIntToStr(); }
 } testDescription_LogTest_testIntToStr;
 
+// Test suite: MDTaskTest
+
+#include "MDTaskTest.h"
+static MDTaskTest *suite_MDTaskTest;
+static CxxTest::List Tests_MDTaskTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_MDTaskTest;
+
+
+static class TestDescription_MDTaskTest_testGetMD5 : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_MDTaskTest) suite_MDTaskTest->testGetMD5(); }
+} testDescription_MDTaskTest_testGetMD5;
+static class TestDescription_MDTaskTest_testProcessing : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_MDTaskTest) suite_MDTaskTest->testProcessing(); }
+} testDescription_MDTaskTest_testProcessing;
+
 // Test suite: MessageProcessorTest
 
 #include "MessageProcessorTest.h"
@@ -112,6 +130,20 @@ static class TestDescription_MessageProcessorTest_testProcessMessage : public Cx
 public:
 	void runTest() { if(suite_MessageProcessorTest) suite_MessageProcessorTest->testProcessMessage(); }
 } testDescription_MessageProcessorTest_testProcessMessage;
+
+// Test suite: TinyXmlTest
+
+#include "TinyXmlTest.h"
+static TinyXmlTest *suite_TinyXmlTest;
+static CxxTest::List Tests_TinyXmlTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_TinyXmlTest;
+
+
+static class TestDescription_TinyXmlTest_testTinyXML : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TinyXmlTest) suite_TinyXmlTest->testTinyXML(); }
+} testDescription_TinyXmlTest_testTinyXML;
 
 // Test suite: XMLUtilsTest
 
@@ -205,6 +237,20 @@ namespace CxxTest
 		testDescription_LogTest_testAddrToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 21, "testAddrToStr");
 		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 29, "testIntToStr");
 
+		// Initialize test suite: MDTaskTest
+		Tests_MDTaskTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_MDTaskTest = new MDTaskTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("MDTaskTest", "Exception thrown when initializing " "MDTaskTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("MDTaskTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_MDTaskTest.initialize(
+			"MDTaskTest.h", 10,
+			"MDTaskTest", *suite_MDTaskTest, Tests_MDTaskTest);
+		testDescription_MDTaskTest_testGetMD5.initialize(Tests_MDTaskTest, suiteDescription_MDTaskTest, 13, "testGetMD5");
+		testDescription_MDTaskTest_testProcessing.initialize(Tests_MDTaskTest, suiteDescription_MDTaskTest, 21, "testProcessing");
+
 		// Initialize test suite: MessageProcessorTest
 		Tests_MessageProcessorTest.initialize();
 
@@ -214,10 +260,23 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("MessageProcessorTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_MessageProcessorTest.initialize(
-			"MessageProcessorTest.h", 10,
+			"MessageProcessorTest.h", 12,
 			"MessageProcessorTest", *suite_MessageProcessorTest, Tests_MessageProcessorTest);
-		testDescription_MessageProcessorTest_testRegisterProcessor.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 29, "testRegisterProcessor");
-		testDescription_MessageProcessorTest_testProcessMessage.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 37, "testProcessMessage");
+		testDescription_MessageProcessorTest_testRegisterProcessor.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 31, "testRegisterProcessor");
+		testDescription_MessageProcessorTest_testProcessMessage.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 39, "testProcessMessage");
+
+		// Initialize test suite: TinyXmlTest
+		Tests_TinyXmlTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_TinyXmlTest = new TinyXmlTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("TinyXmlTest", "Exception thrown when initializing " "TinyXmlTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("TinyXmlTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_TinyXmlTest.initialize(
+			"TinyXmlTest.h", 8,
+			"TinyXmlTest", *suite_TinyXmlTest, Tests_TinyXmlTest);
+		testDescription_TinyXmlTest_testTinyXML.initialize(Tests_TinyXmlTest, suiteDescription_TinyXmlTest, 11, "testTinyXML");
 
 		// Initialize test suite: XMLUtilsTest
 		Tests_XMLUtilsTest.initialize();
@@ -246,7 +305,9 @@ namespace CxxTest
 		delete suite_ArgumentsMapTest;
 		delete suite_ClientsMapTest;
 		delete suite_LogTest;
+		delete suite_MDTaskTest;
 		delete suite_MessageProcessorTest;
+		delete suite_TinyXmlTest;
 		delete suite_XMLUtilsTest;
 
 	}

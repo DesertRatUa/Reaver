@@ -26,6 +26,9 @@ public:
 	virtual unsigned GetID() const = 0;
 
 	static Task* CreateTask( const unsigned id );
+
+	void ReSerializeRequest();
+	void ReSerializeRespond();
 };
 
 typedef std::shared_ptr<Task> TaskPtr;

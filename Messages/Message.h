@@ -22,6 +22,9 @@ public:
 	virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const = 0;
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc ) = 0;
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc ) = 0;
+
+	void ReSerializeRequest();
+	void ReSerializeRespond();
 };
 
 #endif /* MESSAGE_H_ */

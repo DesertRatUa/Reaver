@@ -10,6 +10,7 @@
 
 #include "Task.h"
 #include <string.h>
+#define MD5_DIGEST_LENGTH 16
 
 class MD5Task : public Task
 {
@@ -30,9 +31,14 @@ class MD5Task : public Task
 
 		void SetHash( const std::string &hash ) throw ( std::exception );
 		std::string GetResult();
+
 	protected:
 		std::string Hash;
 		unsigned begin, end, result;
+		unsigned char digest[MD5_DIGEST_LENGTH];
+		char mdString[33];
+
+		std::string GetMD5( const std::string &text );
 };
 
 #endif /* MD5TASK_H_ */

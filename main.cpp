@@ -14,6 +14,7 @@
 
 int main( int argc, char *argv[] )
 {
+
 	if ( argc == 0 )
 	{
 		std::cout << "Failed get PATH from argc" << std::endl;

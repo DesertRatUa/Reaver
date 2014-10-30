@@ -34,3 +34,19 @@ std::string Message::SerializeRespond() const
 	doc.Print( &printer );
 	return printer.CStr();
 }
+
+void Message::ReSerializeRequest()
+{
+	XMLDocument doc;
+	std::string xml = SerializeReqest();
+	doc.Parse( xml.c_str(), xml.length() );
+	DeserializeReqest( doc );
+}
+
+void Message::ReSerializeRespond()
+{
+	XMLDocument doc;
+	std::string xml = SerializeRespond();
+	doc.Parse( xml.c_str(), xml.length() );
+	DeserializeRespond( doc );
+}
