@@ -10,7 +10,7 @@
 
 class Task;
 class ServerModule;
-class ServerMessageProcessor;
+class ServerMessageProcessorInterface;
 class Message;
 class ClientModule;
 

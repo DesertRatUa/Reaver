@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "XMLUtils.h"
 #include <openssl/md5.h>
+#include <algorithm>
 
 MD5Task::MD5Task() : begin(0), end(0), result(0)
 {
@@ -64,6 +65,8 @@ void MD5Task::SetHash( const std::string &hash ) throw ( std::exception )
 	{
 		throw std::runtime_error( "MD5 Hash too long" );
 	}
+	Hash.clear();
+	std::transform( hash.begin(), hash.end(), Hash.begin(), ::tolower );
 }
 
 std::string MD5Task::GetResult()

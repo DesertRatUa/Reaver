@@ -131,6 +131,40 @@ public:
 	void runTest() { if(suite_MessageProcessorTest) suite_MessageProcessorTest->testProcessMessage(); }
 } testDescription_MessageProcessorTest_testProcessMessage;
 
+// Test suite: NodesMapTest
+
+#include "NodesMapTest.h"
+static NodesMapTest *suite_NodesMapTest;
+static CxxTest::List Tests_NodesMapTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_NodesMapTest;
+
+
+static class TestDescription_NodesMapTest_testRegisterNode : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testRegisterNode(); }
+} testDescription_NodesMapTest_testRegisterNode;
+static class TestDescription_NodesMapTest_testUnregisterNode : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testUnregisterNode(); }
+} testDescription_NodesMapTest_testUnregisterNode;
+static class TestDescription_NodesMapTest_testGetNode : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetNode(); }
+} testDescription_NodesMapTest_testGetNode;
+static class TestDescription_NodesMapTest_testGetFreeNode : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetFreeNode(); }
+} testDescription_NodesMapTest_testGetFreeNode;
+static class TestDescription_NodesMapTest_testGetFreeThreadsNum : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetFreeThreadsNum(); }
+} testDescription_NodesMapTest_testGetFreeThreadsNum;
+static class TestDescription_NodesMapTest_testTaskComplete : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testTaskComplete(); }
+} testDescription_NodesMapTest_testTaskComplete;
+
 // Test suite: TinyXmlTest
 
 #include "TinyXmlTest.h"
@@ -265,6 +299,24 @@ namespace CxxTest
 		testDescription_MessageProcessorTest_testRegisterProcessor.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 31, "testRegisterProcessor");
 		testDescription_MessageProcessorTest_testProcessMessage.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 39, "testProcessMessage");
 
+		// Initialize test suite: NodesMapTest
+		Tests_NodesMapTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_NodesMapTest = new NodesMapTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("NodesMapTest", "Exception thrown when initializing " "NodesMapTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("NodesMapTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_NodesMapTest.initialize(
+			"NodesMapTest.h", 9,
+			"NodesMapTest", *suite_NodesMapTest, Tests_NodesMapTest);
+		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 32, "testRegisterNode");
+		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 42, "testUnregisterNode");
+		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 52, "testGetNode");
+		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 63, "testGetFreeNode");
+		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 79, "testGetFreeThreadsNum");
+		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 84, "testTaskComplete");
+
 		// Initialize test suite: TinyXmlTest
 		Tests_TinyXmlTest.initialize();
 
@@ -307,6 +359,7 @@ namespace CxxTest
 		delete suite_LogTest;
 		delete suite_MDTaskTest;
 		delete suite_MessageProcessorTest;
+		delete suite_NodesMapTest;
 		delete suite_TinyXmlTest;
 		delete suite_XMLUtilsTest;
 

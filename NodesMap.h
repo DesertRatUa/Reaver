@@ -16,22 +16,22 @@
 class NodesMap
 {
 public:
-	NodesMap( ServerMessageProcessor &processor );
+	NodesMap();
 	virtual ~NodesMap();
 
 	void Init();
 
-	void RegisterNode( const std::string& addr, const unsigned threadNum );
-	void UnregisterNode( const std::string& addr );
-	Node& GetNode( const std::string& addr )throw ( std::exception );
+	void RegisterNode( const std::string& addr, const unsigned threadNum, ServerMessageProcessorInterface &manager ) throw ( std::exception );
+	void UnregisterNode( const std::string& addr ) throw ( std::exception );
+	Node& GetNode( const std::string& addr ) throw ( std::exception );
 	Node* GetFreeNode() ;
+	unsigned GetFreeThreadsNum();
 	void TaskComplete( const std::string& addr );
 
 protected:
 	typedef std::vector<Node> Nodes;
 	Nodes m_nodes;
 	std::mutex m_mut;
-	ServerMessageProcessor &m_processor;
 };
 
 #endif /* NODESMAP_H_ */

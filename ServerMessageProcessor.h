@@ -8,19 +8,17 @@
 #ifndef SERVERMESSAGEPROCESSOR_H_
 #define SERVERMESSAGEPROCESSOR_H_
 
-#include "include.h"
-#include "MessageProcessor.h"
-#include "Tasks/Task.h"
+#include "ServerMessageProcessorInterface.h"
 
-class ServerMessageProcessor : public MessageProcessor
+class ServerMessageProcessor : public ServerMessageProcessorInterface
 {
 public:
 	ServerMessageProcessor( ServerModule *parent );
 	virtual ~ServerMessageProcessor();
 
 	virtual void Init();
-	void SendRegisterMessage( const std::string &addr, const std::string *error );
-	void SendTaskMessage( const std::string &addr, TaskPtr &task );
+	virtual void SendRegisterMessage( const std::string &addr, const std::string *error );
+	virtual void SendTaskMessage( const std::string &addr, TaskPtr &task );
 
 protected:
 	static ServerModule *m_parent;

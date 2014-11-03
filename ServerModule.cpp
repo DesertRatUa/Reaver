@@ -13,7 +13,7 @@
 
 ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) :
 	Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this),
-	m_run(false), m_signal( m_run ), m_nodes( m_processor )
+	m_run(false), m_signal( m_run )
 {
 }
 
@@ -94,12 +94,29 @@ void ServerModule::TaskPlanner()
 
 void ServerModule::RegisterNode( const std::string& addr, const unsigned threadNum )
 {
-	m_nodes.RegisterNode( addr, threadNum );
+	try
+	{
+		m_nodes.RegisterNode( addr, threadNum, m_processor );
+		m_processor.SendRegisterMessage( addr, NULL );
+	}
+	catch (std::exception &exc)
+	{
+		Log::AddException( "Server module::RegisterNode", exc );
+		std::string error( exc.what() );
+		m_processor.SendRegisterMessage( addr, &error );
+	}
 }
 
 void ServerModule::UnregisterNode( const std::string& addr )
 {
-	m_nodes.UnregisterNode( addr );
+	try
+	{
+		m_nodes.UnregisterNode( addr );
+	}
+	catch (std::exception &exc)
+	{
+		Log::AddException( "Server module::UnregisterNode", exc );
+	}
 }
 
 void ServerModule::TaskRespond( const std::string& addr, Task &task )

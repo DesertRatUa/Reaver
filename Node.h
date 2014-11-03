@@ -14,11 +14,11 @@
 class Node
 {
 public:
-	Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessor &manager );
+	Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessorInterface &manager );
 	virtual ~Node();
 
-	bool isBusy() const;
 	bool isThreadsAvalible() const;
+	unsigned GetFreeThreadsNum() const;
 	std::string GetID() const;
 
 	bool operator==( const Node& node ) const;
@@ -26,17 +26,16 @@ public:
 
 	Node& operator=(const Node& node );
 
-	void SendTask( TaskPtr& task );
-	void TaskComplete();
+	void SendTask( TaskPtr& task ) throw ( std::exception );
+	void TaskComplete() throw ( std::exception );
 
 protected:
 
 	unsigned m_threads;
 	unsigned m_threadsLimit;
-	bool m_busy;
 	std::string m_addr;
 
-	ServerMessageProcessor &m_proccessor;
+	ServerMessageProcessorInterface &m_proccessor;
 };
 
 #endif /* NODE_H_ */
