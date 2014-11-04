@@ -78,13 +78,34 @@ public:
 
 	void testGetFreeThreadsNum()
 	{
-
+		NodesMap map;
+		std::string addr( "127.0.0.1:80" );
+		std::string addr1( "127.0.0.1:81" );
+		TaskPtr task( new TestTask() );
+		map.RegisterNode( addr, 2, *this );
+		map.RegisterNode( addr1, 2, *this );
+		TS_ASSERT_EQUALS( map.GetFreeThreadsNum(), unsigned(4) );
+		Node &node = map.GetNode( addr );
+		node.SendTask( task );
+		TS_ASSERT_EQUALS( map.GetFreeThreadsNum(), unsigned(3) );
+		node.SendTask( task );
+		TS_ASSERT_EQUALS( map.GetFreeThreadsNum(), unsigned(2) );
+		map.GetNode(addr1).SendTask( task );
+		TS_ASSERT_EQUALS( map.GetFreeThreadsNum(), unsigned(1) );
 	}
 
 	void testTaskComplete()
 	{
+		NodesMap map;
+		std::string addr( "127.0.0.1:80" );
+		TaskPtr task( new TestTask() );
+		map.RegisterNode( addr, 1, *this );
+		Node &node = map.GetNode( addr );
+		node.SendTask( task );
+		TS_ASSERT( map.GetFreeNode() == NULL );
+		TS_ASSERT_THROWS_NOTHING( node.TaskComplete() );
+		TS_ASSERT( map.GetFreeNode() != NULL );
 	}
-
 };
 
 #endif /*NODESMAPTEST_H_*/

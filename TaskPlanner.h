@@ -16,6 +16,11 @@ public:
 
 	void Init();
 	void Run();
+	void AddTask( TaskPtr &task );
+
+protected:
+	typedef std::vector<TaskPtr> Tasks;
+	Tasks m_tasks;
 };
 
 #endif /* TASKPLANNER_H_ */

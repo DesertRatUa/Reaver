@@ -131,6 +131,36 @@ public:
 	void runTest() { if(suite_MessageProcessorTest) suite_MessageProcessorTest->testProcessMessage(); }
 } testDescription_MessageProcessorTest_testProcessMessage;
 
+// Test suite: NodeTest
+
+#include "NodeTest.h"
+static NodeTest *suite_NodeTest;
+static CxxTest::List Tests_NodeTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_NodeTest;
+
+
+static class TestDescription_NodeTest_testSendTask : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodeTest) suite_NodeTest->testSendTask(); }
+} testDescription_NodeTest_testSendTask;
+static class TestDescription_NodeTest_testTaskComplete : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodeTest) suite_NodeTest->testTaskComplete(); }
+} testDescription_NodeTest_testTaskComplete;
+static class TestDescription_NodeTest_testisThreadsAvalible : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodeTest) suite_NodeTest->testisThreadsAvalible(); }
+} testDescription_NodeTest_testisThreadsAvalible;
+static class TestDescription_NodeTest_testGetFreeThreadsNum : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodeTest) suite_NodeTest->testGetFreeThreadsNum(); }
+} testDescription_NodeTest_testGetFreeThreadsNum;
+static class TestDescription_NodeTest_testGetID : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodeTest) suite_NodeTest->testGetID(); }
+} testDescription_NodeTest_testGetID;
+
 // Test suite: NodesMapTest
 
 #include "NodesMapTest.h"
@@ -299,6 +329,23 @@ namespace CxxTest
 		testDescription_MessageProcessorTest_testRegisterProcessor.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 31, "testRegisterProcessor");
 		testDescription_MessageProcessorTest_testProcessMessage.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 39, "testProcessMessage");
 
+		// Initialize test suite: NodeTest
+		Tests_NodeTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_NodeTest = new NodeTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("NodeTest", "Exception thrown when initializing " "NodeTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("NodeTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_NodeTest.initialize(
+			"NodeTest.h", 8,
+			"NodeTest", *suite_NodeTest, Tests_NodeTest);
+		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 34, "testSendTask");
+		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 45, "testTaskComplete");
+		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 57, "testisThreadsAvalible");
+		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 68, "testGetFreeThreadsNum");
+		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 79, "testGetID");
+
 		// Initialize test suite: NodesMapTest
 		Tests_NodesMapTest.initialize();
 
@@ -315,7 +362,7 @@ namespace CxxTest
 		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 52, "testGetNode");
 		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 63, "testGetFreeNode");
 		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 79, "testGetFreeThreadsNum");
-		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 84, "testTaskComplete");
+		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 97, "testTaskComplete");
 
 		// Initialize test suite: TinyXmlTest
 		Tests_TinyXmlTest.initialize();
@@ -359,6 +406,7 @@ namespace CxxTest
 		delete suite_LogTest;
 		delete suite_MDTaskTest;
 		delete suite_MessageProcessorTest;
+		delete suite_NodeTest;
 		delete suite_NodesMapTest;
 		delete suite_TinyXmlTest;
 		delete suite_XMLUtilsTest;
