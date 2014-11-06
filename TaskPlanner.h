@@ -8,6 +8,11 @@
 #ifndef TASKPLANNER_H_
 #define TASKPLANNER_H_
 
+#include "Tasks/Task.h"
+#include "include.h"
+#include "vector"
+#include "mutex"
+
 class TaskPlanner
 {
 public:
@@ -16,11 +21,14 @@ public:
 
 	void Init();
 	void Run();
-	void AddTask( TaskPtr &task );
+	void AddTask( const TaskPtr &task, const unsigned threadsNum );
+	void TaskComplete( const TaskPtr &task );
 
 protected:
-	typedef std::vector<TaskPtr> Tasks;
+
 	Tasks m_tasks;
+	unsigned m_taskCount;
+	std::mutex m_mut;
 };
 
 #endif /* TASKPLANNER_H_ */

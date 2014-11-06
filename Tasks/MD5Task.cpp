@@ -83,3 +83,8 @@ std::string MD5Task::GetMD5( const std::string &text )
 	}
 	return std::string( mdString );
 }
+
+Tasks MD5Task::SeperateTask( const unsigned threadNums, const unsigned plannerID ) const
+{
+	return Tasks();
+}

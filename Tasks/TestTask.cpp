@@ -64,3 +64,8 @@ unsigned TestTask::GetID() const
 {
 	return ID;
 }
+
+Tasks TestTask::SeperateTask( const unsigned threadNums, const unsigned plannerID ) const
+{
+	return Tasks();
+}

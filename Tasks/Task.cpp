@@ -10,7 +10,7 @@
 #include "tinyxml2.h"
 using namespace tinyxml2;
 
-Task::Task()
+Task::Task() : m_plannerID(0)
 {
 }
 
@@ -47,4 +47,9 @@ void Task::ReSerializeRespond()
 	doc.Clear();
 	doc.Parse( printer.CStr(), printer.CStrSize() );
 	DeserializeRespond( doc );
+}
+
+unsigned Task::GetPlannerID()
+{
+	return m_plannerID;
 }

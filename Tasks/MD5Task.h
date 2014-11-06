@@ -29,6 +29,8 @@ class MD5Task : public Task
 		virtual void Process();
 		virtual unsigned GetID() const;
 
+		virtual Tasks SeperateTask( const unsigned threadNums, const unsigned plannerID ) const;
+
 		void SetHash( const std::string &hash ) throw ( std::exception );
 		std::string GetResult();
 

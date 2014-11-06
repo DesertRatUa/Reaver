@@ -9,6 +9,7 @@
 #define TASK_H_
 #include "include.h"
 #include <memory>
+#include <vector>
 
 class Task
 {
@@ -25,12 +26,19 @@ public:
 	virtual void Process() = 0;
 	virtual unsigned GetID() const = 0;
 
+	unsigned GetPlannerID();
+	virtual std::vector<std::shared_ptr<Task>> SeperateTask( const unsigned threadNums, const unsigned plannerID ) const = 0;
+
 	static Task* CreateTask( const unsigned id );
 
 	void ReSerializeRequest();
 	void ReSerializeRespond();
+
+protected:
+	unsigned m_plannerID;
 };
 
 typedef std::shared_ptr<Task> TaskPtr;
+typedef std::vector<TaskPtr> Tasks;
 
 #endif /* TASK_H_ */

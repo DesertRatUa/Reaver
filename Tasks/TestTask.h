@@ -29,6 +29,8 @@ public:
 	virtual void Process();
 	virtual unsigned GetID() const;
 
+	virtual Tasks SeperateTask( const unsigned threadNums, const unsigned plannerID ) const;
+
 	unsigned start, end, hash;
 	unsigned result;
 
