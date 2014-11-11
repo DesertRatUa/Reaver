@@ -56,7 +56,7 @@ void ClientCommunicationManager::DataHandlerThread( ClientCommunicationManager &
 	Log::Add( "Start handler thread" );
 	try
 	{
-	ReadSocket( parent.m_socket, parent, Log::AddrToStr( parent.m_address ) );
+		ReadSocket( parent.m_socket, parent, Log::AddrToStr( parent.m_address ) );
 	}
 	catch( std::exception &exc )
 	{

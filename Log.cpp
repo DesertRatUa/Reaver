@@ -94,6 +94,11 @@ std::string Log::IntToStr( const unsigned value )
 	return boost::lexical_cast<std::string>(value);
 }
 
+std::string Log::IntToStr( const size_t &value )
+{
+	return boost::lexical_cast<std::string>(value);
+}
+
 std::string Log::AddrToStr( const sockaddr_in& addr )
 {
 	return std::string( inet_ntoa( addr.sin_addr ) + std::string(":") + Log::IntToStr( addr.sin_port ) );

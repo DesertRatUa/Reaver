@@ -9,8 +9,6 @@
 #define CLIENTSMAP_H_
 
 #include "Client.h"
-#include <mutex>
-#include <vector>
 
 class ClientsMap
 {

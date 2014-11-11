@@ -9,8 +9,13 @@
 #define CLIENT_H_
 
 #include "include.h"
-#include <winsock2.h>
-#include <thread>
+#include "Thread.h"
+#ifdef WIN32
+   #include <winsock2.h>
+#else
+   #include <sys/socket.h>
+   #include <sys/un.h>
+#endif
 
 class Client
 {
@@ -36,7 +41,7 @@ protected:
 	bool m_disconnected;
 	friend class ServerCommunicationManager;
 	SOCKET socket;
-	std::unique_ptr<std::thread> thread;
+	ThreadPtr thread;
 };
 
 typedef std::shared_ptr<Client> ClientPtr;

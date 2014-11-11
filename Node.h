@@ -9,7 +9,7 @@
 #define NODE_H_
 
 #include "include.h"
-#include <Tasks/Task.h>
+#include "Tasks/Task.h"
 
 class Node
 {

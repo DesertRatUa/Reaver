@@ -64,6 +64,17 @@ static const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
 namespace tinyxml2
 {
 
+XMLNode *deepCopy( XMLNode *src, XMLDocument *destDoc )
+{
+    XMLNode *current = src->ShallowClone( destDoc );
+    for( XMLNode *child=src->FirstChild(); child; child=child->NextSibling() )
+    {
+        current->InsertEndChild( deepCopy( child, destDoc ) );
+    }
+
+    return current;
+}
+
 struct Entity {
     const char* pattern;
     int length;

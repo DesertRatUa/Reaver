@@ -8,8 +8,7 @@
 #ifndef LOG_H_
 #define LOG_H_
 
-#include <exception>
-#include <string>
+#include "include.h"
 #include <fstream>
 #include <mutex>
 
@@ -29,6 +28,7 @@ public:
 	static void AddException( std::string name, const std::exception &exc );
 	static std::string IntToStr( const int value );
 	static std::string IntToStr( const unsigned value );
+	static std::string IntToStr( const size_t &value );
 	static std::string AddrToStr( const sockaddr_in& addr );
 	static void SetName( const std::string &name );
 

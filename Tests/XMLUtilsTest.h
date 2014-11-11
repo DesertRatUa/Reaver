@@ -14,31 +14,35 @@ public:
 		tinyxml2::XMLPrinter prnt;
 		XMLUtils::AddPacketId( doc, 5 );
 		doc.Print( &prnt );
-		TS_ASSERT_EQUALS( std::string(prnt.CStr()), "<PacketID>5</PacketID>\n" );
+		TS_ASSERT_EQUALS( std::string(prnt.CStr()), "<Packet PacketID=\"5\"/>\n" );
 	}
 
 	void testAddText()
 	{
 		tinyxml2::XMLDocument doc;
 		tinyxml2::XMLPrinter prnt;
+		XMLUtils::AddPacketId( doc, 5 );
 		XMLUtils::AddText( doc, "Test", "Message" );
 		doc.Print( &prnt );
-		TS_ASSERT_EQUALS( std::string(prnt.CStr()), "<Test>Message</Test>\n" );
+		TS_ASSERT_EQUALS( std::string(prnt.CStr()),
+				"<Packet PacketID=\"5\">\n    <Test>Message</Test>\n</Packet>\n" );
+		doc.Clear();
 	}
 
 	void testAddInt()
 	{
 		tinyxml2::XMLDocument doc;
 		tinyxml2::XMLPrinter prnt;
+		XMLUtils::AddPacketId( doc, 5 );
 		XMLUtils::AddInt( doc, "Test", 1 );
 		doc.Print( &prnt );
-		TS_ASSERT_EQUALS( std::string(prnt.CStr()), "<Test>1</Test>\n" );
+		TS_ASSERT_EQUALS( std::string(prnt.CStr()), "<Packet PacketID=\"5\">\n    <Test>1</Test>\n</Packet>\n" );
 	}
 
 	void testGetText()
 	{
 		tinyxml2::XMLDocument doc;
-		std::string xml( "<Test>Message</Test>" );
+		std::string xml( "<Packet PacketID=\"5\">\n    <Test>Message</Test>\n</Packet>\n" );
 		doc.Parse( xml.c_str(), xml.length() );
 		XMLUtils::GetText( doc, "Test", xml );
 		TS_ASSERT_EQUALS( xml, "Message" );
@@ -47,7 +51,7 @@ public:
 	void testGetInt()
 	{
 		tinyxml2::XMLDocument doc;
-		std::string xml( "<Test>1</Test>" );
+		std::string xml( "<Packet PacketID=\"1\">\n    <Test>1</Test>\n</Packet>\n" );
 		doc.Parse( xml.c_str(), xml.length() );
 		unsigned num = 0;
 		XMLUtils::GetInt( doc, "Test", num );
@@ -57,7 +61,7 @@ public:
 	void testGetPacketId()
 	{
 		tinyxml2::XMLDocument doc;
-		std::string xml( "<PacketID>5</PacketID>" );
+		std::string xml( "<Packet PacketID=\"5\"/>\n" );
 		doc.Parse( xml.c_str(), xml.length() );
 		unsigned num = 0;
 		XMLUtils::GetPacketId( doc, num );

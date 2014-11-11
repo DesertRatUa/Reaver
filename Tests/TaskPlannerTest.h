@@ -36,7 +36,8 @@ class TaskPlannerTest : public CxxTest::TestSuite
 public:
 	void testAddTask()
 	{
-		TaskPlanner planner;
+		NodesMap map;
+		TaskPlanner planner(map);
 		TaskPtr task( new TestTask() );
 		planner.AddTask( task, 2 );
 		TS_ASSERT_EQUALS( planner.m_tasks.size(), unsigned(2) );
@@ -47,13 +48,19 @@ public:
 
 	void testTaskComplete()
 	{
-		TaskPlanner planner;
+		NodesMap map;
+		TaskPlanner planner(map);
 		TaskPtr task( new TestTask() );
 		planner.AddTask( task, 2 );
 		planner.AddTask( task, 3 );
 		task->m_plannerID = 1;
 		planner.TaskComplete( task );
 		TS_ASSERT_EQUALS( unsigned (planner.m_tasks.size()), unsigned(3) );
+		planner.TaskComplete( task );
+		TS_ASSERT_EQUALS( unsigned (planner.m_tasks.size()), unsigned(3) );
+		task->m_plannerID = 2;
+		planner.TaskComplete( task );
+		TS_ASSERT_EQUALS( unsigned (planner.m_tasks.size()), unsigned(0) );
 	}
 
 };

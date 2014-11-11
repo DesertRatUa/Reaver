@@ -21,23 +21,55 @@ MessageProcessor::~MessageProcessor()
 void MessageProcessor::ProcessMessage( const std::string& message, const std::string& addr )
 {
 	tinyxml2::XMLDocument doc;
-	doc.Parse( message.c_str(), message.length() );
 	unsigned id = 0;
-	XMLUtils::GetPacketId( doc, id );
-	if ( id == 0 )
+	doc.Parse( message.c_str(), message.length() );
+	Packets packets( SeperatePackets( doc ) );
+	for ( unsigned i = 0; i < packets.size(); ++i )
 	{
-		Log::Add( "Failed get PacketID from: " + message );
-		return;
+		id = 0;
+		tinyxml2::XMLDocument &packet = *packets.at(i);
+		XMLUtils::GetPacketId( packet, id );
+		if ( id == 0 )
+		{
+			tinyxml2::XMLPrinter printer;
+			packet.Print( &printer );
+			Log::Add( "Failed get PacketID from message: " + message + "\nPacket: " + std::string( printer.CStr() ) );
+			return;
+		}
+		Processors::iterator prc = m_processors.find( id );
+		if ( prc == m_processors.end() )
+		{
+			Log::Add( "No processor for message " + Log::IntToStr( id ) + ": " + message );
+		}
+		else
+		{
+			(*prc->second)( packet, addr );
+		}
 	}
-	Processors::iterator prc = m_processors.find( id );
-	if ( prc == m_processors.end() )
+}
+
+MessageProcessor::Packets MessageProcessor::SeperatePackets( tinyxml2::XMLDocument &doc )
+{
+	Packets packets;
+	tinyxml2::XMLElement *packet = doc.FirstChildElement( "Packet" );
+	while ( packet )
 	{
-		Log::Add( "No processor for message " + Log::IntToStr( id ) + ": " + message );
+		packets.push_back( PacketPtr( new tinyxml2::XMLDocument() ) );
+		tinyxml2::XMLDocument &ndoc = *packets.back();
+		ndoc.InsertEndChild( tinyxml2::deepCopy( packet, &ndoc ) );
+		doc.DeleteChild( packet );
+		packet = doc.FirstChildElement( "Packet" );
 	}
-	else
+	if ( packets.size() > 1 )
 	{
-		(*prc->second)( doc, addr );
+		Log::Add( "Separate message to " + Log::IntToStr( packets.size() ) + " packets" );
 	}
+	return packets;
+}
+
+void MessageProcessor::ParsePacket( tinyxml2::XMLElement *packet, const std::string& message, const std::string& addr )
+{
+
 }
 
 void MessageProcessor::RegisterProcessor( const unsigned id, Processor processor ) throw (std::runtime_error)

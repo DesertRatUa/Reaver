@@ -9,7 +9,6 @@
 #define ARGUMENTSMAP_H_
 
 #include "Argument.h"
-#include <exception>
 #include <vector>
 
 class ArgumentsMap

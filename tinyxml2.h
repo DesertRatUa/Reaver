@@ -861,6 +861,8 @@ private:
 };
 
 
+XMLNode *deepCopy( XMLNode *src, XMLDocument *destDoc );
+
 /** XML text.
 
 	Note that a text node can have child element nodes, for example:

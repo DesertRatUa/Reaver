@@ -25,7 +25,7 @@ public:
 		task.begin = 1;
 		task.end = 15;
 		task.Process();
-		Log::Add( "MD5 Task " + Log::IntToStr(  task.result ) );
+		//Log::Add( "MD5 Task " + Log::IntToStr(  task.result ) );
 		TS_ASSERT_EQUALS( task.result, unsigned( 12 ) );
 	}
 };

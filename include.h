@@ -6,7 +6,9 @@
  */
 #ifndef INCLUDE_H_
 #define INCLUDE_H_
+
 #include <string>
+#include <exception>
 
 class Task;
 class ServerModule;
@@ -17,6 +19,7 @@ class ClientModule;
 namespace tinyxml2
 {
 	class XMLDocument;
+	class XMLElement;
 }
 
 namespace std

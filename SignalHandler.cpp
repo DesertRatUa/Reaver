@@ -48,6 +48,6 @@ void SignalHandler::Wait()
 	}
 	while ( !handled && m_run )
 	{
-		usleep(100);
+		Sleep(100);
 	}
 }

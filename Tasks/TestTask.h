@@ -16,6 +16,7 @@ class TestTask: public Task
 public:
 	TestTask();
 	TestTask( const unsigned Start, const unsigned End, const unsigned Hash );
+	TestTask( const unsigned Start, const unsigned End, const unsigned Hash, const unsigned plannerId );
 	virtual ~TestTask();
 
 	const static unsigned ID = 1;

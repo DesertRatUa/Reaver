@@ -11,8 +11,6 @@
 #include "include.h"
 #include "CommunicationManager.h"
 #include "Client.h"
-#include <stdexcept>
-#include <mutex>
 #include "ClientsMap.h"
 
 class ServerCommunicationManager: public CommunicationManager

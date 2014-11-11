@@ -14,6 +14,11 @@ Task::Task() : m_plannerID(0)
 {
 }
 
+Task::Task( const unsigned plannerId ): m_plannerID(plannerId)
+{
+
+}
+
 Task::~Task()
 {
 }

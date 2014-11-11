@@ -27,7 +27,7 @@ typedef const CxxTest::TestDescription *TestDescriptionPtr;
 
 // Test suite: ArgumentsMapTest
 
-#include "ArgumentsMapTest.h"
+#include "Tests\ArgumentsMapTest.h"
 static ArgumentsMapTest *suite_ArgumentsMapTest;
 static CxxTest::List Tests_ArgumentsMapTest;
 
@@ -51,9 +51,27 @@ public:
 	void runTest() { if(suite_ArgumentsMapTest) suite_ArgumentsMapTest->testSet(); }
 } testDescription_ArgumentsMapTest_testSet;
 
+// Test suite: ClientTaskPlannerTest
+
+#include "Tests\ClientTaskPlannerTest.h"
+static ClientTaskPlannerTest *suite_ClientTaskPlannerTest;
+static CxxTest::List Tests_ClientTaskPlannerTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_ClientTaskPlannerTest;
+
+
+static class TestDescription_ClientTaskPlannerTest_testAddTask : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ClientTaskPlannerTest) suite_ClientTaskPlannerTest->testAddTask(); }
+} testDescription_ClientTaskPlannerTest_testAddTask;
+static class TestDescription_ClientTaskPlannerTest_testRun : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ClientTaskPlannerTest) suite_ClientTaskPlannerTest->testRun(); }
+} testDescription_ClientTaskPlannerTest_testRun;
+
 // Test suite: ClientsMapTest
 
-#include "ClientsMapTest.h"
+#include "Tests\ClientsMapTest.h"
 static ClientsMapTest *suite_ClientsMapTest;
 static CxxTest::List Tests_ClientsMapTest;
 
@@ -75,7 +93,7 @@ public:
 
 // Test suite: LogTest
 
-#include "LogTest.h"
+#include "Tests\LogTest.h"
 static LogTest *suite_LogTest;
 static CxxTest::List Tests_LogTest;
 
@@ -97,7 +115,7 @@ public:
 
 // Test suite: MDTaskTest
 
-#include "MDTaskTest.h"
+#include "Tests\MDTaskTest.h"
 static MDTaskTest *suite_MDTaskTest;
 static CxxTest::List Tests_MDTaskTest;
 
@@ -115,7 +133,7 @@ public:
 
 // Test suite: MessageProcessorTest
 
-#include "MessageProcessorTest.h"
+#include "Tests\MessageProcessorTest.h"
 static MessageProcessorTest *suite_MessageProcessorTest;
 static CxxTest::List Tests_MessageProcessorTest;
 
@@ -133,7 +151,7 @@ public:
 
 // Test suite: NodeTest
 
-#include "NodeTest.h"
+#include "Tests\NodeTest.h"
 static NodeTest *suite_NodeTest;
 static CxxTest::List Tests_NodeTest;
 
@@ -163,7 +181,7 @@ public:
 
 // Test suite: NodesMapTest
 
-#include "NodesMapTest.h"
+#include "Tests\NodesMapTest.h"
 static NodesMapTest *suite_NodesMapTest;
 static CxxTest::List Tests_NodesMapTest;
 
@@ -197,7 +215,7 @@ public:
 
 // Test suite: TaskPlannerTest
 
-#include "TaskPlannerTest.h"
+#include "Tests\TaskPlannerTest.h"
 static TaskPlannerTest *suite_TaskPlannerTest;
 static CxxTest::List Tests_TaskPlannerTest;
 
@@ -213,9 +231,27 @@ public:
 	void runTest() { if(suite_TaskPlannerTest) suite_TaskPlannerTest->testTaskComplete(); }
 } testDescription_TaskPlannerTest_testTaskComplete;
 
+// Test suite: TestTaskTest
+
+#include "Tests\TestTaskTest.h"
+static TestTaskTest *suite_TestTaskTest;
+static CxxTest::List Tests_TestTaskTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_TestTaskTest;
+
+
+static class TestDescription_TestTaskTest_testProcess : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TestTaskTest) suite_TestTaskTest->testProcess(); }
+} testDescription_TestTaskTest_testProcess;
+static class TestDescription_TestTaskTest_testSeperateTask : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TestTaskTest) suite_TestTaskTest->testSeperateTask(); }
+} testDescription_TestTaskTest_testSeperateTask;
+
 // Test suite: TinyXmlTest
 
-#include "TinyXmlTest.h"
+#include "Tests\TinyXmlTest.h"
 static TinyXmlTest *suite_TinyXmlTest;
 static CxxTest::List Tests_TinyXmlTest;
 
@@ -229,7 +265,7 @@ public:
 
 // Test suite: XMLUtilsTest
 
-#include "XMLUtilsTest.h"
+#include "Tests\XMLUtilsTest.h"
 static XMLUtilsTest *suite_XMLUtilsTest;
 static CxxTest::List Tests_XMLUtilsTest;
 
@@ -282,12 +318,26 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ArgumentsMapTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_ArgumentsMapTest.initialize(
-			"ArgumentsMapTest.h", 9,
+			"Tests\\ArgumentsMapTest.h", 9,
 			"ArgumentsMapTest", *suite_ArgumentsMapTest, Tests_ArgumentsMapTest);
 		testDescription_ArgumentsMapTest_testExceptions.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 12, "testExceptions");
 		testDescription_ArgumentsMapTest_testAdd.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 19, "testAdd");
 		testDescription_ArgumentsMapTest_testDefaultSet.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 27, "testDefaultSet");
 		testDescription_ArgumentsMapTest_testSet.initialize(Tests_ArgumentsMapTest, suiteDescription_ArgumentsMapTest, 38, "testSet");
+
+		// Initialize test suite: ClientTaskPlannerTest
+		Tests_ClientTaskPlannerTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_ClientTaskPlannerTest = new ClientTaskPlannerTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("ClientTaskPlannerTest", "Exception thrown when initializing " "ClientTaskPlannerTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ClientTaskPlannerTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_ClientTaskPlannerTest.initialize(
+			"Tests\\ClientTaskPlannerTest.h", 11,
+			"ClientTaskPlannerTest", *suite_ClientTaskPlannerTest, Tests_ClientTaskPlannerTest);
+		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 39, "testAddTask");
+		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 50, "testRun");
 
 		// Initialize test suite: ClientsMapTest
 		Tests_ClientsMapTest.initialize();
@@ -298,7 +348,7 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ClientsMapTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_ClientsMapTest.initialize(
-			"ClientsMapTest.h", 8,
+			"Tests\\ClientsMapTest.h", 8,
 			"ClientsMapTest", *suite_ClientsMapTest, Tests_ClientsMapTest);
 		testDescription_ClientsMapTest_testRegister.initialize(Tests_ClientsMapTest, suiteDescription_ClientsMapTest, 11, "testRegister");
 		testDescription_ClientsMapTest_testUnregister.initialize(Tests_ClientsMapTest, suiteDescription_ClientsMapTest, 27, "testUnregister");
@@ -313,11 +363,11 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("LogTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_LogTest.initialize(
-			"LogTest.h", 8,
+			"Tests\\LogTest.h", 9,
 			"LogTest", *suite_LogTest, Tests_LogTest);
-		testDescription_LogTest_testInit.initialize(Tests_LogTest, suiteDescription_LogTest, 11, "testInit");
-		testDescription_LogTest_testAddrToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 21, "testAddrToStr");
-		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 29, "testIntToStr");
+		testDescription_LogTest_testInit.initialize(Tests_LogTest, suiteDescription_LogTest, 12, "testInit");
+		testDescription_LogTest_testAddrToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 22, "testAddrToStr");
+		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 30, "testIntToStr");
 
 		// Initialize test suite: MDTaskTest
 		Tests_MDTaskTest.initialize();
@@ -328,7 +378,7 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("MDTaskTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_MDTaskTest.initialize(
-			"MDTaskTest.h", 10,
+			"Tests\\MDTaskTest.h", 10,
 			"MDTaskTest", *suite_MDTaskTest, Tests_MDTaskTest);
 		testDescription_MDTaskTest_testGetMD5.initialize(Tests_MDTaskTest, suiteDescription_MDTaskTest, 13, "testGetMD5");
 		testDescription_MDTaskTest_testProcessing.initialize(Tests_MDTaskTest, suiteDescription_MDTaskTest, 21, "testProcessing");
@@ -342,7 +392,7 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("MessageProcessorTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_MessageProcessorTest.initialize(
-			"MessageProcessorTest.h", 12,
+			"Tests\\MessageProcessorTest.h", 12,
 			"MessageProcessorTest", *suite_MessageProcessorTest, Tests_MessageProcessorTest);
 		testDescription_MessageProcessorTest_testRegisterProcessor.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 31, "testRegisterProcessor");
 		testDescription_MessageProcessorTest_testProcessMessage.initialize(Tests_MessageProcessorTest, suiteDescription_MessageProcessorTest, 39, "testProcessMessage");
@@ -356,7 +406,7 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("NodeTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_NodeTest.initialize(
-			"NodeTest.h", 8,
+			"Tests\\NodeTest.h", 8,
 			"NodeTest", *suite_NodeTest, Tests_NodeTest);
 		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 36, "testSendTask");
 		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 47, "testTaskComplete");
@@ -373,7 +423,7 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("NodesMapTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_NodesMapTest.initialize(
-			"NodesMapTest.h", 9,
+			"Tests\\NodesMapTest.h", 9,
 			"NodesMapTest", *suite_NodesMapTest, Tests_NodesMapTest);
 		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 34, "testRegisterNode");
 		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 44, "testUnregisterNode");
@@ -391,10 +441,24 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("TaskPlannerTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_TaskPlannerTest.initialize(
-			"TaskPlannerTest.h", 10,
+			"Tests\\TaskPlannerTest.h", 10,
 			"TaskPlannerTest", *suite_TaskPlannerTest, Tests_TaskPlannerTest);
 		testDescription_TaskPlannerTest_testAddTask.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 37, "testAddTask");
-		testDescription_TaskPlannerTest_testTaskComplete.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 48, "testTaskComplete");
+		testDescription_TaskPlannerTest_testTaskComplete.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 49, "testTaskComplete");
+
+		// Initialize test suite: TestTaskTest
+		Tests_TestTaskTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_TestTaskTest = new TestTaskTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("TestTaskTest", "Exception thrown when initializing " "TestTaskTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("TestTaskTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_TestTaskTest.initialize(
+			"Tests\\TestTaskTest.h", 8,
+			"TestTaskTest", *suite_TestTaskTest, Tests_TestTaskTest);
+		testDescription_TestTaskTest_testProcess.initialize(Tests_TestTaskTest, suiteDescription_TestTaskTest, 11, "testProcess");
+		testDescription_TestTaskTest_testSeperateTask.initialize(Tests_TestTaskTest, suiteDescription_TestTaskTest, 18, "testSeperateTask");
 
 		// Initialize test suite: TinyXmlTest
 		Tests_TinyXmlTest.initialize();
@@ -405,7 +469,7 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("TinyXmlTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_TinyXmlTest.initialize(
-			"TinyXmlTest.h", 8,
+			"Tests\\TinyXmlTest.h", 8,
 			"TinyXmlTest", *suite_TinyXmlTest, Tests_TinyXmlTest);
 		testDescription_TinyXmlTest_testTinyXML.initialize(Tests_TinyXmlTest, suiteDescription_TinyXmlTest, 11, "testTinyXML");
 
@@ -418,15 +482,15 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("XMLUtilsTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_XMLUtilsTest.initialize(
-			"XMLUtilsTest.h", 8,
+			"Tests\\XMLUtilsTest.h", 8,
 			"XMLUtilsTest", *suite_XMLUtilsTest, Tests_XMLUtilsTest);
 		testDescription_XMLUtilsTest_testAddPacketID.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 11, "testAddPacketID");
 		testDescription_XMLUtilsTest_testAddText.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 20, "testAddText");
-		testDescription_XMLUtilsTest_testAddInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 29, "testAddInt");
-		testDescription_XMLUtilsTest_testGetText.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 38, "testGetText");
-		testDescription_XMLUtilsTest_testGetInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 47, "testGetInt");
-		testDescription_XMLUtilsTest_testGetPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 57, "testGetPacketId");
-		testDescription_XMLUtilsTest_testPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 67, "testPacketId");
+		testDescription_XMLUtilsTest_testAddInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 32, "testAddInt");
+		testDescription_XMLUtilsTest_testGetText.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 42, "testGetText");
+		testDescription_XMLUtilsTest_testGetInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 51, "testGetInt");
+		testDescription_XMLUtilsTest_testGetPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 61, "testGetPacketId");
+		testDescription_XMLUtilsTest_testPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 71, "testPacketId");
 
 
 	}
@@ -434,6 +498,7 @@ namespace CxxTest
 	void cleanup()
 	{
 		delete suite_ArgumentsMapTest;
+		delete suite_ClientTaskPlannerTest;
 		delete suite_ClientsMapTest;
 		delete suite_LogTest;
 		delete suite_MDTaskTest;
@@ -441,6 +506,7 @@ namespace CxxTest
 		delete suite_NodeTest;
 		delete suite_NodesMapTest;
 		delete suite_TaskPlannerTest;
+		delete suite_TestTaskTest;
 		delete suite_TinyXmlTest;
 		delete suite_XMLUtilsTest;
 

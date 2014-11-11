@@ -14,7 +14,13 @@ TestTask::TestTask() : start(0), end(0), hash(0), result(0)
 {
 }
 
-TestTask::TestTask( const unsigned Start, const unsigned End, const unsigned Hash ) : start( Start ), end( End ), hash( Hash ), result(0)
+TestTask::TestTask( const unsigned Start, const unsigned End, const unsigned Hash ) :
+		start( Start ), end( End ), hash( Hash ), result(0)
+{
+}
+
+TestTask::TestTask( const unsigned Start, const unsigned End, const unsigned Hash, const unsigned plannerId ) :
+		start( Start ), end( End ), hash( Hash ), result(0) , Task( plannerId )
 {
 }
 
@@ -48,16 +54,15 @@ void TestTask::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 
 void TestTask::Process()
 {
-	Sleep(3000);
 	for( unsigned i = start; i < end; ++i )
 	{
-		if ( (i + 5)*35 == hash )
+		if (  i == hash )
 		{
 			result = i;
 			return;
 		}
+		Sleep(100);
 	}
-	Sleep(3000);
 }
 
 unsigned TestTask::GetID() const
@@ -67,5 +72,17 @@ unsigned TestTask::GetID() const
 
 Tasks TestTask::SeperateTask( const unsigned threadNums, const unsigned plannerID ) const
 {
-	return Tasks();
+	Tasks tasks;
+	if ( threadNums < 2 )
+	{
+		tasks.push_back( TaskPtr( new TestTask( *this ) ) );
+		return tasks;
+	}
+	unsigned st = start;
+	unsigned step = ( end - start ) / threadNums;
+	for ( unsigned i = 0; i < threadNums; ++i )
+	{
+		tasks.push_back( TaskPtr( new TestTask( st, st+=step, hash, plannerID ) ) );
+	}
+	return tasks;
 }

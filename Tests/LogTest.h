@@ -4,6 +4,7 @@
 #include <cxxtest/TestSuite.h>
 
 #include "Log.h"
+#include "winsock2.h"
 
 class LogTest : public CxxTest::TestSuite
 {

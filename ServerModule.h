@@ -9,11 +9,13 @@
 #define SERVERMODULE_H_
 
 #include "include.h"
+#include "Thread.h"
 #include "ServerCommunicationManager.h"
 #include "SignalHandler.h"
 #include "Module.h"
 #include "ServerMessageProcessor.h"
 #include "NodesMap.h"
+#include "TaskPlanner.h"
 
 class Task;
 
@@ -34,7 +36,7 @@ protected:
 	void Stop();
 
 	static void TaskPlannerThread ( ServerModule &parent );
-	void TaskPlanner();
+	void _TaskPlanner();
 
 	friend class ServerMessageProcessor;
 	bool m_run;
@@ -42,8 +44,9 @@ protected:
 	SignalHandler m_signal;
 	ServerMessageProcessor m_processor;
 	NodesMap m_nodes;
+	TaskPlanner m_planner;
 
-	std::unique_ptr<std::thread> m_taskPlanner;
+	ThreadPtr m_taskPlanner;
 };
 
 #endif /* SERVERMODULE_H_ */

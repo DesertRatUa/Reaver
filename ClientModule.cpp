@@ -8,7 +8,6 @@
 #include "ClientModule.h"
 #include "Log.h"
 #include "stdexcept"
-#include "Tasks/Task.h"
 #include <thread>
 
 ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) :
@@ -133,10 +132,15 @@ void ClientModule::TaskRequest( TaskPtr &task )
 		return;
 	}
 	Log::Add( "Recive Task: " + Log::IntToStr( task->GetID() ) );
-	m_respondTime = GetTickCount();
+	m_taskThr.push_back( std::thread( TaskProcess, task, std::ref( m_processor ) ) );
+}
+
+void ClientModule::TaskProcess( TaskPtr task, ClientMessageProcessor &processor )
+{
+	unsigned respondTime = GetTickCount();
 	task->Process();
 	Log::Add( "Task done" );
-	m_processor.SendTaskMessage( GetTickCount() - m_respondTime, task );
+	processor.SendTaskMessage( GetTickCount() - respondTime, task );
 }
 
 void ClientModule::Stop()

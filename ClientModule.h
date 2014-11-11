@@ -9,11 +9,11 @@
 #define CLIENTMODULE_H_
 
 #include "include.h"
+#include "Thread.h"
 #include "Module.h"
 #include "ClientCommunicationManager.h"
 #include "SignalHandler.h"
 #include "ClientMessageProcessor.h"
-#include <mutex>
 
 class ClientModule : public Module
 {
@@ -47,7 +47,8 @@ protected:
 	ClientMessageProcessor m_processor;
 	unsigned long m_respondTime;
 	std::mutex m_mut;
-	std::unique_ptr<std::thread> m_sequence;
+	ThreadPtr m_sequence;
+	std::vector<std::thread> m_taskThr;
 	unsigned m_count;
 
 	void Respond();
@@ -58,6 +59,7 @@ protected:
 	void Sequence();
 
 	static void SequenceThread( ClientModule &parent );
+	static void TaskProcess( TaskPtr task, ClientMessageProcessor &processor );
 };
 
 #endif /* CLIENTMODULE_H_ */

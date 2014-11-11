@@ -7,14 +7,17 @@
 
 #ifndef TASK_H_
 #define TASK_H_
+
 #include "include.h"
 #include <memory>
-#include <vector>
+#include <deque>
+
 
 class Task
 {
 public:
 	Task();
+	Task( const unsigned plannerId );
 	virtual ~Task();
 
 	virtual void SerializeRequest( tinyxml2::XMLDocument &doc ) const = 0;
@@ -27,7 +30,7 @@ public:
 	virtual unsigned GetID() const = 0;
 
 	unsigned GetPlannerID();
-	virtual std::vector<std::shared_ptr<Task>> SeperateTask( const unsigned threadNums, const unsigned plannerID ) const = 0;
+	virtual std::deque<std::shared_ptr<Task>> SeperateTask( const unsigned threadNums, const unsigned plannerID ) const = 0;
 
 	static Task* CreateTask( const unsigned id );
 
@@ -39,6 +42,6 @@ protected:
 };
 
 typedef std::shared_ptr<Task> TaskPtr;
-typedef std::vector<TaskPtr> Tasks;
+typedef std::deque<TaskPtr> Tasks;
 
 #endif /* TASK_H_ */

@@ -9,14 +9,14 @@
 #define COMMUNICATIONMANAGER_H_
 
 #include "include.h"
+#include "Thread.h"
 #include <vector>
-//#ifdef WIN32
+#ifdef WIN32
    #include <winsock2.h>
-//#else
-   //#include <sys/socket.h>
-   //#include <sys/un.h>
-//#endif
-#include <memory>
+#else
+   #include <sys/socket.h>
+   #include <sys/un.h>
+#endif
 
 class MessageProcessor;
 
@@ -38,7 +38,7 @@ protected:
 	bool &m_run;
 	WSADATA m_wsaData;
 	SOCKET m_socket;
-	std::unique_ptr<std::thread> m_mainThread;
+	ThreadPtr m_mainThread;
 	timeval m_timeout;
 	sockaddr_in m_address;
 };

@@ -10,7 +10,6 @@
 
 #include "include.h"
 #include "CommunicationManager.h"
-#include <stdexcept>
 
 class ClientCommunicationManager: public CommunicationManager
 {

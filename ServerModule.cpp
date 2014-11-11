@@ -9,11 +9,10 @@
 #include "Log.h"
 #include <windows.h>
 #include "Tasks/TestTask.h"
-#include <thread>
 
 ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) :
 	Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this),
-	m_run(false), m_signal( m_run )
+	m_run(false), m_signal( m_run ), m_planner( m_nodes )
 {
 }
 
@@ -29,6 +28,7 @@ void ServerModule::Init()
 	m_connection.Init();
 	m_processor.Init();
 	m_nodes.Init();
+	m_planner.Init();
 }
 
 void ServerModule::Run()
@@ -42,6 +42,7 @@ void ServerModule::Run()
 	try
 	{
 		m_connection.Listen( ip, port );
+		m_planner.Run();
 		m_taskPlanner.reset( new std::thread( ServerModule::TaskPlannerThread, std::ref( *this ) ) );
 		m_signal.Wait();
 	}
@@ -51,6 +52,7 @@ void ServerModule::Run()
 	}
 
 	Stop();
+	m_planner.Stop();
 	m_taskPlanner->join();
 	m_connection.Close();
 	Log::Add( "Stop server module" );
@@ -63,31 +65,30 @@ void ServerModule::Stop()
 
 void ServerModule::TaskPlannerThread ( ServerModule &parent )
 {
-	Log::Add( "Start task planner thread" );
+	Log::Add( "Start task add thread" );
 	try
 	{
-		parent.TaskPlanner();
+		parent._TaskPlanner();
 	}
 	catch( std::exception &exc )
 	{
 		Log::AddException( "Task planner thread", exc );
 	}
-	Log::Add( "Stop task planner thread" );
+	Log::Add( "Stop task add thread" );
 }
 
-void ServerModule::TaskPlanner()
+void ServerModule::_TaskPlanner()
 {
+	unsigned i = 0;
 	while ( m_run )
 	{
-		Node *node = m_nodes.GetFreeNode();
-		if ( node )
+		++i;
+		Sleep( 100 );
+		if ( i >= 100 )
 		{
-			TaskPtr task( new TestTask( 0, 99999, 3496675 ) );
-			node->SendTask( task );
-		}
-		else
-		{
-			Sleep( 1000 );
+			TaskPtr task( new TestTask( 0, 999999, 80000 ) );
+			m_planner.AddTask( task, m_nodes.GetFreeThreadsNum() );
+			i = 0;
 		}
 	}
 }

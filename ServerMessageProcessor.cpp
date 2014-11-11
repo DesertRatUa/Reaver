@@ -11,7 +11,8 @@
 #include "Messages/EchoMessage.h"
 #include "Messages/RegisterMessage.h"
 #include "Messages/TaskMessage.h"
-#include "Tasks/Task.h"
+
+#include "tinyxml2.h"
 
 ServerModule *ServerMessageProcessor::m_parent(NULL);
 
