@@ -4,7 +4,7 @@
 #include <cxxtest/TestSuite.h>
 
 #include "NodesMap.h"
-#include "ServerMessageProcessorInterface.h"
+#include "ServerMessageProcessor.h"
 
 class NodesMapTest : public CxxTest::TestSuite, public ServerMessageProcessorInterface
 {

@@ -13,6 +13,8 @@
 class Task;
 class ServerModule;
 class ServerMessageProcessorInterface;
+class ClientMessageProcessorInterface;
+class ClientCommunicationManagerInterface;
 class Message;
 class ClientModule;
 

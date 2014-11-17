@@ -12,10 +12,12 @@
 #include "Tasks/Task.h"
 #include "Thread.h"
 
+class ClientMessageProcessorInterface;
+
 class ClientTaskPlanner
 {
 public:
-	ClientTaskPlanner( unsigned ThreadNums );
+	ClientTaskPlanner( ClientMessageProcessorInterface &processor, unsigned ThreadNums );
 	virtual ~ClientTaskPlanner();
 
 	void Init();
@@ -27,15 +29,18 @@ public:
 protected:
 	struct TaskThrd
 	{
-		TaskThrd();
+		TaskThrd( ClientTaskPlanner &Parent );
 		ThreadPtr thread;
+		TaskPtr task;
 		bool Done;
+		ClientTaskPlanner *parent;
 	};
 	typedef std::vector<TaskThrd> TaskThrds;
 
-	static void Thread( ClientTaskPlanner &parent );
-	static void TaskThread( TaskPtr task, TaskThrd &thread );
-	void TaskPlanner();
+	static void ThreadMain( ClientTaskPlanner &parent );
+	static void ThreadTask( TaskThrd *thread );
+	void MainSequence();
+	void TaskProcess( TaskPtr &task );
 
 	bool m_run;
 	unsigned m_threadNums;
@@ -43,6 +48,7 @@ protected:
 	TaskThrds m_threads;
 	std::mutex m_mut;
 	Tasks m_tasks;
+	ClientMessageProcessorInterface &m_processor;
 };
 
 #endif /* CLIENTTASKPLANNER_H_ */

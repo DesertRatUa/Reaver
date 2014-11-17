@@ -42,6 +42,7 @@ protected:
 	friend class ServerCommunicationManager;
 	SOCKET socket;
 	ThreadPtr thread;
+	std::mutex m_mut;
 };
 
 typedef std::shared_ptr<Client> ClientPtr;

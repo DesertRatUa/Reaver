@@ -11,7 +11,9 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include "Log.h"
 
-Config::Config( std::string path ) :NodeType( UNDEFINED ), ServerIp("127.0.0.1"), ServerPort(1025), ListenIp("*"), ListenPort(1025), m_path(path)
+Config::Config( std::string path ) :
+	NodeType( UNDEFINED ), ServerIp("127.0.0.1"), ServerPort(1025), ListenIp("*"),
+	ListenPort(1025), m_path(path), ThreadNums(4)
 {
 	m_configFile = m_path.substr( 0, m_path.find_last_of( "\\" ) ) + "\\" + "Config.cfg";
 }

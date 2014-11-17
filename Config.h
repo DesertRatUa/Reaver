@@ -32,6 +32,7 @@ class Config
 		unsigned ServerPort;
 		std::string ListenIp;
 		unsigned ListenPort;
+		unsigned ThreadNums;
 
 	protected:
 		boost::property_tree::ptree m_configTree;

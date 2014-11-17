@@ -7,8 +7,9 @@
 
 #include <Node.h>
 #include "Client.h"
-#include "ServerMessageProcessorInterface.h"
+#include "ServerMessageProcessor.h"
 #include "Log.h"
+#include "Tasks/Task.h"
 
 Node::Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessorInterface &manager ) :
 	m_addr( addr ), m_proccessor( manager ), m_threads(0), m_threadsLimit( threadNum )

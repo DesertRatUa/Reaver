@@ -3,7 +3,7 @@
 
 #include <cxxtest/TestSuite.h>
 #include "Node.h"
-#include "ServerMessageProcessorInterface.h"
+#include "ServerMessageProcessor.h"
 
 class NodeTest : public CxxTest::TestSuite
 {

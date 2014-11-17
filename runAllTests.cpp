@@ -334,10 +334,10 @@ namespace CxxTest
 		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ClientTaskPlannerTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
 
 		suiteDescription_ClientTaskPlannerTest.initialize(
-			"Tests\\ClientTaskPlannerTest.h", 11,
+			"Tests\\ClientTaskPlannerTest.h", 13,
 			"ClientTaskPlannerTest", *suite_ClientTaskPlannerTest, Tests_ClientTaskPlannerTest);
-		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 39, "testAddTask");
-		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 50, "testRun");
+		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 56, "testAddTask");
+		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 68, "testRun");
 
 		// Initialize test suite: ClientsMapTest
 		Tests_ClientsMapTest.initialize();

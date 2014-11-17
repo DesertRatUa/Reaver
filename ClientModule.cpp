@@ -11,9 +11,10 @@
 #include <thread>
 
 ClientModule::ClientModule( Config &config, ArgumentsMap &arguments ) :
-	Module( config, arguments ), m_connection( m_processor, m_run ), m_processor(this),
-	m_run(false), m_signal( m_run ), m_respondTime(0), m_state( INIT ), m_count(0),
-	m_respond(false)
+	Module( config, arguments ), m_connection( m_processor, m_run ),
+	m_processor( *this, m_connection ), m_run( false ), m_signal( m_run ),
+	m_respondTime(0), m_state( INIT ), m_count(0), m_respond(false),
+	m_planner( m_processor, config.ThreadNums )
 
 {
 }
@@ -29,6 +30,7 @@ void ClientModule::Init()
 	m_signal.Init();
 	m_connection.Init();
 	m_processor.Init();
+	m_planner.Init();
 }
 
 void ClientModule::Run()
@@ -42,6 +44,7 @@ void ClientModule::Run()
 	try
 	{
 		m_connection.Connect( ip, port );
+		m_planner.Run();
 		m_sequence.reset( new std::thread( ClientModule::SequenceThread, std::ref( *this ) ) );
 		m_signal.Wait();
 	}
@@ -132,7 +135,7 @@ void ClientModule::TaskRequest( TaskPtr &task )
 		return;
 	}
 	Log::Add( "Recive Task: " + Log::IntToStr( task->GetID() ) );
-	m_taskThr.push_back( std::thread( TaskProcess, task, std::ref( m_processor ) ) );
+	m_planner.AddTask( task );
 }
 
 void ClientModule::TaskProcess( TaskPtr task, ClientMessageProcessor &processor )
@@ -146,6 +149,7 @@ void ClientModule::TaskProcess( TaskPtr task, ClientMessageProcessor &processor 
 void ClientModule::Stop()
 {
 	m_run = false;
+	m_planner.Stop();
 }
 
 void ClientModule::RegisterClient()

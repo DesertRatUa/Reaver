@@ -26,6 +26,7 @@ bool Client::operator==( const Client &client ) const
 
 void  Client::Send( const std::string& message )
 {
+	std::lock_guard<std::mutex> lock(m_mut);
 	send( socket, message.c_str(), message.length(), 0);
 }
 

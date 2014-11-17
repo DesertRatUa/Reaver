@@ -14,6 +14,7 @@
 #include "ClientCommunicationManager.h"
 #include "SignalHandler.h"
 #include "ClientMessageProcessor.h"
+#include "ClientTaskPlanner.h"
 
 class ClientModule : public Module
 {
@@ -29,8 +30,6 @@ public:
 	void TaskRequest( TaskPtr &task );
 
 protected:
-	friend class ClientMessageProcessor;
-
 	enum State
 	{
 		FAILED = 0,
@@ -42,14 +41,16 @@ protected:
 
 	bool m_run;
 	bool m_respond;
+	unsigned long m_respondTime;
+	unsigned m_count;
+
 	ClientCommunicationManager m_connection;
 	SignalHandler m_signal;
 	ClientMessageProcessor m_processor;
-	unsigned long m_respondTime;
+	ClientTaskPlanner m_planner;
+
 	std::mutex m_mut;
 	ThreadPtr m_sequence;
-	std::vector<std::thread> m_taskThr;
-	unsigned m_count;
 
 	void Respond();
 	void Wait();

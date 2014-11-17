@@ -14,11 +14,11 @@
 
 class NodesMap;
 
-class TaskPlanner
+class ServerTaskPlanner
 {
 public:
-	TaskPlanner( NodesMap &map );
-	virtual ~TaskPlanner();
+	ServerTaskPlanner( NodesMap &map );
+	virtual ~ServerTaskPlanner();
 
 	void Init();
 	void Run();
@@ -27,7 +27,7 @@ public:
 	void TaskComplete( const TaskPtr &task );
 
 protected:
-	static void Thread( TaskPlanner &parent );
+	static void Thread( ServerTaskPlanner &parent );
 	void ThreadRun();
 
 	Tasks m_tasks;

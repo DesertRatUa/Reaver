@@ -11,13 +11,24 @@
 #include <assert.h>
 #include <thread>
 
-ClientCommunicationManager::ClientCommunicationManager( MessageProcessor &processor, bool &isRun ) : CommunicationManager( processor, isRun )
+ClientCommunicationManager::ClientCommunicationManager
+	( MessageProcessor &processor, bool &isRun ) :
+	CommunicationManager( processor, isRun )
 {
 }
 
 ClientCommunicationManager::~ClientCommunicationManager()
 {
 }
+
+ClientCommunicationManagerInterface::ClientCommunicationManagerInterface()
+{
+}
+
+ClientCommunicationManagerInterface::~ClientCommunicationManagerInterface()
+{
+}
+
 
 void ClientCommunicationManager::Connect( const std::string &addr, const unsigned port ) throw(std::runtime_error)
 {
@@ -68,6 +79,7 @@ void ClientCommunicationManager::DataHandlerThread( ClientCommunicationManager &
 
 void ClientCommunicationManager::Send( const std::string &message )
 {
+	std::lock_guard<std::mutex> lock(m_mut);
 	send( m_socket, message.c_str(), message.length(), 0);
 }
 

@@ -25,6 +25,14 @@ ServerMessageProcessor::~ServerMessageProcessor()
 {
 }
 
+ServerMessageProcessorInterface::ServerMessageProcessorInterface()
+{
+}
+
+ServerMessageProcessorInterface::~ServerMessageProcessorInterface()
+{
+}
+
 void ServerMessageProcessor::Init()
 {
 	RegisterProcessor( 1, &ServerMessageProcessor::RecieveEchoMessage );

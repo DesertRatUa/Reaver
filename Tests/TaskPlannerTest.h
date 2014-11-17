@@ -4,7 +4,7 @@
 #include <cxxtest/TestSuite.h>
 
 #define protected public
-#include "TaskPlanner.h"
+#include "ServerTaskPlanner.h"
 #undef protected
 
 class TaskPlannerTest : public CxxTest::TestSuite
@@ -37,7 +37,7 @@ public:
 	void testAddTask()
 	{
 		NodesMap map;
-		TaskPlanner planner(map);
+		ServerTaskPlanner planner(map);
 		TaskPtr task( new TestTask() );
 		planner.AddTask( task, 2 );
 		TS_ASSERT_EQUALS( planner.m_tasks.size(), unsigned(2) );
@@ -49,7 +49,7 @@ public:
 	void testTaskComplete()
 	{
 		NodesMap map;
-		TaskPlanner planner(map);
+		ServerTaskPlanner planner(map);
 		TaskPtr task( new TestTask() );
 		planner.AddTask( task, 2 );
 		planner.AddTask( task, 3 );

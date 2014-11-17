@@ -12,17 +12,29 @@
 #include "Messages/RegisterMessage.h"
 #include "Messages/EchoMessage.h"
 #include "Messages/TaskMessage.h"
+#include "ClientMessageProcessor.h"
 
+ClientCommunicationManagerInterface *ClientMessageProcessor::m_communication(NULL);
 ClientModule *ClientMessageProcessor::m_parent(NULL);
 
-ClientMessageProcessor::ClientMessageProcessor( ClientModule *parent  )
+ClientMessageProcessor::ClientMessageProcessor( ClientModule &parent, ClientCommunicationManagerInterface &communication )
 {
-	m_parent = parent;
+	m_parent = &parent;
+	m_communication = &communication;
 }
 
 ClientMessageProcessor::~ClientMessageProcessor()
 {
 }
+
+ClientMessageProcessorInterface::ClientMessageProcessorInterface()
+{
+}
+
+ClientMessageProcessorInterface::~ClientMessageProcessorInterface()
+{
+}
+
 
 void ClientMessageProcessor::Init()
 {
@@ -62,19 +74,19 @@ void ClientMessageProcessor::SendEchoMessage( const std::string& message )
 {
 	assert( m_parent );
 	EchoMessage mess( message );
-	m_parent->m_connection.SendRequest( mess );
+	m_communication->SendRequest( mess );
 }
 
 void ClientMessageProcessor::SendRegisterMessage()
 {
 	assert( m_parent );
 	RegisterMessage mess(4);
-	m_parent->m_connection.SendRequest( mess );
+	m_communication->SendRequest( mess );
 }
 
 void ClientMessageProcessor::SendTaskMessage( const unsigned long time, TaskPtr &task )
 {
 	assert( m_parent );
 	TaskMessage mess( time, task );
-	m_parent->m_connection.SendRespond( mess );
+	m_communication->SendRespond( mess );
 }

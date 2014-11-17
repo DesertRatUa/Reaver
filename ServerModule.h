@@ -15,7 +15,7 @@
 #include "Module.h"
 #include "ServerMessageProcessor.h"
 #include "NodesMap.h"
-#include "TaskPlanner.h"
+#include "ServerTaskPlanner.h"
 
 class Task;
 
@@ -44,7 +44,7 @@ protected:
 	SignalHandler m_signal;
 	ServerMessageProcessor m_processor;
 	NodesMap m_nodes;
-	TaskPlanner m_planner;
+	ServerTaskPlanner m_planner;
 
 	ThreadPtr m_taskPlanner;
 };

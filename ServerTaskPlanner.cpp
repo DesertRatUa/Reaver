@@ -5,43 +5,44 @@
  *      Author: maximm
  */
 
-#include <TaskPlanner.h>
+#include "ServerTaskPlanner.h"
 #include "NodesMap.h"
 #include "Log.h"
 #include <windows.h>
 
-TaskPlanner::TaskPlanner( NodesMap &map ) : m_taskCount(0), m_run(false), m_nodes( map )
+ServerTaskPlanner::ServerTaskPlanner(  NodesMap &map) :
+	m_taskCount(0), m_run(false), m_nodes( map )
 {
 }
 
-TaskPlanner::~TaskPlanner()
+ServerTaskPlanner::~ServerTaskPlanner()
 {
 }
 
-void TaskPlanner::Init()
+void ServerTaskPlanner::Init()
 {
 }
 
-void TaskPlanner::Run()
+void ServerTaskPlanner::Run()
 {
 	m_run = true;
-	m_thread.reset( new std::thread( TaskPlanner::Thread, std::ref( *this ) ) );
+	m_thread.reset( new std::thread( ServerTaskPlanner::Thread, std::ref( *this ) ) );
 }
 
-void TaskPlanner::Stop()
+void ServerTaskPlanner::Stop()
 {
 	m_run = false;
 	m_thread->join();
 }
 
-void TaskPlanner::Thread( TaskPlanner &parent )
+void ServerTaskPlanner::Thread( ServerTaskPlanner &parent )
 {
 	Log::Add( "Start TaskPlanner thread" );
 	parent.ThreadRun();
 	Log::Add( "Stop TaskPlanner thread" );
 }
 
-void TaskPlanner::ThreadRun()
+void ServerTaskPlanner::ThreadRun()
 {
 	Node *node = NULL;
 	while ( m_run )
@@ -64,7 +65,7 @@ void TaskPlanner::ThreadRun()
 	}
 }
 
-void TaskPlanner::AddTask( const TaskPtr &task, const unsigned threadsNum )
+void ServerTaskPlanner::AddTask( const TaskPtr &task, const unsigned threadsNum )
 {
 	Tasks tasks = task->SeperateTask( threadsNum, ++m_taskCount );
 	std::lock_guard<std::mutex> lock( m_mut );
@@ -72,7 +73,7 @@ void TaskPlanner::AddTask( const TaskPtr &task, const unsigned threadsNum )
 	m_tasks.insert( m_tasks.end(), tasks.begin(), tasks.end() );
 }
 
-void TaskPlanner::TaskComplete( const TaskPtr &task )
+void ServerTaskPlanner::TaskComplete( const TaskPtr &task )
 {
 	const unsigned &id = task->GetPlannerID();
 	std::lock_guard<std::mutex> lock( m_mut );
