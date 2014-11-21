@@ -54,7 +54,7 @@ void Task::ReSerializeRespond()
 	DeserializeRespond( doc );
 }
 
-unsigned Task::GetPlannerID()
+unsigned Task::GetPlannerID() const
 {
 	return m_plannerID;
 }

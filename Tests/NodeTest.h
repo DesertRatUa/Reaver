@@ -13,7 +13,7 @@ public:
 	{
 		virtual void Init() {}
 		virtual void SendRegisterMessage( const std::string &addr, const std::string *error ) {}
-		virtual void SendTaskMessage( const std::string &addr, TaskPtr &task ) {}
+		virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) {}
 	};
 
 	class TestTask : public Task
@@ -30,6 +30,14 @@ public:
 		virtual unsigned GetID() const
 		{
 			return 0;
+		}
+		virtual Task* Clone()
+		{
+			return NULL;
+		}
+		virtual bool isDone()
+		{
+			return true;
 		}
 	};
 
@@ -51,9 +59,9 @@ public:
 		TestManager manger;
 		Node node( addr, 1, manger );
 		node.SendTask( task );
-		TS_ASSERT_THROWS_NOTHING( node.TaskComplete() );
+		TS_ASSERT_THROWS_NOTHING( node.TaskComplete( task ) );
 		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), unsigned(1) );
-		TS_ASSERT_THROWS_ANYTHING( node.TaskComplete() );
+		TS_ASSERT_THROWS_ANYTHING( node.TaskComplete( task ) );
 	}
 
 	void testisThreadsAvalible()

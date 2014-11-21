@@ -45,20 +45,24 @@ void ClientTaskPlanner::Stop()
 	Log::Add("2");
 	std::lock_guard<std::mutex> lock(m_mut);
 	Log::Add("3");
-	for( TaskThrds::iterator iter = m_threads.begin(); iter != m_threads.end(); ++iter )
+	for( ThreadDataPtrs::iterator iter = m_threads.begin(); iter != m_threads.end(); ++iter )
 	{
 		Log::Add("4");
-		if( !iter->thread.get() )
+
+		ThreadDataPtr &ptr = *iter;
+		if( !ptr->m_thread.get() )
 		{
 			Log::Add( "Null pointer to thread" );
 			continue;
 		}
-		if ( !iter->thread->joinable() )
+
+		std::thread &thread = *ptr->m_thread;
+		if ( !thread.joinable() )
 		{
 			Log::Add( "Thread is not joinabled" );
 			continue;
 		}
-		iter->thread->join();
+		thread.join();
 	}
 	Log::Add("5");
 	m_threads.clear();
@@ -66,10 +70,10 @@ void ClientTaskPlanner::Stop()
 
 void ClientTaskPlanner::AddTask( TaskPtr &task )
 {
+	assert( task.get() );
 	std::lock_guard<std::mutex> lock(m_mut);
-	//Log::Add( Log::IntToStr( unsigned( task.use_count() ) ) );
 	m_tasks.push_back( task );
-	//Log::Add( Log::IntToStr( unsigned( task.use_count() ) ) );
+	Log::Add( "Task added: " + Log::IntToStr( task->GetID() ) );
 }
 
 void ClientTaskPlanner::ThreadMain( ClientTaskPlanner &parent )
@@ -79,66 +83,66 @@ void ClientTaskPlanner::ThreadMain( ClientTaskPlanner &parent )
 	Log::Add( "Stop TaskPlanner thread" );
 }
 
-void ClientTaskPlanner::ThreadTask( TaskThrd *thread )
+void ClientTaskPlanner::ThreadTask( ThreadData &data )
 {
-	Log::Add( "Start task" );
-	assert( thread->task.get() );
-	assert( thread->parent );
-	Log::Add( "Start task thread for taskId: " + Log::IntToStr( thread->task->GetID() ) );
-	//thread->parent->TaskProcess( thread->task );
-	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( thread->task->GetID() ) );
-	thread->Done = true;
-	Log::Add( "Stop task" );
-}
-
-void ClientTaskPlanner::TaskProcess( TaskPtr &task )
-{
+	assert( data.m_task.get() );
+	assert( data.m_parent );
+	TaskPtr &task = data.m_task;
+	Log::Add( "Start task thread for taskId: " + Log::IntToStr( task->GetID() ) );
 	unsigned respondTime = GetTickCount();
 	task->Process();
-	m_processor.SendTaskMessage( GetTickCount() - respondTime, task );
+	data.m_parent->SendTaskMessage( GetTickCount() - respondTime, task );
+	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( task->GetID() ) );
+	data.m_done = true;
+}
+
+void ClientTaskPlanner::SendTaskMessage( const unsigned long time, TaskPtr &task )
+{
+	m_processor.SendTaskMessage( time, task );
 }
 
 void ClientTaskPlanner::MainSequence()
 {
 	while ( m_run )
 	{
-		if ( m_tasks.size() > 0 && m_threads.size() < m_threadNums )
-		{
-			std::lock_guard<std::mutex> lock(m_mut);
-			m_threads.push_back( TaskThrd( *this ) );
-			TaskThrd &thread = m_threads.back();
-
-			Log::Add( Log::IntToStr( unsigned( thread.task.use_count() ) ) );
-			thread.task = m_tasks.front();
-			m_tasks.pop_front();
-			assert( thread.task.get() );
-			Log::Add( Log::IntToStr( unsigned( thread.task.use_count() ) ) );
-			thread.thread.reset( new std::thread( ClientTaskPlanner::ThreadTask, &thread ) ) ;
-		}
-		else
-		{
-			Sleep(100);
-		}
+		Sleep(100);
 		std::lock_guard<std::mutex> lock(m_mut);
-		for( TaskThrds::iterator iter = m_threads.begin(); iter != m_threads.end(); )
+		while ( m_tasks.size() > 0 && m_threads.size() < m_threadNums )
 		{
-			if ( iter->Done )
+			m_threads.push_back( ThreadDataPtr( new ThreadData( *this ) ) );
+			ThreadData &thread = *m_threads.back();
+
+			thread.m_task = m_tasks.front();
+			m_tasks.pop_front();
+
+			thread.m_thread.reset( new std::thread( ClientTaskPlanner::ThreadTask, std::ref( thread ) ) );
+		}
+		for( ThreadDataPtrs::iterator iter = m_threads.begin(); iter != m_threads.end(); )
+		{
+			ThreadDataPtr &ptr = *iter;
+			if ( ptr->m_done )
 			{
 				Log::Add( "Delete" );
-
-				if( !iter->thread.get() )
+				if( ptr->m_thread.get() )
+				{
+					std::thread &thread = *ptr->m_thread;
+					Log::Add( "Point G" );
+					if ( thread.joinable() )
+					{
+						Log::Add( "Join" );
+						thread.join();
+					}
+					else
+					{
+						Log::Add( "Thread is not joinabled" );
+					}
+				}
+				else
 				{
 					Log::Add( "Null pointer to thread" );
-					continue;
 				}
-				if ( !iter->thread->joinable() )
-				{
-					Log::Add( "Thread is not joinabled" );
-					continue;
-				}
-
-				iter->thread->join();
 				iter = m_threads.erase(iter);
+				Log::Add( "Delete complete" );
 			}
 			else
 			{
@@ -148,6 +152,7 @@ void ClientTaskPlanner::MainSequence()
 	}
 }
 
-ClientTaskPlanner::TaskThrd::TaskThrd( ClientTaskPlanner &Parent ) : Done(false), parent(&Parent)
+ClientTaskPlanner::ThreadData::ThreadData( ClientTaskPlanner &Parent ) :
+		m_done(false), m_parent(&Parent)
 {
 }

@@ -23,7 +23,6 @@ public:
 		}
 
 		unsigned count = 0;
-		std::mutex mut;
 
 		virtual void SerializeRequest( tinyxml2::XMLDocument &doc ) const {}
 		virtual void DeserializeRequest( const tinyxml2::XMLDocument &doc )  {}
@@ -36,12 +35,20 @@ public:
 		}
 		virtual void Process()
 		{
-			std::lock_guard<std::mutex> lock(mut);
+			//std::lock_guard<std::mutex> lock(mut);
 			++count;
 		}
 		virtual unsigned GetID() const
 		{
 			return 0;
+		}
+		virtual Task* Clone()
+		{
+			return new TestTask( *this );
+		}
+		virtual bool isDone()
+		{
+			return true;
 		}
 	};
 
@@ -69,17 +76,17 @@ public:
 	{
 		TestProc proc;
 		ClientTaskPlanner planner( proc, 2 );
-		TaskPtr task( new TestTask() );
-		TestTask &tt = dynamic_cast<TestTask&>(*task.get());
-		TS_ASSERT_EQUALS( tt.count, unsigned(0) );
-		planner.AddTask( task );
-		planner.AddTask( task );
-		planner.AddTask( task );
-		planner.AddTask( task );
+		TestTask *task =  new ClientTaskPlannerTest::TestTask();
+		TaskPtr taskptr( task );
+		TS_ASSERT_EQUALS( task->count, unsigned(0) );
+		planner.AddTask( taskptr );
+		planner.AddTask( taskptr );
+		planner.AddTask( taskptr );
+		planner.AddTask( taskptr );
 		planner.Run();
-		Sleep(30000);
+		Sleep(300);
 		planner.Stop();
-		TS_ASSERT_EQUALS( tt.count, unsigned(4) );
+		TS_ASSERT_EQUALS( task->count, unsigned(4) );
 	}
 
 };

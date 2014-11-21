@@ -14,11 +14,11 @@ TaskMessage::TaskMessage() : SpendTime(0)
 {
 }
 
-TaskMessage::TaskMessage( const unsigned spendTime, TaskPtr &tsk ) : SpendTime( spendTime ),  task( tsk )
+TaskMessage::TaskMessage( const unsigned spendTime, const TaskPtr &tsk ) : SpendTime( spendTime ),  task( tsk )
 {
 }
 
-TaskMessage::TaskMessage( TaskPtr &tsk ): SpendTime(0), task( tsk )
+TaskMessage::TaskMessage( const TaskPtr &tsk ): SpendTime(0), task( tsk )
 {
 }
 

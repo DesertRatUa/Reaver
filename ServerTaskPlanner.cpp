@@ -73,9 +73,9 @@ void ServerTaskPlanner::AddTask( const TaskPtr &task, const unsigned threadsNum 
 	m_tasks.insert( m_tasks.end(), tasks.begin(), tasks.end() );
 }
 
-void ServerTaskPlanner::TaskComplete( const TaskPtr &task )
+void ServerTaskPlanner::TaskComplete( const Task &task )
 {
-	const unsigned &id = task->GetPlannerID();
+	const unsigned &id = task.GetPlannerID();
 	std::lock_guard<std::mutex> lock( m_mut );
 	for ( Tasks::iterator iter = m_tasks.begin(); iter !=  m_tasks.end(); )
 	{

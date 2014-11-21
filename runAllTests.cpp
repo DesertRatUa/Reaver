@@ -336,8 +336,8 @@ namespace CxxTest
 		suiteDescription_ClientTaskPlannerTest.initialize(
 			"Tests\\ClientTaskPlannerTest.h", 13,
 			"ClientTaskPlannerTest", *suite_ClientTaskPlannerTest, Tests_ClientTaskPlannerTest);
-		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 56, "testAddTask");
-		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 68, "testRun");
+		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 63, "testAddTask");
+		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 75, "testRun");
 
 		// Initialize test suite: ClientsMapTest
 		Tests_ClientsMapTest.initialize();
@@ -408,11 +408,11 @@ namespace CxxTest
 		suiteDescription_NodeTest.initialize(
 			"Tests\\NodeTest.h", 8,
 			"NodeTest", *suite_NodeTest, Tests_NodeTest);
-		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 36, "testSendTask");
-		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 47, "testTaskComplete");
-		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 59, "testisThreadsAvalible");
-		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 70, "testGetFreeThreadsNum");
-		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 81, "testGetID");
+		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 44, "testSendTask");
+		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 55, "testTaskComplete");
+		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 67, "testisThreadsAvalible");
+		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 78, "testGetFreeThreadsNum");
+		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 89, "testGetID");
 
 		// Initialize test suite: NodesMapTest
 		Tests_NodesMapTest.initialize();
@@ -425,12 +425,12 @@ namespace CxxTest
 		suiteDescription_NodesMapTest.initialize(
 			"Tests\\NodesMapTest.h", 9,
 			"NodesMapTest", *suite_NodesMapTest, Tests_NodesMapTest);
-		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 34, "testRegisterNode");
-		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 44, "testUnregisterNode");
-		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 54, "testGetNode");
-		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 65, "testGetFreeNode");
-		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 81, "testGetFreeThreadsNum");
-		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 99, "testTaskComplete");
+		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 42, "testRegisterNode");
+		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 52, "testUnregisterNode");
+		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 62, "testGetNode");
+		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 73, "testGetFreeNode");
+		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 89, "testGetFreeThreadsNum");
+		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 107, "testTaskComplete");
 
 		// Initialize test suite: TaskPlannerTest
 		Tests_TaskPlannerTest.initialize();
@@ -443,8 +443,8 @@ namespace CxxTest
 		suiteDescription_TaskPlannerTest.initialize(
 			"Tests\\TaskPlannerTest.h", 10,
 			"TaskPlannerTest", *suite_TaskPlannerTest, Tests_TaskPlannerTest);
-		testDescription_TaskPlannerTest_testAddTask.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 37, "testAddTask");
-		testDescription_TaskPlannerTest_testTaskComplete.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 49, "testTaskComplete");
+		testDescription_TaskPlannerTest_testAddTask.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 45, "testAddTask");
+		testDescription_TaskPlannerTest_testTaskComplete.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 57, "testTaskComplete");
 
 		// Initialize test suite: TestTaskTest
 		Tests_TestTaskTest.initialize();

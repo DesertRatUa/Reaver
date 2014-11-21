@@ -19,7 +19,7 @@ public:
 	virtual ~ServerMessageProcessorInterface();
 
 	virtual void SendRegisterMessage( const std::string &addr, const std::string *error ) = 0;
-	virtual void SendTaskMessage( const std::string &addr, TaskPtr &task ) = 0;
+	virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) = 0;
 };
 
 class ServerMessageProcessor : public ServerMessageProcessorInterface
@@ -30,7 +30,7 @@ public:
 
 	virtual void Init();
 	virtual void SendRegisterMessage( const std::string &addr, const std::string *error );
-	virtual void SendTaskMessage( const std::string &addr, TaskPtr &task );
+	virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task );
 
 protected:
 	static ServerModule *m_parent;

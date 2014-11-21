@@ -29,6 +29,8 @@ public:
 
 	virtual void Process();
 	virtual unsigned GetID() const;
+	virtual Task* Clone();
+	virtual bool isDone();
 
 	virtual Tasks SeperateTask( const unsigned threadNums, const unsigned plannerID ) const;
 

@@ -52,18 +52,19 @@ Node& Node::operator=(const Node& node )
 	return *this;
 }
 
-void Node::SendTask( TaskPtr& task ) throw ( std::exception )
+void Node::SendTask( const TaskPtr& task ) throw ( std::exception )
 {
 	if ( m_threads >= m_threadsLimit  )
 	{
 		throw std::runtime_error( "No free threads on node: " + m_addr );
 	}
+	m_times[task->GetPlannerID()] = GetTickCount();
 	++m_threads;
 	Log::Add( "Task: " + Log::IntToStr( task->GetID() ) + " send to " + m_addr + " Avalible threads: " + Log::IntToStr( m_threadsLimit - m_threads ) );
 	m_proccessor.SendTaskMessage( m_addr, task );
 }
 
-void Node::TaskComplete() throw ( std::exception )
+void Node::TaskComplete( const TaskPtr& task ) throw ( std::exception )
 {
 	Log::Add( "Node: " + m_addr + " complete job" );
 	if ( m_threads == 0 )

@@ -88,3 +88,13 @@ Tasks MD5Task::SeperateTask( const unsigned threadNums, const unsigned plannerID
 {
 	return Tasks();
 }
+
+Task* MD5Task::Clone()
+{
+	return new MD5Task( *this );
+}
+
+bool MD5Task::isDone()
+{
+	return result != 0 ;
+}

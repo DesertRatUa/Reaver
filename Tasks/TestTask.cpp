@@ -61,7 +61,7 @@ void TestTask::Process()
 			result = i;
 			return;
 		}
-		Sleep(100);
+		//Sleep(100);
 	}
 }
 
@@ -85,4 +85,14 @@ Tasks TestTask::SeperateTask( const unsigned threadNums, const unsigned plannerI
 		tasks.push_back( TaskPtr( new TestTask( st, st+=step, hash, plannerID ) ) );
 	}
 	return tasks;
+}
+
+Task* TestTask::Clone()
+{
+	return new TestTask( *this );
+}
+
+bool TestTask::isDone()
+{
+	return result != 0;
 }

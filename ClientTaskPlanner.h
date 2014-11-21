@@ -27,25 +27,29 @@ public:
 	void AddTask( TaskPtr &task );
 
 protected:
-	struct TaskThrd
+	struct ThreadData
 	{
-		TaskThrd( ClientTaskPlanner &Parent );
-		ThreadPtr thread;
-		TaskPtr task;
-		bool Done;
-		ClientTaskPlanner *parent;
+		ThreadData( ClientTaskPlanner &Parent );
+		//~TaskThrd();
+
+		ThreadPtr m_thread;
+		TaskPtr m_task;
+		bool m_done;
+		ClientTaskPlanner *m_parent;
 	};
-	typedef std::vector<TaskThrd> TaskThrds;
+	typedef std::shared_ptr<ThreadData> ThreadDataPtr;
+	typedef std::vector<ThreadDataPtr> ThreadDataPtrs;
 
 	static void ThreadMain( ClientTaskPlanner &parent );
-	static void ThreadTask( TaskThrd *thread );
+	static void ThreadTask( ThreadData &data );
 	void MainSequence();
 	void TaskProcess( TaskPtr &task );
+	void SendTaskMessage( const unsigned long time, TaskPtr &task );
 
 	bool m_run;
 	unsigned m_threadNums;
 	ThreadPtr m_mainThread;
-	TaskThrds m_threads;
+	ThreadDataPtrs m_threads;
 	std::mutex m_mut;
 	Tasks m_tasks;
 	ClientMessageProcessorInterface &m_processor;

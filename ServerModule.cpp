@@ -123,4 +123,8 @@ void ServerModule::UnregisterNode( const std::string& addr )
 void ServerModule::TaskRespond( const std::string& addr, Task &task )
 {
 	m_nodes.TaskComplete( addr );
+	if ( task.isDone() )
+	{
+		m_planner.TaskComplete( task );
+	}
 }

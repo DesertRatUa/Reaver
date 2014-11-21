@@ -16,14 +16,20 @@ BOOL WINAPI CatchHandler( DWORD fdwCtrlType )
 {
 	switch( fdwCtrlType )
 	{
-	case CTRL_C_EVENT:
+		case CTRL_CLOSE_EVENT:
 		{
-		Log::Add( "CTRL + C catched" );
-		handled = true;
-	    return TRUE;
+			Log::Add( "Close window catched" );
+			handled = true;
+			break;
 		}
-	default : return FALSE;
+		case CTRL_C_EVENT:
+		{
+			Log::Add( "CTRL + C catched" );
+			handled = true;
+			break;
+		}
 	}
+	return handled;
 }
 
 SignalHandler::SignalHandler( bool &isRun ) : m_run( isRun )

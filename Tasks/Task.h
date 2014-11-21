@@ -28,8 +28,10 @@ public:
 
 	virtual void Process() = 0;
 	virtual unsigned GetID() const = 0;
+	virtual Task* Clone() = 0;
+	virtual bool isDone() = 0;
 
-	unsigned GetPlannerID();
+	unsigned GetPlannerID() const;
 	virtual std::deque<std::shared_ptr<Task>> SeperateTask( const unsigned threadNums, const unsigned plannerID ) const = 0;
 
 	static Task* CreateTask( const unsigned id );

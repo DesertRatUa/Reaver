@@ -51,7 +51,7 @@ void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const
 	m_parent->m_connection.GetClient( addr ).SendRespond( mess );
 }
 
-void ServerMessageProcessor::SendTaskMessage( const std::string &addr, TaskPtr &task )
+void ServerMessageProcessor::SendTaskMessage( const std::string &addr, const TaskPtr &task )
 {
 	TaskMessage mess(task);
 	m_parent->m_connection.GetClient( addr ).SendRequest( mess );

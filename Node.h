@@ -10,6 +10,7 @@
 
 #include "include.h"
 #include "Tasks/Task.h"
+#include <map>
 
 class Node
 {
@@ -26,11 +27,12 @@ public:
 
 	Node& operator=(const Node& node );
 
-	void SendTask( TaskPtr& task ) throw ( std::exception );
-	void TaskComplete() throw ( std::exception );
+	void SendTask( const TaskPtr& task ) throw ( std::exception );
+	void TaskComplete( const TaskPtr& task ) throw ( std::exception );
 
 protected:
-
+	typedef std::map<unsigned long, unsigned long> TaskTimes;
+	TaskTimes m_times;
 	unsigned m_threads;
 	unsigned m_threadsLimit;
 	std::string m_addr;
