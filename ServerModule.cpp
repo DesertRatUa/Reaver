@@ -120,10 +120,10 @@ void ServerModule::UnregisterNode( const std::string& addr )
 	}
 }
 
-void ServerModule::TaskRespond( const std::string& addr, Task &task )
+void ServerModule::TaskRespond( const std::string& addr, const TaskPtr &task )
 {
-	m_nodes.TaskComplete( addr );
-	if ( task.isDone() )
+	m_nodes.TaskComplete( addr, task );
+	if ( task->isDone() )
 	{
 		m_planner.TaskComplete( task );
 	}

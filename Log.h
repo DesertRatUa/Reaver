@@ -29,8 +29,11 @@ public:
 	static std::string IntToStr( const int value );
 	static std::string IntToStr( const unsigned value );
 	static std::string IntToStr( const size_t &value );
+	static std::string IntToStr( const unsigned long value );
 	static std::string AddrToStr( const sockaddr_in& addr );
 	static void SetName( const std::string &name );
+	static std::string BoolToStr( const bool value );
+	static void StrToBool( std::string value, bool &result );
 
 protected:
 	static std::string PrintTime();

@@ -30,7 +30,7 @@ public:
 
 	void RegisterNode( const std::string& addr, const unsigned threadNum );
 	void UnregisterNode( const std::string& addr );
-	void TaskRespond( const std::string& addr, Task &task );
+	void TaskRespond( const std::string& addr, const TaskPtr &task );
 
 protected:
 	void Stop();

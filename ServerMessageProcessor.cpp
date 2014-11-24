@@ -80,8 +80,8 @@ void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& do
 	assert( m_parent );
 	TaskMessage mess;
 	mess.DeserializeRespond( doc );
-	assert( mess.task );
-	Log::Add( "Recived task: " + Log::IntToStr( mess.task->GetID() ) + " respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
-	assert( mess.task.get() );
-	m_parent->TaskRespond( addr, *mess.task );
+	assert( mess.Task );
+	Log::Add( "Recived task: " + Log::IntToStr( mess.Task->GetID() ) + " respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
+	assert( mess.Task.get() );
+	m_parent->TaskRespond( addr, mess.Task );
 }

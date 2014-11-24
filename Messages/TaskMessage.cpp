@@ -10,15 +10,22 @@
 #include "Tasks/Task.h"
 #include <assert.h>
 
-TaskMessage::TaskMessage() : SpendTime(0)
+TaskMessage::TaskMessage() : SpendTime(0), Cancel( false ), PlannerID(0)
 {
 }
 
-TaskMessage::TaskMessage( const unsigned spendTime, const TaskPtr &tsk ) : SpendTime( spendTime ),  task( tsk )
+TaskMessage::TaskMessage( const unsigned spendTime, const TaskPtr &tsk ) :
+		SpendTime( spendTime ),  Task( tsk ), Cancel( false ), PlannerID(0)
 {
 }
 
-TaskMessage::TaskMessage( const TaskPtr &tsk ): SpendTime(0), task( tsk )
+TaskMessage::TaskMessage( const TaskPtr &tsk ):
+		SpendTime(0), Task( tsk ), Cancel( false ), PlannerID(0)
+{
+}
+
+TaskMessage::TaskMessage( const bool canceled ) :
+		SpendTime(0), Cancel( canceled ), PlannerID(0)
 {
 }
 
@@ -28,42 +35,62 @@ TaskMessage::~TaskMessage()
 
 void TaskMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
-	assert( task.get() );
+	assert( Task.get() );
 	XMLUtils::AddPacketId( doc, 3 );
-	XMLUtils::AddInt( doc, "TaskID", task->GetID() );
-	task->SerializeRequest( doc );
+	XMLUtils::AddBool( doc, "Cancel", Cancel );
+	XMLUtils::AddInt( doc, "PlannerID", Task->GetPlannerID() );
+	if ( !Cancel )
+	{
+		XMLUtils::AddInt( doc, "TaskID", Task->GetID() );
+		Task->SerializeRequest( doc );
+	}
 }
 
 void TaskMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
-	assert( task.get() );
+	assert( Task.get() );
 	XMLUtils::AddPacketId( doc, 3 );
-	XMLUtils::AddInt( doc, "SpendTime", SpendTime );
-	XMLUtils::AddInt( doc, "TaskID", task->GetID() );
-	task->SerializeRespond( doc );
+	XMLUtils::AddBool( doc, "Cancel", Cancel );
+	XMLUtils::AddInt( doc, "PlannerID", Task->GetPlannerID() );
+	if ( !Cancel )
+	{
+		XMLUtils::AddInt( doc, "SpendTime", SpendTime );
+		XMLUtils::AddInt( doc, "TaskID", Task->GetID() );
+		Task->SerializeRespond( doc );
+	}
 }
 
 void TaskMessage::DeserializeReqest( const tinyxml2::XMLDocument &doc )
 {
-	unsigned taskId = 0;
-	XMLUtils::GetInt( doc, "TaskID", taskId );
-	if ( taskId != 0 )
+	XMLUtils::GetBool( doc, "Cancel", Cancel );
+	XMLUtils::GetInt( doc, "PlannerID", PlannerID );
+	if ( !Cancel )
 	{
-		task.reset( Task::CreateTask( taskId ) );
-		assert( task.get() );
-		task->DeserializeRequest( doc );
+		unsigned taskId = 0;
+		XMLUtils::GetInt( doc, "TaskID", taskId );
+		if ( taskId != 0 )
+		{
+			Task.reset( Task::CreateTask( taskId ) );
+			assert( Task.get() );
+			Task->DeserializeRequest( doc );
+		}
 	}
 }
 
 void TaskMessage::DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
-	unsigned taskId = 0;
-	XMLUtils::GetInt( doc, "SpendTime", SpendTime );
-	XMLUtils::GetInt( doc, "TaskID", taskId );
-	if ( taskId != 0 )
+	XMLUtils::GetBool( doc, "Cancel", Cancel );
+	XMLUtils::GetInt( doc, "PlannerID", PlannerID );
+	if ( !Cancel )
 	{
-		task.reset( Task::CreateTask( taskId ) );
-		assert( task.get() );
-		task->DeserializeRespond( doc );
+		unsigned taskId = 0;
+		XMLUtils::GetInt( doc, "SpendTime", SpendTime );
+		XMLUtils::GetInt( doc, "TaskID", taskId );
+		if ( taskId != 0 )
+		{
+			Task.reset( Task::CreateTask( taskId ) );
+			assert( Task.get() );
+			Task->DeserializeRespond( doc );
+		}
 	}
 }

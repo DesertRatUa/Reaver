@@ -66,8 +66,8 @@ void ClientMessageProcessor::ReciveTaskMessage( const tinyxml2::XMLDocument& doc
 	assert( m_parent );
 	TaskMessage mess;
 	mess.DeserializeReqest( doc );
-	assert( mess.task.get() );
-	m_parent->TaskRequest( mess.task );
+	assert( mess.Task.get() );
+	m_parent->TaskRequest( mess.Task );
 }
 
 void ClientMessageProcessor::SendEchoMessage( const std::string& message )

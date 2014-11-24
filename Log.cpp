@@ -94,6 +94,11 @@ std::string Log::IntToStr( const unsigned value )
 	return boost::lexical_cast<std::string>(value);
 }
 
+std::string Log::IntToStr( const unsigned long value )
+{
+	return boost::lexical_cast<std::string>(value);
+}
+
 std::string Log::IntToStr( const size_t &value )
 {
 	return boost::lexical_cast<std::string>(value);
@@ -107,4 +112,28 @@ std::string Log::AddrToStr( const sockaddr_in& addr )
 void Log::SetName( const std::string &name )
 {
 	m_name = name;
+}
+
+std::string Log::BoolToStr( const bool value )
+{
+	switch (value)
+	{
+	case true:
+		return "true";
+	case false:
+		return "false";
+	}
+}
+
+void Log::StrToBool( std::string value, bool &result )
+{
+	std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+	if ( value == "true" )
+	{
+		result = true;
+	}
+	else if ( value == "false" )
+	{
+		result = false;
+	}
 }

@@ -24,7 +24,7 @@ public:
 	void Run();
 	void Stop();
 	void AddTask( const TaskPtr &task, const unsigned threadsNum );
-	void TaskComplete( const Task &task );
+	void TaskComplete( const TaskPtr &task );
 
 protected:
 	static void Thread( ServerTaskPlanner &parent );

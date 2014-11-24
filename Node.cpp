@@ -12,7 +12,7 @@
 #include "Tasks/Task.h"
 
 Node::Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessorInterface &manager ) :
-	m_addr( addr ), m_proccessor( manager ), m_threads(0), m_threadsLimit( threadNum )
+	m_addr( addr ), m_proccessor( &manager ), m_threads(0), m_threadsLimit( threadNum )
 {
 }
 
@@ -45,13 +45,6 @@ bool Node::operator==( const std::string& addr ) const
 	return m_addr == addr;
 }
 
-Node& Node::operator=(const Node& node )
-{
-	m_addr = node.m_addr;
-	m_proccessor = node.m_proccessor;
-	return *this;
-}
-
 void Node::SendTask( const TaskPtr& task ) throw ( std::exception )
 {
 	if ( m_threads >= m_threadsLimit  )
@@ -61,7 +54,7 @@ void Node::SendTask( const TaskPtr& task ) throw ( std::exception )
 	m_times[task->GetPlannerID()] = GetTickCount();
 	++m_threads;
 	Log::Add( "Task: " + Log::IntToStr( task->GetID() ) + " send to " + m_addr + " Avalible threads: " + Log::IntToStr( m_threadsLimit - m_threads ) );
-	m_proccessor.SendTaskMessage( m_addr, task );
+	m_proccessor->SendTaskMessage( m_addr, task );
 }
 
 void Node::TaskComplete( const TaskPtr& task ) throw ( std::exception )
@@ -71,5 +64,28 @@ void Node::TaskComplete( const TaskPtr& task ) throw ( std::exception )
 	{
 		throw std::runtime_error( "No used threads on node: " + m_addr );
 	}
+	TaskTimes::iterator iter = m_times.find( task->GetPlannerID() );
+	if( iter == m_times.end() )
+	{
+		throw std::runtime_error( "No time record for task: " + Log::IntToStr( task->GetPlannerID() ) );
+	}
+	m_times.erase( iter );
 	--m_threads;
+}
+
+void Node::CheckForStaleTasks( const unsigned limit )
+{
+	unsigned long time = GetTickCount();
+	for ( TaskTimes::iterator iter = m_times.begin(); iter != m_times.end(); )
+	{
+		if ( time - iter->second >= limit )
+		{
+			Log::Add( "Delete stale task: " + Log::IntToStr( iter->first ) );
+			iter = m_times.erase( iter );
+		}
+		else
+		{
+			++iter;
+		}
+	}
 }

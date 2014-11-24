@@ -18,6 +18,7 @@ public:
 	TaskMessage();
 	TaskMessage( const unsigned spendTime, const TaskPtr &tsk );
 	TaskMessage( const TaskPtr &tsk );
+	TaskMessage( const bool canceled );
 	virtual ~TaskMessage();
 
 	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;
@@ -25,8 +26,10 @@ public:
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc );
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 
+	bool Cancel;
 	unsigned SpendTime;
-	std::shared_ptr<Task> task;
+	unsigned PlannerID;
+	TaskPtr Task;
 };
 
 #endif /* TASKMESSAGE_H_ */

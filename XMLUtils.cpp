@@ -82,5 +82,17 @@ void XMLUtils::GetPacketId( const tinyxml2::XMLDocument &doc, unsigned &variable
 
 void XMLUtils::AddInt( tinyxml2::XMLDocument &doc, const std::string &name, const unsigned num )
 {
-	AddText( doc,name, Log::IntToStr(num) );
+	AddText( doc, name, Log::IntToStr(num) );
+}
+
+void XMLUtils::AddBool( tinyxml2::XMLDocument &doc, const std::string &name, const bool value )
+{
+	AddText( doc, name, Log::BoolToStr( value ) );
+}
+
+void XMLUtils::GetBool( const tinyxml2::XMLDocument &doc, const std::string &name, bool &value )
+{
+	std::string text;
+	GetText( doc, name, text );
+	Log::StrToBool( text, value );
 }

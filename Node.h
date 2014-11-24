@@ -25,10 +25,9 @@ public:
 	bool operator==( const Node& node ) const;
 	bool operator==( const std::string& addr ) const;
 
-	Node& operator=(const Node& node );
-
 	void SendTask( const TaskPtr& task ) throw ( std::exception );
 	void TaskComplete( const TaskPtr& task ) throw ( std::exception );
+	void CheckForStaleTasks( const unsigned limit );
 
 protected:
 	typedef std::map<unsigned long, unsigned long> TaskTimes;
@@ -37,7 +36,7 @@ protected:
 	unsigned m_threadsLimit;
 	std::string m_addr;
 
-	ServerMessageProcessorInterface &m_proccessor;
+	ServerMessageProcessorInterface *m_proccessor;
 };
 
 #endif /* NODE_H_ */

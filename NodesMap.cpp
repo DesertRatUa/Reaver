@@ -94,7 +94,7 @@ unsigned NodesMap::GetFreeThreadsNum()
 	return count;
 }
 
-void NodesMap::TaskComplete( const std::string& addr )
+void NodesMap::TaskComplete(  const std::string& addr, const TaskPtr &task  )
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 
@@ -103,5 +103,5 @@ void NodesMap::TaskComplete( const std::string& addr )
 	{
 		throw std::runtime_error( "Node: " + addr + " Not registered" );
 	}
-	iter->TaskComplete();
+	iter->TaskComplete( task );
 }

@@ -24,6 +24,8 @@ public:
 	static void GetInt( const tinyxml2::XMLDocument &doc, const std::string &name, int &variable );
 	static void GetInt( const tinyxml2::XMLDocument &doc, const std::string &name, unsigned &variable );
 	static void GetPacketId( const tinyxml2::XMLDocument &doc, unsigned &variable );
+	static void AddBool( tinyxml2::XMLDocument &doc, const std::string &name, const bool value );
+	static void GetBool( const tinyxml2::XMLDocument &doc, const std::string &name, bool &value );
 };
 
 #endif /* XMLUTILS_H_ */

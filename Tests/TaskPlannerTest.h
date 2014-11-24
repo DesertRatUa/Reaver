@@ -62,12 +62,12 @@ public:
 		planner.AddTask( task, 2 );
 		planner.AddTask( task, 3 );
 		task->m_plannerID = 1;
-		planner.TaskComplete( *task );
+		planner.TaskComplete( task );
 		TS_ASSERT_EQUALS( unsigned (planner.m_tasks.size()), unsigned(3) );
-		planner.TaskComplete( *task );
+		planner.TaskComplete( task );
 		TS_ASSERT_EQUALS( unsigned (planner.m_tasks.size()), unsigned(3) );
 		task->m_plannerID = 2;
-		planner.TaskComplete( *task );
+		planner.TaskComplete( task );
 		TS_ASSERT_EQUALS( unsigned (planner.m_tasks.size()), unsigned(0) );
 	}
 

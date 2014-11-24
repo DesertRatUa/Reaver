@@ -26,7 +26,7 @@ public:
 	Node& GetNode( const std::string& addr ) throw ( std::exception );
 	Node* GetFreeNode() ;
 	unsigned GetFreeThreadsNum();
-	void TaskComplete( const std::string& addr );
+	void TaskComplete( const std::string& addr, const TaskPtr &task );
 
 protected:
 	typedef std::vector<Node> Nodes;
