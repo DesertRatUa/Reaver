@@ -32,12 +32,12 @@ void  Client::Send( const std::string& message )
 
 void Client::SendRespond( const Message& message )
 {
-	Send( message.SerializeRespond() );
+	Send( message.SerializeRespondStr() );
 }
 
 void Client::SendRequest( const Message& message )
 {
-	Send( message.SerializeReqest() );
+	Send( message.SerializeReqestStr() );
 }
 
 std::string Client::GetAddr()

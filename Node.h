@@ -10,7 +10,8 @@
 
 #include "include.h"
 #include "Tasks/Task.h"
-#include <map>
+#include <vector>
+#include <mutex>
 
 class Node
 {
@@ -27,14 +28,22 @@ public:
 
 	void SendTask( const TaskPtr& task ) throw ( std::exception );
 	void TaskComplete( const TaskPtr& task ) throw ( std::exception );
-	void CheckForStaleTasks( const unsigned limit );
+	void CheckForStaleTasks( const unsigned timeOut );
+
+	struct ThreadData
+	{
+		ThreadData( unsigned long start, unsigned id );
+		bool operator==( const unsigned &id ) const;
+		unsigned long startTime;
+		unsigned plannerID;
+	};
 
 protected:
-	typedef std::map<unsigned long, unsigned long> TaskTimes;
+	typedef std::vector<ThreadData> TaskTimes;
 	TaskTimes m_times;
-	unsigned m_threads;
 	unsigned m_threadsLimit;
 	std::string m_addr;
+	std::shared_ptr<std::mutex> m_mut;
 
 	ServerMessageProcessorInterface *m_proccessor;
 };

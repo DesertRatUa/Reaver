@@ -31,6 +31,25 @@ public:
 	{
 		TS_ASSERT_EQUALS( Log::IntToStr( 123 ), "123" );
 	}
-};
 
+	void testBoolToStr()
+	{
+		TS_ASSERT_EQUALS( Log::BoolToStr( true ), "true" );
+		TS_ASSERT_EQUALS( Log::BoolToStr( false ), "false" );
+	}
+
+	void testStrToBool()
+	{
+		bool value = false;
+		Log::StrToBool( "Tru", value );
+		TS_ASSERT_EQUALS( value, false );
+		Log::StrToBool( "TRUE", value );
+		TS_ASSERT_EQUALS( value, true );
+		value = false;
+		Log::StrToBool( "true", value );
+		TS_ASSERT_EQUALS( value, true );
+		Log::StrToBool( "False", value );
+		TS_ASSERT_EQUALS( value, false );
+	}
+};
 #endif /*LOGTEST_H_*/

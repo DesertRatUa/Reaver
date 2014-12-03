@@ -18,11 +18,11 @@ public:
 	TaskMessage();
 	TaskMessage( const unsigned spendTime, const TaskPtr &tsk );
 	TaskMessage( const TaskPtr &tsk );
-	TaskMessage( const bool canceled );
+	TaskMessage( const bool canceled, const unsigned plannerId );
 	virtual ~TaskMessage();
 
-	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;
-	virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const;
+	virtual void SerializeReqest( tinyxml2::XMLDocument &doc ) const;
+	virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const;
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc );
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 

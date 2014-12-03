@@ -6,14 +6,18 @@
 #include "NodesMap.h"
 #include "ServerMessageProcessor.h"
 
-class NodesMapTest : public CxxTest::TestSuite, public ServerMessageProcessorInterface
+class NodesMapTest : public CxxTest::TestSuite
 {
 public:
 
-	virtual void Init() {}
-	virtual void SendRegisterMessage( const std::string &addr, const std::string *error ) {}
-	virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) {}
-
+	class Manager : public ServerMessageProcessorInterface
+	{
+	public:
+		virtual void Init() {}
+		virtual void SendRegisterMessage( const std::string &addr, const std::string *error ) {}
+		virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) {}
+		virtual void SendCancelTaskMessage( const std::string &addr, const unsigned plannerId ) {};
+	};
 	class TestTask : public Task
 	{
 		virtual void SerializeRequest( tinyxml2::XMLDocument &doc ) const {}
@@ -42,18 +46,20 @@ public:
 	void testRegisterNode()
 	{
 		NodesMap map;
+		Manager manager;
 		std::string addr( "127.0.0.1:80" );
 		TS_ASSERT_THROWS_ANYTHING( map.GetNode( addr ) );
-		TS_ASSERT_THROWS_NOTHING( map.RegisterNode( addr, 2, *this ) );
+		TS_ASSERT_THROWS_NOTHING( map.RegisterNode( addr, 2, manager ) );
 		TS_ASSERT_THROWS_NOTHING( map.GetNode( addr ) );
-		TS_ASSERT_THROWS_ANYTHING( map.RegisterNode( addr, 2, *this ) );
+		TS_ASSERT_THROWS_ANYTHING( map.RegisterNode( addr, 2, manager ) );
 	}
 
 	void testUnregisterNode()
 	{
 		NodesMap map;
+		Manager manager;
 		std::string addr( "127.0.0.1:80" );
-		map.RegisterNode( addr, 2, *this );
+		map.RegisterNode( addr, 2, manager );
 		TS_ASSERT_THROWS_NOTHING( map.UnregisterNode( addr ) );
 		TS_ASSERT_THROWS_ANYTHING( map.GetNode( addr ) );
 		TS_ASSERT_THROWS_ANYTHING( map.UnregisterNode( addr ) );
@@ -62,9 +68,10 @@ public:
 	void testGetNode()
 	{
 		NodesMap map;
+		Manager manager;
 		std::string addr( "127.0.0.1:80" );
 		TS_ASSERT_THROWS_ANYTHING( map.GetNode( addr ) );
-		map.RegisterNode( addr, 2, *this );
+		map.RegisterNode( addr, 2, manager );
 		TS_ASSERT_THROWS_NOTHING( map.GetNode( addr ) );
 		map.UnregisterNode( addr );
 		TS_ASSERT_THROWS_ANYTHING( map.GetNode( addr ) );
@@ -73,9 +80,10 @@ public:
 	void testGetFreeNode()
 	{
 		NodesMap map;
+		Manager manager;
 		std::string addr( "127.0.0.1:80" );
 		TaskPtr task( new TestTask() );
-		map.RegisterNode( addr, 2, *this );
+		map.RegisterNode( addr, 2, manager );
 		TS_ASSERT( map.GetFreeNode() != NULL );
 		Node &node = map.GetNode( addr );
 		node.SendTask( task );
@@ -89,11 +97,12 @@ public:
 	void testGetFreeThreadsNum()
 	{
 		NodesMap map;
+		Manager manager;
 		std::string addr( "127.0.0.1:80" );
 		std::string addr1( "127.0.0.1:81" );
 		TaskPtr task( new TestTask() );
-		map.RegisterNode( addr, 2, *this );
-		map.RegisterNode( addr1, 2, *this );
+		map.RegisterNode( addr, 2, manager );
+		map.RegisterNode( addr1, 2, manager );
 		TS_ASSERT_EQUALS( map.GetFreeThreadsNum(), unsigned(4) );
 		Node &node = map.GetNode( addr );
 		node.SendTask( task );
@@ -107,9 +116,10 @@ public:
 	void testTaskComplete()
 	{
 		NodesMap map;
+		Manager manager;
 		std::string addr( "127.0.0.1:80" );
 		TaskPtr task( new TestTask() );
-		map.RegisterNode( addr, 1, *this );
+		map.RegisterNode( addr, 1, manager );
 		Node &node = map.GetNode( addr );
 		node.SendTask( task );
 		TS_ASSERT( map.GetFreeNode() == NULL );

@@ -72,6 +72,7 @@ Node* NodesMap::GetFreeNode()
 {
 	Node* node = NULL;
 	std::lock_guard<std::mutex> lock(m_mut);
+
 	for ( Nodes::iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
 	{
 		if ( iter->isThreadsAvalible() )
@@ -87,6 +88,7 @@ unsigned NodesMap::GetFreeThreadsNum()
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 	unsigned count = 0;
+
 	for ( Nodes::iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
 	{
 		count += iter->GetFreeThreadsNum();
@@ -104,4 +106,14 @@ void NodesMap::TaskComplete(  const std::string& addr, const TaskPtr &task  )
 		throw std::runtime_error( "Node: " + addr + " Not registered" );
 	}
 	iter->TaskComplete( task );
+}
+
+void NodesMap::CheckForStaleTasks( const unsigned timeOut )
+{
+	std::lock_guard<std::mutex> lock(m_mut);
+
+	for ( Nodes::iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
+	{
+		iter->CheckForStaleTasks( timeOut );
+	}
 }

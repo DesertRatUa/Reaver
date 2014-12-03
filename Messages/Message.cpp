@@ -17,36 +17,34 @@ Message::~Message()
 {
 }
 
-std::string Message::SerializeReqest() const
+std::string Message::SerializeReqestStr() const
 {
 	XMLDocument doc;
 	XMLPrinter printer;
-	_SerializeReqest( doc );
+	SerializeReqest( doc );
 	doc.Print( &printer );
 	return printer.CStr();
 }
 
-std::string Message::SerializeRespond() const
+std::string Message::SerializeRespondStr() const
 {
 	XMLDocument doc;
 	XMLPrinter printer;
-	_SerializeRespond( doc );
+	SerializeRespond( doc );
 	doc.Print( &printer );
 	return printer.CStr();
 }
 
-void Message::ReSerializeRequest()
+void Message::DeserializeReqestStr( const std::string &xml )
 {
 	XMLDocument doc;
-	std::string xml = SerializeReqest();
 	doc.Parse( xml.c_str(), xml.length() );
 	DeserializeReqest( doc );
 }
 
-void Message::ReSerializeRespond()
+void Message::DeserializeRespondStr( const std::string &xml )
 {
 	XMLDocument doc;
-	std::string xml = SerializeRespond();
 	doc.Parse( xml.c_str(), xml.length() );
 	DeserializeRespond( doc );
 }

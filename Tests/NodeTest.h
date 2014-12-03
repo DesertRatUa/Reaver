@@ -13,7 +13,8 @@ public:
 	{
 		virtual void Init() {}
 		virtual void SendRegisterMessage( const std::string &addr, const std::string *error ) {}
-		virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) {}
+		virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) {};
+		virtual void SendCancelTaskMessage( const std::string &addr, const unsigned plannerId ) {};
 	};
 
 	class TestTask : public Task
@@ -44,7 +45,7 @@ public:
 	void testSendTask()
 	{
 		std::string addr( "127.0.0.1:80" );
-		TaskPtr task( new TestTask );
+		TaskPtr task( new TestTask() );
 		TestManager manger;
 		Node node( addr, 1, manger );
 		TS_ASSERT_THROWS_NOTHING( node.SendTask( task ) );
@@ -73,6 +74,8 @@ public:
 		TS_ASSERT_EQUALS( node.isThreadsAvalible(), true );
 		node.SendTask( task );
 		TS_ASSERT_EQUALS( node.isThreadsAvalible(), false );
+		node.TaskComplete( task );
+		TS_ASSERT_EQUALS( node.isThreadsAvalible(), true );
 	}
 
 	void testGetFreeThreadsNum()
@@ -80,7 +83,9 @@ public:
 		std::string addr( "127.0.0.1:80" );
 		TaskPtr task( new TestTask );
 		TestManager manger;
-		Node node( addr, 1, manger );
+		Node node( addr, 2, manger );
+		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), unsigned(2) );
+		node.SendTask( task );
 		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), unsigned(1) );
 		node.SendTask( task );
 		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), unsigned(0) );
@@ -92,6 +97,19 @@ public:
 		TestManager manger;
 		Node node( addr, 1, manger );
 		TS_ASSERT_EQUALS( node.GetID(), addr );
+	}
+
+	void testCheckForStaleTasks()
+	{
+		std::string addr( "127.0.0.1:80" );
+		TaskPtr task( new TestTask() );
+		TestManager manger;
+		Node node( addr, 2, manger );
+		node.SendTask( task );
+		node.SendTask( task );
+		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), (unsigned) 0 );
+		node.CheckForStaleTasks( 0 );
+		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), (unsigned) 2 );
 	}
 };
 

@@ -81,6 +81,19 @@ public:
 		TS_ASSERT_EQUALS( id, unsigned(5) );
 	}
 
+	void testBool()
+	{
+		tinyxml2::XMLDocument doc;
+		tinyxml2::XMLPrinter prnt;
+		XMLUtils::AddPacketId( doc, 5 );
+		XMLUtils::AddBool( doc, "TEST", true );
+		doc.Print( &prnt );
+		doc.Clear();
+		doc.Parse( prnt.CStr(), prnt.CStrSize() );
+		bool value = false;
+		XMLUtils::GetBool( doc, "TEST", value );
+		TS_ASSERT_EQUALS( value, true );
+	}
 };
 
 #endif /*XMLUTILSTEST_H_*/

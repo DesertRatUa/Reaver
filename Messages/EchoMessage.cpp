@@ -20,13 +20,13 @@ EchoMessage::~EchoMessage()
 {
 }
 
-void EchoMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
+void EchoMessage::SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddPacketId( doc, 1 );
 	XMLUtils::AddText( doc, "Echo", Text );
 }
 
-void EchoMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
+void EchoMessage::SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddPacketId( doc, 1 );
 	XMLUtils::AddText( doc, "Echo", Text );

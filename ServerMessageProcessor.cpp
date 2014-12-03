@@ -57,6 +57,12 @@ void ServerMessageProcessor::SendTaskMessage( const std::string &addr, const Tas
 	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
 }
 
+void ServerMessageProcessor::SendCancelTaskMessage( const std::string &addr, const unsigned plannerId )
+{
+	TaskMessage mess( true, plannerId );
+	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
+}
+
 void ServerMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
 {
 	assert( m_parent );

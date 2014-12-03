@@ -36,9 +36,6 @@ public:
 
 	static Task* CreateTask( const unsigned id );
 
-	void ReSerializeRequest();
-	void ReSerializeRespond();
-
 protected:
 	unsigned m_plannerID;
 };

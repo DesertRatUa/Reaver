@@ -85,10 +85,10 @@ void ClientCommunicationManager::Send( const std::string &message )
 
 void ClientCommunicationManager::SendRequest( const Message &message )
 {
-	Send( message.SerializeReqest() );
+	Send( message.SerializeReqestStr() );
 }
 
 void ClientCommunicationManager::SendRespond( const Message &message )
 {
-	Send( message.SerializeRespond() );
+	Send( message.SerializeRespondStr() );
 }

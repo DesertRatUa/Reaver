@@ -112,6 +112,14 @@ static class TestDescription_LogTest_testIntToStr : public CxxTest::RealTestDesc
 public:
 	void runTest() { if(suite_LogTest) suite_LogTest->testIntToStr(); }
 } testDescription_LogTest_testIntToStr;
+static class TestDescription_LogTest_testBoolToStr : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_LogTest) suite_LogTest->testBoolToStr(); }
+} testDescription_LogTest_testBoolToStr;
+static class TestDescription_LogTest_testStrToBool : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_LogTest) suite_LogTest->testStrToBool(); }
+} testDescription_LogTest_testStrToBool;
 
 // Test suite: MDTaskTest
 
@@ -178,6 +186,10 @@ static class TestDescription_NodeTest_testGetID : public CxxTest::RealTestDescri
 public:
 	void runTest() { if(suite_NodeTest) suite_NodeTest->testGetID(); }
 } testDescription_NodeTest_testGetID;
+static class TestDescription_NodeTest_testCheckForStaleTasks : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_NodeTest) suite_NodeTest->testCheckForStaleTasks(); }
+} testDescription_NodeTest_testCheckForStaleTasks;
 
 // Test suite: NodesMapTest
 
@@ -212,6 +224,32 @@ static class TestDescription_NodesMapTest_testTaskComplete : public CxxTest::Rea
 public:
 	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testTaskComplete(); }
 } testDescription_NodesMapTest_testTaskComplete;
+
+// Test suite: TaskMessageTest
+
+#include "Tests\TaskMessageTest.h"
+static TaskMessageTest *suite_TaskMessageTest;
+static CxxTest::List Tests_TaskMessageTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_TaskMessageTest;
+
+
+static class TestDescription_TaskMessageTest_testRequest : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TaskMessageTest) suite_TaskMessageTest->testRequest(); }
+} testDescription_TaskMessageTest_testRequest;
+static class TestDescription_TaskMessageTest_testRequestCancel : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TaskMessageTest) suite_TaskMessageTest->testRequestCancel(); }
+} testDescription_TaskMessageTest_testRequestCancel;
+static class TestDescription_TaskMessageTest_testRespond : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TaskMessageTest) suite_TaskMessageTest->testRespond(); }
+} testDescription_TaskMessageTest_testRespond;
+static class TestDescription_TaskMessageTest_testRespondCancel : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_TaskMessageTest) suite_TaskMessageTest->testRespondCancel(); }
+} testDescription_TaskMessageTest_testRespondCancel;
 
 // Test suite: TaskPlannerTest
 
@@ -300,6 +338,10 @@ static class TestDescription_XMLUtilsTest_testPacketId : public CxxTest::RealTes
 public:
 	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testPacketId(); }
 } testDescription_XMLUtilsTest_testPacketId;
+static class TestDescription_XMLUtilsTest_testBool : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_XMLUtilsTest) suite_XMLUtilsTest->testBool(); }
+} testDescription_XMLUtilsTest_testBool;
 
 
 
@@ -368,6 +410,8 @@ namespace CxxTest
 		testDescription_LogTest_testInit.initialize(Tests_LogTest, suiteDescription_LogTest, 12, "testInit");
 		testDescription_LogTest_testAddrToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 22, "testAddrToStr");
 		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 30, "testIntToStr");
+		testDescription_LogTest_testBoolToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 35, "testBoolToStr");
+		testDescription_LogTest_testStrToBool.initialize(Tests_LogTest, suiteDescription_LogTest, 41, "testStrToBool");
 
 		// Initialize test suite: MDTaskTest
 		Tests_MDTaskTest.initialize();
@@ -408,11 +452,12 @@ namespace CxxTest
 		suiteDescription_NodeTest.initialize(
 			"Tests\\NodeTest.h", 8,
 			"NodeTest", *suite_NodeTest, Tests_NodeTest);
-		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 44, "testSendTask");
-		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 55, "testTaskComplete");
-		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 67, "testisThreadsAvalible");
-		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 78, "testGetFreeThreadsNum");
-		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 89, "testGetID");
+		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 45, "testSendTask");
+		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 56, "testTaskComplete");
+		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 68, "testisThreadsAvalible");
+		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 81, "testGetFreeThreadsNum");
+		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 94, "testGetID");
+		testDescription_NodeTest_testCheckForStaleTasks.initialize(Tests_NodeTest, suiteDescription_NodeTest, 102, "testCheckForStaleTasks");
 
 		// Initialize test suite: NodesMapTest
 		Tests_NodesMapTest.initialize();
@@ -425,12 +470,28 @@ namespace CxxTest
 		suiteDescription_NodesMapTest.initialize(
 			"Tests\\NodesMapTest.h", 9,
 			"NodesMapTest", *suite_NodesMapTest, Tests_NodesMapTest);
-		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 42, "testRegisterNode");
-		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 52, "testUnregisterNode");
-		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 62, "testGetNode");
-		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 73, "testGetFreeNode");
-		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 89, "testGetFreeThreadsNum");
-		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 107, "testTaskComplete");
+		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 46, "testRegisterNode");
+		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 57, "testUnregisterNode");
+		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 68, "testGetNode");
+		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 80, "testGetFreeNode");
+		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 97, "testGetFreeThreadsNum");
+		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 116, "testTaskComplete");
+
+		// Initialize test suite: TaskMessageTest
+		Tests_TaskMessageTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_TaskMessageTest = new TaskMessageTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("TaskMessageTest", "Exception thrown when initializing " "TaskMessageTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("TaskMessageTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_TaskMessageTest.initialize(
+			"Tests\\TaskMessageTest.h", 8,
+			"TaskMessageTest", *suite_TaskMessageTest, Tests_TaskMessageTest);
+		testDescription_TaskMessageTest_testRequest.initialize(Tests_TaskMessageTest, suiteDescription_TaskMessageTest, 12, "testRequest");
+		testDescription_TaskMessageTest_testRequestCancel.initialize(Tests_TaskMessageTest, suiteDescription_TaskMessageTest, 29, "testRequestCancel");
+		testDescription_TaskMessageTest_testRespond.initialize(Tests_TaskMessageTest, suiteDescription_TaskMessageTest, 45, "testRespond");
+		testDescription_TaskMessageTest_testRespondCancel.initialize(Tests_TaskMessageTest, suiteDescription_TaskMessageTest, 63, "testRespondCancel");
 
 		// Initialize test suite: TaskPlannerTest
 		Tests_TaskPlannerTest.initialize();
@@ -491,6 +552,7 @@ namespace CxxTest
 		testDescription_XMLUtilsTest_testGetInt.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 51, "testGetInt");
 		testDescription_XMLUtilsTest_testGetPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 61, "testGetPacketId");
 		testDescription_XMLUtilsTest_testPacketId.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 71, "testPacketId");
+		testDescription_XMLUtilsTest_testBool.initialize(Tests_XMLUtilsTest, suiteDescription_XMLUtilsTest, 84, "testBool");
 
 
 	}
@@ -505,6 +567,7 @@ namespace CxxTest
 		delete suite_MessageProcessorTest;
 		delete suite_NodeTest;
 		delete suite_NodesMapTest;
+		delete suite_TaskMessageTest;
 		delete suite_TaskPlannerTest;
 		delete suite_TestTaskTest;
 		delete suite_TinyXmlTest;

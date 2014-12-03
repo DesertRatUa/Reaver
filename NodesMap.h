@@ -27,6 +27,7 @@ public:
 	Node* GetFreeNode() ;
 	unsigned GetFreeThreadsNum();
 	void TaskComplete( const std::string& addr, const TaskPtr &task );
+	void CheckForStaleTasks( const unsigned timeOut );
 
 protected:
 	typedef std::vector<Node> Nodes;

@@ -16,8 +16,8 @@ public:
 	RegisterMessage( const unsigned threadNum );
 	virtual ~RegisterMessage();
 
-	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const;
-	virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const;
+	virtual void SerializeReqest( tinyxml2::XMLDocument &doc ) const;
+	virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const;
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc );
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 

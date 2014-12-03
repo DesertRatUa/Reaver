@@ -24,8 +24,8 @@ TaskMessage::TaskMessage( const TaskPtr &tsk ):
 {
 }
 
-TaskMessage::TaskMessage( const bool canceled ) :
-		SpendTime(0), Cancel( canceled ), PlannerID(0)
+TaskMessage::TaskMessage( const bool canceled, const unsigned plannerId ) :
+		SpendTime(0), Cancel( canceled ), PlannerID( plannerId )
 {
 }
 
@@ -33,7 +33,7 @@ TaskMessage::~TaskMessage()
 {
 }
 
-void TaskMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
+void TaskMessage::SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
 	assert( Task.get() );
 	XMLUtils::AddPacketId( doc, 3 );
@@ -46,7 +46,7 @@ void TaskMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
 	}
 }
 
-void TaskMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
+void TaskMessage::SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	assert( Task.get() );
 	XMLUtils::AddPacketId( doc, 3 );

@@ -21,13 +21,13 @@ RegisterMessage::~RegisterMessage()
 {
 }
 
-void RegisterMessage::_SerializeReqest( tinyxml2::XMLDocument &doc ) const
+void RegisterMessage::SerializeReqest( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddPacketId( doc, 2 );
 	XMLUtils::AddInt( doc, "ThreadNum", ThreadNum );
 }
 
-void RegisterMessage::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
+void RegisterMessage::SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddPacketId( doc, 2 );
 	XMLUtils::AddText( doc, "ClientID", ClientId );

@@ -15,16 +15,15 @@ public:
 	Message();
 	virtual ~Message();
 
-	virtual std::string SerializeReqest() const;
-	virtual std::string SerializeRespond() const;
+	std::string SerializeReqestStr() const;
+	std::string SerializeRespondStr() const;
+	void DeserializeReqestStr( const std::string &xml );
+	void DeserializeRespondStr( const std::string &xml );
 
-	virtual void _SerializeReqest( tinyxml2::XMLDocument &doc ) const = 0;
-	virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const = 0;
+	virtual void SerializeReqest( tinyxml2::XMLDocument &doc ) const = 0;
+	virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const = 0;
 	virtual void DeserializeReqest( const tinyxml2::XMLDocument &doc ) = 0;
 	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc ) = 0;
-
-	void ReSerializeRequest();
-	void ReSerializeRespond();
 };
 
 #endif /* MESSAGE_H_ */
