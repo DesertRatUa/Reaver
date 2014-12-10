@@ -19,10 +19,10 @@ public:
 
 	class TestTask : public Task
 	{
-		virtual void SerializeRequest( tinyxml2::XMLDocument &doc ) const {}
-		virtual void DeserializeRequest( const tinyxml2::XMLDocument &doc )  {}
-		virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const {}
-		virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc ) {}
+		virtual void _SerializeRequest( tinyxml2::XMLDocument &doc ) const {}
+		virtual void _DeserializeRequest( const tinyxml2::XMLDocument &doc )  {}
+		virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const {}
+		virtual void _DeserializeRespond( const tinyxml2::XMLDocument &doc ) {}
 		virtual Tasks SeperateTask( const unsigned threadNums, const unsigned plannerID ) const
 		{
 			return Tasks();
@@ -58,10 +58,13 @@ public:
 		std::string addr( "127.0.0.1:80" );
 		TaskPtr task( new TestTask );
 		TestManager manger;
-		Node node( addr, 1, manger );
+		Node node( addr, 2, manger );
+		node.SendTask( task );
 		node.SendTask( task );
 		TS_ASSERT_THROWS_NOTHING( node.TaskComplete( task ) );
 		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), unsigned(1) );
+		TS_ASSERT_THROWS_NOTHING( node.TaskComplete( task ) );
+		TS_ASSERT_EQUALS( node.GetFreeThreadsNum(), unsigned(2) );
 		TS_ASSERT_THROWS_ANYTHING( node.TaskComplete( task ) );
 	}
 

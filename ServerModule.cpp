@@ -122,9 +122,16 @@ void ServerModule::UnregisterNode( const std::string& addr )
 
 void ServerModule::TaskRespond( const std::string& addr, const TaskPtr &task )
 {
-	m_nodes.TaskComplete( addr, task );
-	if ( task->isDone() )
+	try
 	{
-		m_planner.TaskComplete( task );
+		m_nodes.TaskComplete( addr, task );
+		if ( task->isDone() )
+		{
+			m_planner.TaskComplete( task );
+		}
+	}
+	catch (std::exception &exc)
+	{
+		Log::AddException( "ServerModule", exc );
 	}
 }

@@ -12,7 +12,6 @@
 #include <memory>
 #include <deque>
 
-
 class Task
 {
 public:
@@ -20,11 +19,11 @@ public:
 	Task( const unsigned plannerId );
 	virtual ~Task();
 
-	virtual void SerializeRequest( tinyxml2::XMLDocument &doc ) const = 0;
-	virtual void DeserializeRequest( const tinyxml2::XMLDocument &doc )  = 0;
+	void SerializeRequest( tinyxml2::XMLDocument &doc ) const;
+	void DeserializeRequest( const tinyxml2::XMLDocument &doc );
 
-	virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const = 0;
-	virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc ) = 0;
+	void SerializeRespond( tinyxml2::XMLDocument &doc ) const;
+	void DeserializeRespond( const tinyxml2::XMLDocument &doc );
 
 	virtual void Process() = 0;
 	virtual unsigned GetID() const = 0;
@@ -38,6 +37,12 @@ public:
 
 protected:
 	unsigned m_plannerID;
+
+	virtual void _SerializeRequest( tinyxml2::XMLDocument &doc ) const = 0;
+	virtual void _DeserializeRequest( const tinyxml2::XMLDocument &doc )  = 0;
+
+	virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const = 0;
+	virtual void _DeserializeRespond( const tinyxml2::XMLDocument &doc ) = 0;
 };
 
 typedef std::shared_ptr<Task> TaskPtr;

@@ -88,6 +88,13 @@ void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& do
 	mess.DeserializeRespond( doc );
 	assert( mess.Task );
 	Log::Add( "Recived task: " + Log::IntToStr( mess.Task->GetID() ) + " respond. Time spend: " +Log::IntToStr( mess.SpendTime ) + " ms" );
-	assert( mess.Task.get() );
-	m_parent->TaskRespond( addr, mess.Task );
+	if ( mess.Cancel )
+	{
+		Log::Add( "Task: " + Log::IntToStr( mess.Task->GetID() ) + "Canceled" );
+	}
+	else
+	{
+		assert( mess.Task.get() );
+		m_parent->TaskRespond( addr, mess.Task );
+	}
 }

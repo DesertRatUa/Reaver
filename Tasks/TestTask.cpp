@@ -28,26 +28,26 @@ TestTask::~TestTask()
 {
 }
 
-void TestTask::SerializeRequest( tinyxml2::XMLDocument &doc ) const
+void TestTask::_SerializeRequest( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddInt( doc, "Start", start );
 	XMLUtils::AddInt( doc, "End", end );
 	XMLUtils::AddInt( doc, "Hash", hash );
 }
 
-void TestTask::DeserializeRequest( const tinyxml2::XMLDocument &doc )
+void TestTask::_DeserializeRequest( const tinyxml2::XMLDocument &doc )
 {
 	XMLUtils::GetInt( doc, "Start", start );
 	XMLUtils::GetInt( doc, "End", end );
 	XMLUtils::GetInt( doc, "Hash", hash );
 }
 
-void TestTask::SerializeRespond( tinyxml2::XMLDocument &doc ) const
+void TestTask::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddInt( doc, "Result", result );
 }
 
-void TestTask::DeserializeRespond( const tinyxml2::XMLDocument &doc )
+void TestTask::_DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
 	XMLUtils::GetInt( doc, "Result", result );
 }

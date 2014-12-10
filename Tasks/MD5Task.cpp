@@ -19,26 +19,26 @@ MD5Task::~MD5Task()
 {
 }
 
-void MD5Task::SerializeRequest( tinyxml2::XMLDocument &doc ) const
+void MD5Task::_SerializeRequest( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddInt( doc, "Begin", begin );
 	XMLUtils::AddInt( doc, "End", end );
 	XMLUtils::AddText( doc, "Hash", Hash );
 }
 
-void MD5Task::DeserializeRequest( const tinyxml2::XMLDocument &doc )
+void MD5Task::_DeserializeRequest( const tinyxml2::XMLDocument &doc )
 {
 	XMLUtils::GetInt( doc, "Begin", begin );
 	XMLUtils::GetInt( doc, "End", end );
 	XMLUtils::GetText( doc, "Hash", Hash );
 }
 
-void MD5Task::SerializeRespond( tinyxml2::XMLDocument &doc ) const
+void MD5Task::_SerializeRespond( tinyxml2::XMLDocument &doc ) const
 {
 	XMLUtils::AddInt( doc, "Result", result );
 }
 
-void MD5Task::DeserializeRespond( const tinyxml2::XMLDocument &doc )
+void MD5Task::_DeserializeRespond( const tinyxml2::XMLDocument &doc )
 {
 	XMLUtils::GetInt( doc, "Result", result );
 }

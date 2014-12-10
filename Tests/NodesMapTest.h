@@ -20,10 +20,10 @@ public:
 	};
 	class TestTask : public Task
 	{
-		virtual void SerializeRequest( tinyxml2::XMLDocument &doc ) const {}
-		virtual void DeserializeRequest( const tinyxml2::XMLDocument &doc )  {}
-		virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const {}
-		virtual void DeserializeRespond( const tinyxml2::XMLDocument &doc ) {}
+		virtual void _SerializeRequest( tinyxml2::XMLDocument &doc ) const {}
+		virtual void _DeserializeRequest( const tinyxml2::XMLDocument &doc )  {}
+		virtual void _SerializeRespond( tinyxml2::XMLDocument &doc ) const {}
+		virtual void _DeserializeRespond( const tinyxml2::XMLDocument &doc ) {}
 		virtual Tasks SeperateTask( const unsigned threadNums, const unsigned plannerID ) const
 		{
 			return Tasks();

@@ -454,10 +454,10 @@ namespace CxxTest
 			"NodeTest", *suite_NodeTest, Tests_NodeTest);
 		testDescription_NodeTest_testSendTask.initialize(Tests_NodeTest, suiteDescription_NodeTest, 45, "testSendTask");
 		testDescription_NodeTest_testTaskComplete.initialize(Tests_NodeTest, suiteDescription_NodeTest, 56, "testTaskComplete");
-		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 68, "testisThreadsAvalible");
-		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 81, "testGetFreeThreadsNum");
-		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 94, "testGetID");
-		testDescription_NodeTest_testCheckForStaleTasks.initialize(Tests_NodeTest, suiteDescription_NodeTest, 102, "testCheckForStaleTasks");
+		testDescription_NodeTest_testisThreadsAvalible.initialize(Tests_NodeTest, suiteDescription_NodeTest, 71, "testisThreadsAvalible");
+		testDescription_NodeTest_testGetFreeThreadsNum.initialize(Tests_NodeTest, suiteDescription_NodeTest, 84, "testGetFreeThreadsNum");
+		testDescription_NodeTest_testGetID.initialize(Tests_NodeTest, suiteDescription_NodeTest, 97, "testGetID");
+		testDescription_NodeTest_testCheckForStaleTasks.initialize(Tests_NodeTest, suiteDescription_NodeTest, 105, "testCheckForStaleTasks");
 
 		// Initialize test suite: NodesMapTest
 		Tests_NodesMapTest.initialize();
