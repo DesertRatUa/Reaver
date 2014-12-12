@@ -96,3 +96,10 @@ void XMLUtils::GetBool( const tinyxml2::XMLDocument &doc, const std::string &nam
 	GetText( doc, name, text );
 	Log::StrToBool( text, value );
 }
+
+std::string XMLUtils::XMLtoStr( const tinyxml2::XMLDocument &doc )
+{
+	tinyxml2::XMLPrinter printer;
+	doc.Print( &printer );
+	return printer.CStr();
+}

@@ -67,11 +67,6 @@ MessageProcessor::Packets MessageProcessor::SeperatePackets( tinyxml2::XMLDocume
 	return packets;
 }
 
-void MessageProcessor::ParsePacket( tinyxml2::XMLElement *packet, const std::string& message, const std::string& addr )
-{
-
-}
-
 void MessageProcessor::RegisterProcessor( const unsigned id, Processor processor ) throw (std::runtime_error)
 {
 	Processors::iterator prc = m_processors.find( id );

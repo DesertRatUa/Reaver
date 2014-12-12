@@ -30,7 +30,6 @@ protected:
 	typedef std::unique_ptr<tinyxml2::XMLDocument> PacketPtr;
 	typedef std::vector<PacketPtr> Packets;
 	Packets SeperatePackets( tinyxml2::XMLDocument &doc );
-	void ParsePacket( tinyxml2::XMLElement *packet, const std::string& message, const std::string& addr );
 
 	void RegisterProcessor( const unsigned id, Processor processor ) throw (std::runtime_error);
 

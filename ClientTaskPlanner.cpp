@@ -83,17 +83,18 @@ void ClientTaskPlanner::ThreadMain( ClientTaskPlanner &parent )
 	Log::Add( "Stop TaskPlanner thread" );
 }
 
-void ClientTaskPlanner::ThreadTask( ThreadData &data )
+void ClientTaskPlanner::ThreadTask( ThreadData *data )
 {
-	assert( data.m_task.get() );
-	assert( data.m_parent );
-	TaskPtr &task = data.m_task;
+	assert( data );
+	assert( data->m_task.get() );
+	assert( data->m_parent );
+	TaskPtr &task = data->m_task;
 	Log::Add( "Start task thread for taskId: " + Log::IntToStr( task->GetID() ) );
 	unsigned respondTime = GetTickCount();
 	task->Process();
-	data.m_parent->SendTaskMessage( GetTickCount() - respondTime, task );
+	data->m_parent->SendTaskMessage( GetTickCount() - respondTime, task );
 	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( task->GetID() ) );
-	data.m_done = true;
+	data->m_done = true;
 }
 
 void ClientTaskPlanner::SendTaskMessage( const unsigned long time, TaskPtr &task )
@@ -110,12 +111,12 @@ void ClientTaskPlanner::MainSequence()
 		while ( m_tasks.size() > 0 && m_threads.size() < m_threadNums )
 		{
 			m_threads.push_back( ThreadDataPtr( new ThreadData( *this ) ) );
-			ThreadData &thread = *m_threads.back();
+			ThreadData *thread = &( *m_threads.back() );
 
-			thread.m_task = m_tasks.front();
+			thread->m_task = m_tasks.front();
 			m_tasks.pop_front();
 
-			thread.m_thread.reset( new std::thread( ClientTaskPlanner::ThreadTask, std::ref( thread ) ) );
+			thread->m_thread.reset( new std::thread( ClientTaskPlanner::ThreadTask, thread ) );
 		}
 		for( ThreadDataPtrs::iterator iter = m_threads.begin(); iter != m_threads.end(); )
 		{

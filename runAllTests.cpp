@@ -269,6 +269,28 @@ public:
 	void runTest() { if(suite_TaskPlannerTest) suite_TaskPlannerTest->testTaskComplete(); }
 } testDescription_TaskPlannerTest_testTaskComplete;
 
+// Test suite: UnitTestTask
+
+#include "Tests\TestTask.h"
+static UnitTestTask *suite_UnitTestTask;
+static CxxTest::List Tests_UnitTestTask;
+
+CxxTest::StaticSuiteDescription suiteDescription_UnitTestTask;
+
+
+static class TestDescription_UnitTestTask_testRequest : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_UnitTestTask) suite_UnitTestTask->testRequest(); }
+} testDescription_UnitTestTask_testRequest;
+static class TestDescription_UnitTestTask_testRespond : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_UnitTestTask) suite_UnitTestTask->testRespond(); }
+} testDescription_UnitTestTask_testRespond;
+static class TestDescription_UnitTestTask_testPlannerID : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_UnitTestTask) suite_UnitTestTask->testPlannerID(); }
+} testDescription_UnitTestTask_testPlannerID;
+
 // Test suite: TestTaskTest
 
 #include "Tests\TestTaskTest.h"
@@ -507,6 +529,21 @@ namespace CxxTest
 		testDescription_TaskPlannerTest_testAddTask.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 45, "testAddTask");
 		testDescription_TaskPlannerTest_testTaskComplete.initialize(Tests_TaskPlannerTest, suiteDescription_TaskPlannerTest, 57, "testTaskComplete");
 
+		// Initialize test suite: UnitTestTask
+		Tests_UnitTestTask.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_UnitTestTask = new UnitTestTask; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("UnitTestTask", "Exception thrown when initializing " "UnitTestTask"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("UnitTestTask", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_UnitTestTask.initialize(
+			"Tests\\TestTask.h", 7,
+			"UnitTestTask", *suite_UnitTestTask, Tests_UnitTestTask);
+		testDescription_UnitTestTask_testRequest.initialize(Tests_UnitTestTask, suiteDescription_UnitTestTask, 42, "testRequest");
+		testDescription_UnitTestTask_testRespond.initialize(Tests_UnitTestTask, suiteDescription_UnitTestTask, 59, "testRespond");
+		testDescription_UnitTestTask_testPlannerID.initialize(Tests_UnitTestTask, suiteDescription_UnitTestTask, 76, "testPlannerID");
+
 		// Initialize test suite: TestTaskTest
 		Tests_TestTaskTest.initialize();
 
@@ -569,6 +606,7 @@ namespace CxxTest
 		delete suite_NodesMapTest;
 		delete suite_TaskMessageTest;
 		delete suite_TaskPlannerTest;
+		delete suite_UnitTestTask;
 		delete suite_TestTaskTest;
 		delete suite_TinyXmlTest;
 		delete suite_XMLUtilsTest;

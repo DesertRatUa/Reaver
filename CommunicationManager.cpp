@@ -63,7 +63,7 @@ void CommunicationManager::Close()
 
 void CommunicationManager::ReadSocket( SOCKET &socket, CommunicationManager& manager, const std::string &add )
 {
-	char Buffer[512];
+	char Buffer[4048];
 	memset( Buffer, 0, sizeof(Buffer) );
 
 	int status = recv( socket, Buffer, sizeof(Buffer), 0 );

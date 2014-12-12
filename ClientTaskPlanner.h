@@ -41,7 +41,7 @@ protected:
 	typedef std::vector<ThreadDataPtr> ThreadDataPtrs;
 
 	static void ThreadMain( ClientTaskPlanner &parent );
-	static void ThreadTask( ThreadData &data );
+	static void ThreadTask( ThreadData *data );
 	void MainSequence();
 	void TaskProcess( TaskPtr &task );
 	void SendTaskMessage( const unsigned long time, TaskPtr &task );
