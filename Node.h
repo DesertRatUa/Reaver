@@ -12,37 +12,25 @@
 #include "Tasks/Task.h"
 #include <vector>
 #include <mutex>
+#include "Client.h"
 
 class Node
 {
 public:
-	Node( const std::string &addr, const unsigned threadNum, ServerMessageProcessorInterface &manager );
+	Node( const Client &client, const unsigned threadNum, ServerMessageProcessorInterface &manager );
 	virtual ~Node();
 
-	bool isThreadsAvalible() const;
-	unsigned GetFreeThreadsNum() const;
-	std::string GetID() const;
+	std::string GetAddr() const;
+	unsigned GetThreadsCount() const;
 
 	bool operator==( const Node& node ) const;
 	bool operator==( const std::string& addr ) const;
-
 	void SendTask( const TaskPtr& task ) throw ( std::exception );
 	void TaskComplete( const TaskPtr& task ) throw ( std::exception );
-	void CheckForStaleTasks( const unsigned timeOut );
-
-	struct ThreadData
-	{
-		ThreadData( unsigned long start, unsigned id );
-		bool operator==( const unsigned &id ) const;
-		unsigned long startTime;
-		unsigned plannerID;
-	};
 
 protected:
-	typedef std::vector<ThreadData> TaskTimes;
-	TaskTimes m_times;
-	unsigned m_threadsLimit;
-	std::string m_addr;
+	unsigned m_threads;
+	const Client *m_client;
 	std::shared_ptr<std::mutex> m_mut;
 
 	ServerMessageProcessorInterface *m_proccessor;

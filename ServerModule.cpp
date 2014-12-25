@@ -54,7 +54,7 @@ void ServerModule::Run()
 	Stop();
 	m_planner.Stop();
 	m_taskPlanner->join();
-	m_connection.Close();
+	m_connection.Stop();
 	Log::Add( "Stop server module" );
 }
 
@@ -87,7 +87,7 @@ void ServerModule::_TaskPlanner()
 		if ( i >= 100 )
 		{
 			TaskPtr task( new TestTask( 0, 999999, 80000 ) );
-			m_planner.AddTask( task, m_nodes.GetFreeThreadsNum() );
+			m_planner.AddTask( task, m_nodes.GetThreadsCount() );
 			i = 0;
 		}
 	}
@@ -97,14 +97,15 @@ void ServerModule::RegisterNode( const std::string& addr, const unsigned threadN
 {
 	try
 	{
-		m_nodes.RegisterNode( addr, threadNum, m_processor );
-		m_processor.SendRegisterMessage( addr, NULL );
+		Client &client = m_connection.GetClient( addr );
+		m_nodes.RegisterNode( client, threadNum, m_processor );
+		m_processor.SendRegisterMessage( client, NULL );
 	}
 	catch (std::exception &exc)
 	{
 		Log::AddException( "Server module::RegisterNode", exc );
 		std::string error( exc.what() );
-		m_processor.SendRegisterMessage( addr, &error );
+		m_processor.SendRegisterMessage( m_connection.GetClient( addr ), &error );
 	}
 }
 
@@ -112,7 +113,7 @@ void ServerModule::UnregisterNode( const std::string& addr )
 {
 	try
 	{
-		m_nodes.UnregisterNode( addr );
+		m_nodes.UnregisterNode(  m_connection.GetClient( addr ) );
 	}
 	catch (std::exception &exc)
 	{
@@ -124,7 +125,7 @@ void ServerModule::TaskRespond( const std::string& addr, const TaskPtr &task )
 {
 	try
 	{
-		m_nodes.TaskComplete( addr, task );
+		m_nodes.TaskComplete(  m_connection.GetClient( addr ), task );
 		if ( task->isDone() )
 		{
 			m_planner.TaskComplete( task );
@@ -134,4 +135,9 @@ void ServerModule::TaskRespond( const std::string& addr, const TaskPtr &task )
 	{
 		Log::AddException( "ServerModule", exc );
 	}
+}
+
+void ServerModule::TaskRequest( const std::string& addr )
+{
+
 }

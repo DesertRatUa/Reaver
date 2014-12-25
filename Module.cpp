@@ -48,3 +48,11 @@ Module* Module::CreateModule( Config &config, ArgumentsMap &arguments )
 	}
 	throw std::runtime_error( "Required one of arguments:\t\n" + arguments("server").m_description + "\t\n" + arguments("client").m_description );
 }
+
+ModuleInterface::ModuleInterface()
+{
+}
+
+ModuleInterface::~ModuleInterface()
+{
+}

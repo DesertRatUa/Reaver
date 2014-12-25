@@ -60,10 +60,12 @@ MessageProcessor::Packets MessageProcessor::SeperatePackets( tinyxml2::XMLDocume
 		doc.DeleteChild( packet );
 		packet = doc.FirstChildElement( "Packet" );
 	}
+	/*
 	if ( packets.size() > 1 )
 	{
 		Log::Add( "Separate message to " + Log::IntToStr( packets.size() ) + " packets" );
 	}
+	*/
 	return packets;
 }
 

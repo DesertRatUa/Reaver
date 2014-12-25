@@ -21,18 +21,16 @@ public:
 
 	void Init();
 
-	void RegisterNode( const std::string& addr, const unsigned threadNum, ServerMessageProcessorInterface &manager ) throw ( std::exception );
-	void UnregisterNode( const std::string& addr ) throw ( std::exception );
-	Node& GetNode( const std::string& addr ) throw ( std::exception );
-	Node* GetFreeNode() ;
-	unsigned GetFreeThreadsNum();
-	void TaskComplete( const std::string& addr, const TaskPtr &task );
-	void CheckForStaleTasks( const unsigned timeOut );
+	void RegisterNode( const Client& client, const unsigned threadNum, ServerMessageProcessorInterface &manager ) throw ( std::exception );
+	void UnregisterNode( const Client& client ) throw ( std::exception );
+	Node& GetNode( const Client& client ) throw ( std::exception );
+	unsigned GetThreadsCount() const;
+	void TaskComplete( const Client& client, const TaskPtr &task );
 
 protected:
 	typedef std::vector<Node> Nodes;
 	Nodes m_nodes;
-	std::mutex m_mut;
+	mutable std::mutex m_mut;
 };
 
 #endif /* NODESMAP_H_ */

@@ -1,7 +1,7 @@
 /*
  * CommunicationManager.h
  *
- *  Created on: 13 черв. 2014
+ *  Created on: 13 пїЅпїЅпїЅпїЅ. 2014
  *      Author: maximm
  */
 
@@ -10,8 +10,9 @@
 
 #include "include.h"
 #include "Thread.h"
+#include "Module.h"
 #include <vector>
-#ifdef WIN32
+#if defined WIN32 || defined WIN64
    #include <winsock2.h>
 #else
    #include <sys/socket.h>
@@ -20,14 +21,14 @@
 
 class MessageProcessor;
 
-class CommunicationManager
+class CommunicationManager : public ModuleInterface
 {
 public:
 	CommunicationManager( MessageProcessor &processor, bool &isRun );
 	virtual ~CommunicationManager();
 
 	virtual void Init();
-	void Close();
+	virtual void Stop();
 
 protected:
 	static void ReadSocket( SOCKET &socket, CommunicationManager &manager, const std::string &addr );

@@ -11,6 +11,15 @@
 #include "Config.h"
 #include "ArgumentsMap.h"
 
+class ModuleInterface
+{
+	public:
+	ModuleInterface();
+	virtual ~ModuleInterface();
+	virtual void Init() = 0;
+	virtual void Stop() = 0;
+};
+
 class Module
 {
 public:

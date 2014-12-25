@@ -45,7 +45,7 @@ void CommunicationManager::Init()
 	}
 }
 
-void CommunicationManager::Close()
+void CommunicationManager::Stop()
 {
 	Log::Add( "Close all connections" );
 

@@ -108,6 +108,10 @@ static class TestDescription_LogTest_testAddrToStr : public CxxTest::RealTestDes
 public:
 	void runTest() { if(suite_LogTest) suite_LogTest->testAddrToStr(); }
 } testDescription_LogTest_testAddrToStr;
+static class TestDescription_LogTest_testStrToAddr : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_LogTest) suite_LogTest->testStrToAddr(); }
+} testDescription_LogTest_testStrToAddr;
 static class TestDescription_LogTest_testIntToStr : public CxxTest::RealTestDescription {
 public:
 	void runTest() { if(suite_LogTest) suite_LogTest->testIntToStr(); }
@@ -212,14 +216,10 @@ static class TestDescription_NodesMapTest_testGetNode : public CxxTest::RealTest
 public:
 	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetNode(); }
 } testDescription_NodesMapTest_testGetNode;
-static class TestDescription_NodesMapTest_testGetFreeNode : public CxxTest::RealTestDescription {
+static class TestDescription_NodesMapTest_testGetThreadsNum : public CxxTest::RealTestDescription {
 public:
-	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetFreeNode(); }
-} testDescription_NodesMapTest_testGetFreeNode;
-static class TestDescription_NodesMapTest_testGetFreeThreadsNum : public CxxTest::RealTestDescription {
-public:
-	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetFreeThreadsNum(); }
-} testDescription_NodesMapTest_testGetFreeThreadsNum;
+	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testGetThreadsNum(); }
+} testDescription_NodesMapTest_testGetThreadsNum;
 static class TestDescription_NodesMapTest_testTaskComplete : public CxxTest::RealTestDescription {
 public:
 	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testTaskComplete(); }
@@ -431,9 +431,10 @@ namespace CxxTest
 			"LogTest", *suite_LogTest, Tests_LogTest);
 		testDescription_LogTest_testInit.initialize(Tests_LogTest, suiteDescription_LogTest, 12, "testInit");
 		testDescription_LogTest_testAddrToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 22, "testAddrToStr");
-		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 30, "testIntToStr");
-		testDescription_LogTest_testBoolToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 35, "testBoolToStr");
-		testDescription_LogTest_testStrToBool.initialize(Tests_LogTest, suiteDescription_LogTest, 41, "testStrToBool");
+		testDescription_LogTest_testStrToAddr.initialize(Tests_LogTest, suiteDescription_LogTest, 30, "testStrToAddr");
+		testDescription_LogTest_testIntToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 38, "testIntToStr");
+		testDescription_LogTest_testBoolToStr.initialize(Tests_LogTest, suiteDescription_LogTest, 43, "testBoolToStr");
+		testDescription_LogTest_testStrToBool.initialize(Tests_LogTest, suiteDescription_LogTest, 49, "testStrToBool");
 
 		// Initialize test suite: MDTaskTest
 		Tests_MDTaskTest.initialize();
@@ -493,11 +494,10 @@ namespace CxxTest
 			"Tests\\NodesMapTest.h", 9,
 			"NodesMapTest", *suite_NodesMapTest, Tests_NodesMapTest);
 		testDescription_NodesMapTest_testRegisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 46, "testRegisterNode");
-		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 57, "testUnregisterNode");
-		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 68, "testGetNode");
-		testDescription_NodesMapTest_testGetFreeNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 80, "testGetFreeNode");
-		testDescription_NodesMapTest_testGetFreeThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 97, "testGetFreeThreadsNum");
-		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 116, "testTaskComplete");
+		testDescription_NodesMapTest_testUnregisterNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 58, "testUnregisterNode");
+		testDescription_NodesMapTest_testGetNode.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 70, "testGetNode");
+		testDescription_NodesMapTest_testGetThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 83, "testGetThreadsNum");
+		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 99, "testTaskComplete");
 
 		// Initialize test suite: TaskMessageTest
 		Tests_TaskMessageTest.initialize();

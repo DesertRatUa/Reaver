@@ -80,7 +80,7 @@ void ClientTaskPlanner::ThreadMain( ClientTaskPlanner &parent )
 {
 	Log::Add( "Start TaskPlanner thread" );
 	parent.MainSequence();
-	Log::Add( "Stop TaskPlanner thread" );
+	Log::Add( "Stop TaskPlanner thread. Total threads: " + Log::IntToStr( parent.m_tasks.size() ) );
 }
 
 void ClientTaskPlanner::ThreadTask( ThreadData *data )
@@ -89,11 +89,11 @@ void ClientTaskPlanner::ThreadTask( ThreadData *data )
 	assert( data->m_task.get() );
 	assert( data->m_parent );
 	TaskPtr &task = data->m_task;
-	Log::Add( "Start task thread for taskId: " + Log::IntToStr( task->GetID() ) );
+	Log::Add( "Start task thread for taskId: " + Log::IntToStr( task->GetID() ) + ". Total threads: " + Log::IntToStr( data->m_parent->m_tasks.size() ) );
 	unsigned respondTime = GetTickCount();
 	task->Process();
 	data->m_parent->SendTaskMessage( GetTickCount() - respondTime, task );
-	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( task->GetID() ) );
+	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( task->GetID() ) + ". Total threads: " + Log::IntToStr( data->m_parent->m_tasks.size() ) );
 	data->m_done = true;
 }
 

@@ -11,6 +11,7 @@
 #include "include.h"
 #include "MessageProcessor.h"
 #include "Tasks/Task.h"
+#include "Client.h"
 
 class ServerMessageProcessorInterface : public MessageProcessor
 {
@@ -18,9 +19,9 @@ public:
 	ServerMessageProcessorInterface();
 	virtual ~ServerMessageProcessorInterface();
 
-	virtual void SendRegisterMessage( const std::string &addr, const std::string *error ) = 0;
-	virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task ) = 0;
-	virtual void SendCancelTaskMessage( const std::string &addr, const unsigned plannerId ) = 0;
+	virtual void SendRegisterMessage( const Client &client, const std::string *error ) = 0;
+	virtual void SendTaskMessage( const Client &client, const TaskPtr &task ) = 0;
+	virtual void SendCancelTaskMessage( const Client &client, const unsigned plannerId ) = 0;
 };
 
 class ServerMessageProcessor : public ServerMessageProcessorInterface
@@ -30,9 +31,9 @@ public:
 	virtual ~ServerMessageProcessor();
 
 	virtual void Init();
-	virtual void SendRegisterMessage( const std::string &addr, const std::string *error );
-	virtual void SendTaskMessage( const std::string &addr, const TaskPtr &task );
-	virtual void SendCancelTaskMessage( const std::string &addr, const unsigned plannerId );
+	virtual void SendRegisterMessage( const Client &client, const std::string *error );
+	virtual void SendTaskMessage( const Client &client, const TaskPtr &task );
+	virtual void SendCancelTaskMessage( const Client &client, const unsigned plannerId );
 
 protected:
 	static ServerModule *m_parent;

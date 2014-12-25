@@ -23,8 +23,16 @@ public:
 	{
 		sockaddr_in addr;
 		addr.sin_addr.s_addr = inet_addr( "127.0.0.1" );
-		addr.sin_port = 89;
+		addr.sin_port = htons( 89 );
 		TS_ASSERT_EQUALS( Log::AddrToStr( addr ), "127.0.0.1:89" );
+	}
+
+	void testStrToAddr()
+	{
+		std::string addr( "127.0.0.1:80" );
+		sockaddr_in res = Log::StrToAddr( addr );
+		TS_ASSERT_EQUALS( ntohs( res.sin_port ),  80 );
+		TS_ASSERT_EQUALS( std::string( inet_ntoa( res.sin_addr ) ), std::string( "127.0.0.1" ) );
 	}
 
 	void testIntToStr()

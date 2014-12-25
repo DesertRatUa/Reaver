@@ -106,7 +106,19 @@ std::string Log::IntToStr( const size_t &value )
 
 std::string Log::AddrToStr( const sockaddr_in& addr )
 {
-	return std::string( inet_ntoa( addr.sin_addr ) + std::string(":") + Log::IntToStr( addr.sin_port ) );
+	return std::string( inet_ntoa( addr.sin_addr ) + std::string(":") + Log::IntToStr( ntohs( addr.sin_port ) ) );
+}
+
+sockaddr_in Log::StrToAddr( const std::string& str )
+{
+	sockaddr_in addr;
+	int pos = str.find(":");
+	if ( pos > 1 )
+	{
+		addr.sin_port = htons( atoi( str.substr( pos + 1, str.length() - pos - 1 ).c_str() ) );
+		addr.sin_addr.s_addr = inet_addr( str.substr( 0, pos ).c_str() );
+	}
+	return addr;
 }
 
 void Log::SetName( const std::string &name )

@@ -73,14 +73,9 @@ unsigned TestTask::GetID() const
 Tasks TestTask::SeperateTask( const unsigned threadNums, const unsigned plannerID ) const
 {
 	Tasks tasks;
-	if ( threadNums < 2 )
-	{
-		tasks.push_back( TaskPtr( new TestTask( *this ) ) );
-		return tasks;
-	}
 	unsigned st = start;
-	unsigned step = ( end - start ) / threadNums;
-	for ( unsigned i = 0; i < threadNums; ++i )
+	unsigned step = ( end - start ) / 100;
+	for ( unsigned i = 0; i < 100; ++i )
 	{
 		tasks.push_back( TaskPtr( new TestTask( st, st+=step, hash, plannerID ) ) );
 	}

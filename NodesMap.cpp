@@ -23,97 +23,72 @@ void NodesMap::Init()
 {
 }
 
-void NodesMap::RegisterNode( const std::string& addr, const unsigned threadNum, ServerMessageProcessorInterface &manager ) throw ( std::exception )
+void NodesMap::RegisterNode( const Client& client, const unsigned threadNum, ServerMessageProcessorInterface &manager ) throw ( std::exception )
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 
-	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), addr );
+	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), client.GetAddr() );
 	if ( iter == m_nodes.end() )
 	{
-		m_nodes.push_back( Node( addr, threadNum, manager ) );
-		Log::Add( "Node: " + addr + " registered with avalible threads: " + Log::IntToStr( threadNum ) );
+		m_nodes.push_back( Node( client, threadNum, manager ) );
+		Log::Add( "Node: " + client.GetAddr() + " registered with avalible threads: " + Log::IntToStr( threadNum ) );
 	}
 	else
 	{
-		throw std::runtime_error( "Node: " + addr + " already registered" );
+		throw std::runtime_error( "Node: " + client.GetAddr() + " already registered" );
 	}
 }
 
-void NodesMap::UnregisterNode( const std::string& addr ) throw ( std::exception )
+void NodesMap::UnregisterNode( const Client& client ) throw ( std::exception )
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 
-	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), addr );
+	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), client.GetAddr() );
 	if ( iter != m_nodes.end() )
 	{
 		m_nodes.erase( iter );
-		Log::AddMessage( "Node: " + addr + " unregistered" );
+		Log::AddMessage( "Node: " + client.GetAddr() + " unregistered" );
 	}
 	else
 	{
-		throw std::runtime_error( "Node: " + addr + " not registered" );
+		throw std::runtime_error( "Node: " + client.GetAddr() + " not registered" );
 	}
 }
 
-Node& NodesMap::GetNode( const std::string& addr ) throw ( std::exception )
+Node& NodesMap::GetNode( const Client& client ) throw ( std::exception )
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 
-	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), addr );
+	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), client.GetAddr() );
 	if ( iter == m_nodes.end() )
 	{
-		throw std::runtime_error( "Node: " + addr + " Not registered" );
+		throw std::runtime_error( "Node: " + client.GetAddr() + " Not registered" );
 	}
 	Node& node = *iter;
 	return node;
 }
 
-Node* NodesMap::GetFreeNode()
-{
-	Node* node = NULL;
-	std::lock_guard<std::mutex> lock(m_mut);
 
-	for ( Nodes::iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
-	{
-		if ( iter->isThreadsAvalible() )
-		{
-			node = &(*iter);
-			break;
-		}
-	}
-	return node;
-}
-
-unsigned NodesMap::GetFreeThreadsNum()
+unsigned NodesMap::GetThreadsCount() const
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 	unsigned count = 0;
 
-	for ( Nodes::iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
+	for ( Nodes::const_iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
 	{
-		count += iter->GetFreeThreadsNum();
+		count += iter->GetThreadsCount();
 	}
 	return count;
 }
 
-void NodesMap::TaskComplete(  const std::string& addr, const TaskPtr &task  )
+void NodesMap::TaskComplete(  const Client& client, const TaskPtr &task  )
 {
 	std::lock_guard<std::mutex> lock(m_mut);
 
-	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), addr );
+	Nodes::iterator iter = std::find( m_nodes.begin(), m_nodes.end(), client.GetAddr() );
 	if ( iter == m_nodes.end() )
 	{
-		throw std::runtime_error( "Node: " + addr + " Not registered" );
+		throw std::runtime_error( "Node: " + client.GetAddr() + " Not registered" );
 	}
 	iter->TaskComplete( task );
-}
-
-void NodesMap::CheckForStaleTasks( const unsigned timeOut )
-{
-	std::lock_guard<std::mutex> lock(m_mut);
-
-	for ( Nodes::iterator iter = m_nodes.begin(); iter != m_nodes.end(); ++iter )
-	{
-		iter->CheckForStaleTasks( timeOut );
-	}
 }

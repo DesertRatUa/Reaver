@@ -1,7 +1,7 @@
 /*
  * Client.h
  *
- *  Created on: 01 àâã. 2014 ã.
+ *  Created on: 01 ï¿½ï¿½ï¿½. 2014 ï¿½.
  *      Author: maximm
  */
 
@@ -10,7 +10,7 @@
 
 #include "include.h"
 #include "Thread.h"
-#ifdef WIN32
+#if defined WIN32 || defined WIN64
    #include <winsock2.h>
 #else
    #include <sys/socket.h>
@@ -23,13 +23,13 @@ public:
 	Client();
 	virtual ~Client();
 
-	void Send( const std::string& message );
-	void SendRequest( const Message& message );
-	void SendRespond( const Message& message );
+	void Send( const std::string& message ) const;
+	void SendRequest( const Message& message ) const;
+	void SendRespond( const Message& message ) const;
 	void Disconnect();
 	void Join();
 	bool isDisconnected();
-	std::string GetAddr();
+	std::string GetAddr() const;
 
 
 	sockaddr_in addr;
@@ -42,7 +42,7 @@ protected:
 	friend class ServerCommunicationManager;
 	SOCKET socket;
 	ThreadPtr thread;
-	std::mutex m_mut;
+	mutable std::mutex m_mut;
 };
 
 typedef std::shared_ptr<Client> ClientPtr;

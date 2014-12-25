@@ -40,27 +40,27 @@ void ServerMessageProcessor::Init()
 	RegisterProcessor( 3, &ServerMessageProcessor::RecieveTaskMessage );
 }
 
-void ServerMessageProcessor::SendRegisterMessage( const std::string &addr, const std::string *error )
+void ServerMessageProcessor::SendRegisterMessage( const Client &client, const std::string *error )
 {
 	RegisterMessage mess;
 	if ( error )
 	{
 		mess.ErrorMsg = *error;
 	}
-	mess.ClientId = addr;
-	m_parent->m_connection.GetClient( addr ).SendRespond( mess );
+	mess.ClientId = client.GetAddr();
+	client.SendRespond( mess );
 }
 
-void ServerMessageProcessor::SendTaskMessage( const std::string &addr, const TaskPtr &task )
+void ServerMessageProcessor::SendTaskMessage( const Client &client, const TaskPtr &task )
 {
 	TaskMessage mess(task);
-	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
+	client.SendRequest( mess );
 }
 
-void ServerMessageProcessor::SendCancelTaskMessage( const std::string &addr, const unsigned plannerId )
+void ServerMessageProcessor::SendCancelTaskMessage( const Client &client, const unsigned plannerId )
 {
 	TaskMessage mess( true, plannerId );
-	m_parent->m_connection.GetClient( addr ).SendRequest( mess );
+	client.SendRequest( mess );
 }
 
 void ServerMessageProcessor::RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )

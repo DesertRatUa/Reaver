@@ -58,7 +58,7 @@ void ClientModule::Run()
 	{
 		m_sequence->join();
 	}
-	m_connection.Close();
+	m_connection.Stop();
 	Log::Add( "Stop client module" );
 }
 

@@ -1,11 +1,11 @@
 /*
  * EchoMessage.cpp
  *
- *  Created on: 19 авг. 2014 г.
+ *  Created on: 19 пїЅпїЅпїЅ. 2014 пїЅ.
  *      Author: maximm
  */
 
-#include <Messages/EchoMessage.h>
+#include "Messages/EchoMessage.h"
 #include <XMLUtils.h>
 
 EchoMessage::EchoMessage()

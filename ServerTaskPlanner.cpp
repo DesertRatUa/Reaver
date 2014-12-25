@@ -49,7 +49,8 @@ void ServerTaskPlanner::ThreadRun()
 	{
 		if ( m_tasks.size() != 0 )
 		{
-			node = m_nodes.GetFreeNode();
+			/*
+			node = m_nodes.GetThreadsCount();
 			if ( node != NULL )
 			{
 				std::lock_guard<std::mutex> lock( m_mut );
@@ -57,6 +58,7 @@ void ServerTaskPlanner::ThreadRun()
 				m_tasks.pop_front();
 				continue;
 			}
+			*/
 		}
 		if ( m_run )
 		{
