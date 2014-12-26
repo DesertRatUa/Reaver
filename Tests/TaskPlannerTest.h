@@ -45,7 +45,7 @@ public:
 	void testAddTask()
 	{
 		NodesMap map;
-		ServerTaskPlanner planner(map);
+		ServerTaskPlanner planner;
 		TaskPtr task( new TestTask() );
 		planner.AddTask( task, 2 );
 		TS_ASSERT_EQUALS( planner.m_tasks.size(), unsigned(2) );
@@ -57,7 +57,7 @@ public:
 	void testTaskComplete()
 	{
 		NodesMap map;
-		ServerTaskPlanner planner(map);
+		ServerTaskPlanner planner;
 		TaskPtr task( new TestTask() );
 		planner.AddTask( task, 2 );
 		planner.AddTask( task, 3 );

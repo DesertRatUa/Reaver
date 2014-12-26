@@ -11,6 +11,7 @@
 #include "Messages/EchoMessage.h"
 #include "Messages/RegisterMessage.h"
 #include "Messages/TaskMessage.h"
+#include "Messages/RequestTask.h"
 
 #include "tinyxml2.h"
 
@@ -97,4 +98,12 @@ void ServerMessageProcessor::RecieveTaskMessage( const tinyxml2::XMLDocument& do
 		assert( mess.Task.get() );
 		m_parent->TaskRespond( addr, mess.Task );
 	}
+}
+
+void ServerMessageProcessor::RecieveRequesTaskMessage( const tinyxml2::XMLDocument& doc, const std::string& addr )
+{
+	assert( m_parent );
+	RequestTask mess;
+	mess.DeserializeReqest( doc );
+	m_parent->TaskRequest( addr, mess.m_threads );
 }

@@ -40,6 +40,7 @@ protected:
 	static void RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 	static void RecieveRegisterMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 	static void RecieveTaskMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
+	static void RecieveRequesTaskMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
 };
 
 #endif /* SERVERMESSAGEPROCESSOR_H_ */

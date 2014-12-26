@@ -12,7 +12,7 @@
 
 ServerModule::ServerModule( Config &config, ArgumentsMap &arguments ) :
 	Module( config, arguments ), m_connection( *this, m_processor, m_run ), m_processor(this),
-	m_run(false), m_signal( m_run ), m_planner( m_nodes )
+	m_run(false), m_signal( m_run )
 {
 }
 
@@ -42,7 +42,6 @@ void ServerModule::Run()
 	try
 	{
 		m_connection.Listen( ip, port );
-		m_planner.Run();
 		m_taskPlanner.reset( new std::thread( ServerModule::TaskPlannerThread, std::ref( *this ) ) );
 		m_signal.Wait();
 	}
@@ -52,7 +51,6 @@ void ServerModule::Run()
 	}
 
 	Stop();
-	m_planner.Stop();
 	m_taskPlanner->join();
 	m_connection.Stop();
 	Log::Add( "Stop server module" );
@@ -137,7 +135,15 @@ void ServerModule::TaskRespond( const std::string& addr, const TaskPtr &task )
 	}
 }
 
-void ServerModule::TaskRequest( const std::string& addr )
+void ServerModule::TaskRequest( const std::string& addr, const unsigned count  )
 {
-
+	for ( unsigned i = 0; i < count; ++i )
+	{
+		TaskPtr ptr = m_planner.GetTask();
+		if( !ptr.get() )
+		{
+			return;
+		}
+		m_processor.SendTaskMessage( m_connection.GetClient( addr ), ptr );
+	}
 }

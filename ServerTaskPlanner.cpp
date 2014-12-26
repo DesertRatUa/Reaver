@@ -10,8 +10,7 @@
 #include "Log.h"
 #include <windows.h>
 
-ServerTaskPlanner::ServerTaskPlanner( NodesMap &map ) :
-	m_taskCount(0), m_run(false), m_nodes( map )
+ServerTaskPlanner::ServerTaskPlanner() : m_taskCount(0)
 {
 }
 
@@ -21,50 +20,6 @@ ServerTaskPlanner::~ServerTaskPlanner()
 
 void ServerTaskPlanner::Init()
 {
-}
-
-void ServerTaskPlanner::Run()
-{
-	m_run = true;
-	m_thread.reset( new std::thread( ServerTaskPlanner::Thread, std::ref( *this ) ) );
-}
-
-void ServerTaskPlanner::Stop()
-{
-	m_run = false;
-	m_thread->join();
-}
-
-void ServerTaskPlanner::Thread( ServerTaskPlanner &parent )
-{
-	Log::Add( "Start TaskPlanner thread" );
-	parent.ThreadRun();
-	Log::Add( "Stop TaskPlanner thread" );
-}
-
-void ServerTaskPlanner::ThreadRun()
-{
-	Node *node = NULL;
-	while ( m_run )
-	{
-		if ( m_tasks.size() != 0 )
-		{
-			/*
-			node = m_nodes.GetThreadsCount();
-			if ( node != NULL )
-			{
-				std::lock_guard<std::mutex> lock( m_mut );
-				node->SendTask( m_tasks.front() );
-				m_tasks.pop_front();
-				continue;
-			}
-			*/
-		}
-		if ( m_run )
-		{
-			Sleep(100);
-		}
-	}
 }
 
 void ServerTaskPlanner::AddTask( const TaskPtr &task, const unsigned threadsNum )
@@ -90,4 +45,16 @@ void ServerTaskPlanner::TaskComplete( const TaskPtr &task )
 			++iter;
 		}
 	}
+}
+
+TaskPtr ServerTaskPlanner::GetTask()
+{
+	TaskPtr ptr;
+	std::lock_guard<std::mutex> lock( m_mut );
+	if ( m_tasks.size() )
+	{
+		ptr = m_tasks.front();
+		m_tasks.pop_front();
+	}
+	return ptr;
 }

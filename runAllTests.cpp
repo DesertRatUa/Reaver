@@ -225,6 +225,42 @@ public:
 	void runTest() { if(suite_NodesMapTest) suite_NodesMapTest->testTaskComplete(); }
 } testDescription_NodesMapTest_testTaskComplete;
 
+// Test suite: RequestTaskTest
+
+#include "Tests\RequestTaskTest.h"
+static RequestTaskTest *suite_RequestTaskTest;
+static CxxTest::List Tests_RequestTaskTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_RequestTaskTest;
+
+
+static class TestDescription_RequestTaskTest_testRequest : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_RequestTaskTest) suite_RequestTaskTest->testRequest(); }
+} testDescription_RequestTaskTest_testRequest;
+
+// Test suite: ServerTaskPlannerTest
+
+#include "Tests\ServerTaskPlannerTest.h"
+static ServerTaskPlannerTest *suite_ServerTaskPlannerTest;
+static CxxTest::List Tests_ServerTaskPlannerTest;
+
+CxxTest::StaticSuiteDescription suiteDescription_ServerTaskPlannerTest;
+
+
+static class TestDescription_ServerTaskPlannerTest_testAddTask : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ServerTaskPlannerTest) suite_ServerTaskPlannerTest->testAddTask(); }
+} testDescription_ServerTaskPlannerTest_testAddTask;
+static class TestDescription_ServerTaskPlannerTest_testTaskComplete : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ServerTaskPlannerTest) suite_ServerTaskPlannerTest->testTaskComplete(); }
+} testDescription_ServerTaskPlannerTest_testTaskComplete;
+static class TestDescription_ServerTaskPlannerTest_testGetTask : public CxxTest::RealTestDescription {
+public:
+	void runTest() { if(suite_ServerTaskPlannerTest) suite_ServerTaskPlannerTest->testGetTask(); }
+} testDescription_ServerTaskPlannerTest_testGetTask;
+
 // Test suite: TaskMessageTest
 
 #include "Tests\TaskMessageTest.h"
@@ -499,6 +535,34 @@ namespace CxxTest
 		testDescription_NodesMapTest_testGetThreadsNum.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 83, "testGetThreadsNum");
 		testDescription_NodesMapTest_testTaskComplete.initialize(Tests_NodesMapTest, suiteDescription_NodesMapTest, 99, "testTaskComplete");
 
+		// Initialize test suite: RequestTaskTest
+		Tests_RequestTaskTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_RequestTaskTest = new RequestTaskTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("RequestTaskTest", "Exception thrown when initializing " "RequestTaskTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("RequestTaskTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_RequestTaskTest.initialize(
+			"Tests\\RequestTaskTest.h", 8,
+			"RequestTaskTest", *suite_RequestTaskTest, Tests_RequestTaskTest);
+		testDescription_RequestTaskTest_testRequest.initialize(Tests_RequestTaskTest, suiteDescription_RequestTaskTest, 11, "testRequest");
+
+		// Initialize test suite: ServerTaskPlannerTest
+		Tests_ServerTaskPlannerTest.initialize();
+
+		_TS_TRY_WITH_SIGNAL_PROTECTION {
+			_TS_TRY { suite_ServerTaskPlannerTest = new ServerTaskPlannerTest; } _TS_PROPAGATE_SIGNAL _TS_CATCH_ABORT( {} )
+			_TS_LAST_CATCH( { CxxTest::__cxxtest_failed_init_suites.addSuite("ServerTaskPlannerTest", "Exception thrown when initializing " "ServerTaskPlannerTest"); } )
+		} _TS_CATCH_SIGNAL( { CxxTest::__cxxtest_failed_init_suites.addSuite("ServerTaskPlannerTest", CxxTest::__cxxtest_sigmsg.c_str()); } );
+
+		suiteDescription_ServerTaskPlannerTest.initialize(
+			"Tests\\ServerTaskPlannerTest.h", 11,
+			"ServerTaskPlannerTest", *suite_ServerTaskPlannerTest, Tests_ServerTaskPlannerTest);
+		testDescription_ServerTaskPlannerTest_testAddTask.initialize(Tests_ServerTaskPlannerTest, suiteDescription_ServerTaskPlannerTest, 14, "testAddTask");
+		testDescription_ServerTaskPlannerTest_testTaskComplete.initialize(Tests_ServerTaskPlannerTest, suiteDescription_ServerTaskPlannerTest, 22, "testTaskComplete");
+		testDescription_ServerTaskPlannerTest_testGetTask.initialize(Tests_ServerTaskPlannerTest, suiteDescription_ServerTaskPlannerTest, 32, "testGetTask");
+
 		// Initialize test suite: TaskMessageTest
 		Tests_TaskMessageTest.initialize();
 
@@ -604,6 +668,8 @@ namespace CxxTest
 		delete suite_MessageProcessorTest;
 		delete suite_NodeTest;
 		delete suite_NodesMapTest;
+		delete suite_RequestTaskTest;
+		delete suite_ServerTaskPlannerTest;
 		delete suite_TaskMessageTest;
 		delete suite_TaskPlannerTest;
 		delete suite_UnitTestTask;

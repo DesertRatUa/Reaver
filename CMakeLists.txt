@@ -21,6 +21,8 @@ set(SOURCE_FILES
     Messages/RegisterMessage.h
     Messages/TaskMessage.cpp
     Messages/TaskMessage.h
+    Messages/RequestTask.h
+    Messages/RequestTask.cpp
     Tasks/MD5Task.cpp
     Tasks/MD5Task.h
     Tasks/Task.cpp
@@ -63,7 +65,6 @@ set(SOURCE_FILES
     CommunicationManager.h
     Config.cpp
     Config.h
-    include.cpp
     include.h
     Log.cpp
     Log.h
@@ -93,7 +94,8 @@ set(SOURCE_FILES
     #UnitTest.cpp
     #UnitTest.h
     XMLUtils.cpp
-    XMLUtils.h)
+    XMLUtils.h
+    )
 
 add_executable(Reaver ${SOURCE_FILES})
 
