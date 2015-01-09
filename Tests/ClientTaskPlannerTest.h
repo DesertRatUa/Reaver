@@ -58,6 +58,7 @@ public:
 		virtual void SendEchoMessage( const std::string& messag ) {}
 		virtual void SendRegisterMessage() {};
 		virtual	void SendTaskMessage( const unsigned long time, TaskPtr &task ) {};
+		virtual	void SendRequesTaskMessage( const unsigned long num ){};
 	};
 
 	void testAddTask()

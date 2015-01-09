@@ -35,20 +35,15 @@ void ClientTaskPlanner::Run()
 
 void ClientTaskPlanner::Stop()
 {
-	Log::Add("1");
 	m_run = false;
 	if ( m_mainThread.get() )
 	{
 		m_mainThread->join();
 		m_mainThread.reset( NULL );
 	}
-	Log::Add("2");
 	std::lock_guard<std::mutex> lock(m_mut);
-	Log::Add("3");
 	for( ThreadDataPtrs::iterator iter = m_threads.begin(); iter != m_threads.end(); ++iter )
 	{
-		Log::Add("4");
-
 		ThreadDataPtr &ptr = *iter;
 		if( !ptr->m_thread.get() )
 		{
@@ -64,7 +59,6 @@ void ClientTaskPlanner::Stop()
 		}
 		thread.join();
 	}
-	Log::Add("5");
 	m_threads.clear();
 }
 
@@ -117,6 +111,10 @@ void ClientTaskPlanner::MainSequence()
 			m_tasks.pop_front();
 
 			thread->m_thread.reset( new std::thread( ClientTaskPlanner::ThreadTask, thread ) );
+		}
+		if ( m_threads.size() < m_threadNums && m_tasks.size() == 0 )
+		{
+			m_processor.SendRequesTaskMessage( m_threadNums - m_threads.size() );
 		}
 		for( ThreadDataPtrs::iterator iter = m_threads.begin(); iter != m_threads.end(); )
 		{

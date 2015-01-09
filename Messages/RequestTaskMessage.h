@@ -10,12 +10,12 @@
 
 #include <Messages/Message.h>
 
-class RequestTask: public Message
+class RequestTaskMessage: public Message
 {
 public:
-	RequestTask( const unsigned threads );
-	RequestTask();
-	virtual ~RequestTask();
+	RequestTaskMessage( const unsigned threads );
+	RequestTaskMessage();
+	virtual ~RequestTaskMessage();
 
 	virtual void SerializeReqest( tinyxml2::XMLDocument &doc ) const;
 	virtual void SerializeRespond( tinyxml2::XMLDocument &doc ) const;

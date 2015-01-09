@@ -12,6 +12,7 @@
 #include "Messages/RegisterMessage.h"
 #include "Messages/EchoMessage.h"
 #include "Messages/TaskMessage.h"
+#include "Messages/RequestTaskMessage.h"
 #include "ClientMessageProcessor.h"
 
 ClientCommunicationManagerInterface *ClientMessageProcessor::m_communication(NULL);
@@ -88,5 +89,12 @@ void ClientMessageProcessor::SendTaskMessage( const unsigned long time, TaskPtr 
 {
 	assert( m_parent );
 	TaskMessage mess( time, task );
+	m_communication->SendRespond( mess );
+}
+
+void ClientMessageProcessor::SendRequesTaskMessage( const unsigned long num )
+{
+	assert( m_parent );
+	RequestTaskMessage mess( num );
 	m_communication->SendRespond( mess );
 }

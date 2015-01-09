@@ -436,8 +436,8 @@ namespace CxxTest
 		suiteDescription_ClientTaskPlannerTest.initialize(
 			"Tests\\ClientTaskPlannerTest.h", 13,
 			"ClientTaskPlannerTest", *suite_ClientTaskPlannerTest, Tests_ClientTaskPlannerTest);
-		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 63, "testAddTask");
-		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 75, "testRun");
+		testDescription_ClientTaskPlannerTest_testAddTask.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 64, "testAddTask");
+		testDescription_ClientTaskPlannerTest_testRun.initialize(Tests_ClientTaskPlannerTest, suiteDescription_ClientTaskPlannerTest, 76, "testRun");
 
 		// Initialize test suite: ClientsMapTest
 		Tests_ClientsMapTest.initialize();

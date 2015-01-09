@@ -21,6 +21,7 @@ public:
 	virtual void SendEchoMessage( const std::string& messag ) = 0;
 	virtual void SendRegisterMessage() = 0;
 	virtual	void SendTaskMessage( const unsigned long time, TaskPtr &task ) = 0;
+	virtual	void SendRequesTaskMessage( const unsigned long num ) = 0;
 };
 
 class ClientMessageProcessor: public MessageProcessor, public ClientMessageProcessorInterface
@@ -34,6 +35,7 @@ public:
 	virtual void SendEchoMessage( const std::string& messag );
 	virtual void SendRegisterMessage();
 	virtual void SendTaskMessage( const unsigned long time, TaskPtr &task );
+	virtual	void SendRequesTaskMessage( const unsigned long num );
 
 protected:
 	static void RecieveEchoMessage( const tinyxml2::XMLDocument& doc, const std::string& addr );
