@@ -96,5 +96,5 @@ void ClientMessageProcessor::SendRequesTaskMessage( const unsigned long num )
 {
 	assert( m_parent );
 	RequestTaskMessage mess( num );
-	m_communication->SendRespond( mess );
+	m_communication->SendRequest( mess );
 }

@@ -47,7 +47,7 @@ protected:
 	void SendTaskMessage( const unsigned long time, TaskPtr &task );
 
 	bool m_run;
-	unsigned m_threadNums;
+	const unsigned m_threadNums;
 	ThreadPtr m_mainThread;
 	ThreadDataPtrs m_threads;
 	std::mutex m_mut;
