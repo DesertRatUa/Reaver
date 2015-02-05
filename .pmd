@@ -292,6 +292,10 @@
             <ruleset>Coupling Rules</ruleset>
         </rule>
         <rule>
+            <name>LooseCoupling</name>
+            <ruleset>Coupling Rules</ruleset>
+        </rule>
+        <rule>
             <name>AbstractClassWithoutAbstractMethod</name>
             <ruleset>Design Rules</ruleset>
         </rule>
@@ -521,6 +525,10 @@
         </rule>
         <rule>
             <name>TooManyStaticImports</name>
+            <ruleset>Import Statement Rules</ruleset>
+        </rule>
+        <rule>
+            <name>UnusedImports</name>
             <ruleset>Import Statement Rules</ruleset>
         </rule>
         <rule>
@@ -844,6 +852,10 @@
             <ruleset>Strict Exception Rules</ruleset>
         </rule>
         <rule>
+            <name>SignatureDeclareThrowsException</name>
+            <ruleset>Strict Exception Rules</ruleset>
+        </rule>
+        <rule>
             <name>AppendCharacterWithChar</name>
             <ruleset>String and StringBuffer Rules</ruleset>
         </rule>
@@ -905,18 +917,6 @@
         </rule>
         <rule>
             <name>CloneMethodMustImplementCloneable</name>
-            <ruleset>Type Resolution Rules</ruleset>
-        </rule>
-        <rule>
-            <name>LooseCoupling</name>
-            <ruleset>Type Resolution Rules</ruleset>
-        </rule>
-        <rule>
-            <name>SignatureDeclareThrowsException</name>
-            <ruleset>Type Resolution Rules</ruleset>
-        </rule>
-        <rule>
-            <name>UnusedImports</name>
             <ruleset>Type Resolution Rules</ruleset>
         </rule>
         <rule>

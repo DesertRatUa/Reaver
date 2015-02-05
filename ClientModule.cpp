@@ -134,7 +134,7 @@ void ClientModule::TaskRequest( TaskPtr &task )
 		Log::Add( "Wrong task request" );
 		return;
 	}
-	Log::Add( "Recive Task: " + Log::IntToStr( task->GetID() ) );
+	//Log::Add( "Recive Task: " + Log::IntToStr( task->GetID() ) );
 	m_planner.AddTask( task );
 }
 

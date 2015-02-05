@@ -67,7 +67,7 @@ void ClientTaskPlanner::AddTask( TaskPtr &task )
 	assert( task.get() );
 	std::lock_guard<std::mutex> lock(m_mut);
 	m_tasks.push_back( task );
-	Log::Add( "Task added: " + Log::IntToStr( task->GetID() ) );
+	Log::Add( "Task added: " + Log::IntToStr( task->GetID() ) + ". Total tasks: " + Log::IntToStr( m_tasks.size() ) );
 }
 
 void ClientTaskPlanner::ThreadMain( ClientTaskPlanner &parent )
@@ -83,11 +83,11 @@ void ClientTaskPlanner::ThreadTask( ThreadData *data )
 	assert( data->m_task.get() );
 	assert( data->m_parent );
 	TaskPtr &task = data->m_task;
-	Log::Add( "Start task thread for taskId: " + Log::IntToStr( task->GetID() ) + ". Total threads: " + Log::IntToStr( data->m_parent->m_tasks.size() ) );
+	Log::Add( "Start task thread for taskId: " + Log::IntToStr( task->GetID() ) );
 	unsigned respondTime = GetTickCount();
 	task->Process();
 	data->m_parent->SendTaskMessage( GetTickCount() - respondTime, task );
-	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( task->GetID() ) + ". Total threads: " + Log::IntToStr( data->m_parent->m_tasks.size() ) );
+	Log::Add( "Stop task thread for taskId: " + Log::IntToStr( task->GetID() ) );
 	data->m_done = true;
 }
 

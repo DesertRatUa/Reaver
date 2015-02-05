@@ -137,16 +137,15 @@ void ServerModule::TaskRespond( const std::string& addr, const TaskPtr &task )
 
 void ServerModule::TaskRequest( const std::string& addr, const unsigned count  )
 {
-	Log::AddMessage( "Task Request: " + Log::IntToStr( count ) );
+	Log::Add( "Task Request: " + Log::IntToStr( count ) );
 	for ( unsigned i = 0; i < count; ++i )
 	{
-		Log::AddMessage( "Send Task" );
 		TaskPtr ptr = m_planner.GetTask();
 		if( !ptr.get() )
 		{
 			return;
 		}
-		Log::AddMessage( "Send Task" );
+		Log::Add( "Send Task" );
 		m_processor.SendTaskMessage( m_connection.GetClient( addr ), ptr );
 	}
 }
